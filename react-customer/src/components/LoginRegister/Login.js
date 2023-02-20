@@ -69,6 +69,10 @@ class Login extends Component {
 
 
   render() {
+    setTimeout(() => {
+      console.log('xxxsx');
+      window.scrollTo(0, 210);
+    }, 100);
     const { username, password } = this.state;
     const { user } = this.props;
     if (user !== null) {

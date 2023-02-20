@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { startLoading, doneLoading } from '../../utils/loading'
 import { withRouter } from 'react-router-dom';
 import validateLoginRegister from '../../utils/validations/validateLoginRegister';
+import { Link } from 'react-router-dom'
 
 toast.configure()
 
@@ -72,6 +73,10 @@ class Register extends Component {
   }
 
   render() {
+    setTimeout(() => {
+      console.log('xxxsx');
+      window.scrollTo(0, 210);
+    }, 100);
     const { firstname, lastname, gmail, phonenumber, address, password, repassword } = this.state;
     return (
       <div className="col-sm-12 col-md-12 col-lg-6 col-xs-12">
@@ -80,7 +85,7 @@ class Register extends Component {
             <h4 className="login-title">Đăng ký</h4>
             <div className="row">
               <div className="col-md-6 mb-20">
-                <label>Họ và tên đệm</label>
+                <label>Họ và tên đệm*</label>
                 <input
                   value={lastname}
                   onChange={this.handleChange}
@@ -90,7 +95,7 @@ class Register extends Component {
                   placeholder="Họ và tên đệm" />
               </div>
               <div className="col-md-6 mb-20">
-                <label>Tên</label>
+                <label>Tên*</label>
                 <input
                   value={firstname}
                   onChange={this.handleChange}
@@ -142,7 +147,7 @@ class Register extends Component {
                   placeholder="Nhập số điện thoại (10 số) " />
               </div>
               <div className="col-md-12 mb-20">
-                <label>Địa chỉ *</label>
+                <label>Địa chỉ</label>
                 <input
                   value={address}
                   onChange={this.handleChange}
@@ -150,6 +155,11 @@ class Register extends Component {
                   type="text"
                   name="address"
                   placeholder="Địa chỉ" />
+              </div>
+              <div className="col-md-12 mb-20">
+                <Link to="/login"> Đăng nhập</Link>
+                {/* <Link to="/activeaccount"> Đăng ký</Link> */}
+
               </div>
               <div className="col-12">
                 <button className="register-button mt-0">Đăng ký</button>

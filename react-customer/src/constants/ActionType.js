@@ -72,3 +72,5 @@ export const FIND_ADDRESS = 'FIND_ADDRESS';
 export const UPDATE_ADDRESS = 'UPDATE_ADDRESS';
 export const ADD_ADDRESS = 'ADD_ADDRESS';
 export const REMOVE_ADDRESS = 'REMOVE_ADDRESS';
+
+export const CLEAR_STORE = 'CLEAR_STORE';

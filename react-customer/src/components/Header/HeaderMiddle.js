@@ -8,6 +8,7 @@ import { actGetProductOfKeyRequest } from '../../redux/actions/products'
 import { actFetchWishListRequest } from '../../redux/actions/wishlist'
 import { withRouter } from 'react-router-dom';
 
+import './header-middle.css';
 
 
 let token, id;
@@ -18,7 +19,15 @@ class HeaderMiddle extends Component {
       textSearch: ''
     }
   }
-  componentDidMount() {
+
+  componentDidMount = () => {
+    //nếu chưa có key historySearch 1-5 thì tạo thêm
+    for (let i = 1; i <= 5; i++) {
+      if (!localStorage.getItem(`historySearch${i}`)) {
+        localStorage.setItem(`historySearch${i}`, '');
+      }
+    }
+
     token = localStorage.getItem("_auth");
     id = localStorage.getItem("_id");
     if (token) {
@@ -45,30 +54,138 @@ class HeaderMiddle extends Component {
       return toast.error('Vui lòng nhập sản phẩm cần tìm ...');
     }
     else {
+      //mảng sau lưu 5 chuỗi search mới nhất
+      let arrHistorySearch = [];
+      for (let i = 1; i <= 5; i++) {
+        //đưa data vào mảng, nếu ko tồn tại key thì gán rỗng
+        arrHistorySearch[i - 1] = localStorage.getItem(`historySearch${i}`) || '';
+      }
+      console.log('arrHistorySearch: ', arrHistorySearch);
+
+      //thêm chuỗi vừa tìm vào đầu arrHistorySearch
+      //nếu chuỗi đã tồn tại trong danh sách thì xóa nó đi
+      const findFunc = (element) => element === textSearch.trim();
+      const foundIndex = arrHistorySearch.findIndex(findFunc);
+      console.log('foundIndex:', foundIndex);
+      //nếu tìm thấy
+      if (foundIndex != -1) {
+        //xóa chuỗi đó khỏi mảng
+        arrHistorySearch.splice(foundIndex, 1);
+        arrHistorySearch.unshift(textSearch.trim());
+      }
+      else {
+        arrHistorySearch.unshift(textSearch.trim());
+      }
+
+      //cập nhật lại danh sách historySearch ở local storage
+      for (let i = 1; i <= 5; i++) {
+        localStorage.setItem(`historySearch${i}`, arrHistorySearch[i - 1]);
+      }
+
+      //delay để chờ ulHistorySearch cập nhật
+      setTimeout(() => {
+        //re render để giá trị mới trong local storage đc hiển thị lên UI
+        this.setState(this.state);
+      }, 1300);
+
       //startLoading();
-      let res = await this.props.searchProduct(textSearch);
-      //console.log('searchProduct res: ', res);
+      // let res = await this.props.searchProduct(textSearch);
+      // console.log('searchProduct res: ', res);
+
+      let res = await actGetProductOfKeyRequest(textSearch)();
+      console.log('searchProduct res: ', res);
       //doneLoading();
-      this.props.history.push(`/search/${textSearch}`);
-      // this.setState({
-      //   textSearch: ''
-      // })
+      if (res) {
+        this.props.history.push(`/search/${textSearch}`);
+      }
+
 
     }
 
   }
 
+  handleOnFocus = () => {
+    console.log('handleOnFocus');
+    document.getElementsByClassName("history-search")[0].style.display = "block";
+  }
+
+  handleOnBlur = () => {
+    console.log('handleOnBlur');
+    setTimeout(() => {
+      document.getElementsByClassName("history-search")[0].style.display = "none";
+    }, 150);
+  }
+
+  handleClickHS1 = () => {
+    console.log('handleClickHS1');
+    this.setState({
+      textSearch: document.getElementsByClassName("history-search")[0].children[1].innerText,
+    });
+
+    setTimeout(() => {
+      this.handleClick();
+    }, 500);
+  }
+
+  handleClickHS2 = () => {
+    this.setState({
+      textSearch: document.getElementsByClassName("history-search")[0].children[2].innerText,
+    });
+
+    setTimeout(() => {
+      this.handleClick();
+    }, 500);
+  }
+
+  handleClickHS3 = () => {
+    this.setState({
+      textSearch: document.getElementsByClassName("history-search")[0].children[3].innerText,
+    });
+
+    setTimeout(() => {
+      this.handleClick();
+    }, 500);
+  }
+
+  handleClickHS4 = () => {
+    this.setState({
+      textSearch: document.getElementsByClassName("history-search")[0].children[4].innerText,
+    });
+
+    setTimeout(() => {
+      this.handleClick();
+    }, 500);
+  }
+
+  handleClickHS5 = (e) => {
+    e.preventDefault();
+    this.setState({
+      textSearch: document.getElementsByClassName("history-search")[0].children[5].innerText,
+    });
+
+    setTimeout(() => {
+      this.handleClick();
+    }, 500);
+  }
+
   render() {
+    setTimeout(() => {
+      //ẩn các dòng historySearch empty
+      let ulHistorySearch = document.getElementsByClassName("history-search")[0].children;
+      console.log("ulHistorySearch: ", ulHistorySearch);
+      for (let i = 1; i <= 5; i++) {
+        if (ulHistorySearch[i].innerText === '') {
+          ulHistorySearch[i].style.display = "none";
+        }
+        else {
+          ulHistorySearch[i].style.display = "list-item";
+        }
+      }
+    }, 500);
+
     const { textSearch } = this.state;
-    const { countCart, countWishList } = this.props;
-    let count = 0;
-    let count2 = 0;
-    if (countCart.length > 0) {
-      countCart.forEach(item => {
-        count += item.cartProductQuantity
-      });
-    }
-    console.log("yêu thích", countWishList)
+    const { cart, countWishList } = this.props;
+
     return (
       <div className="header-middle pl-sm-0 pr-sm-0 pl-xs-0 pr-xs-0">
         <div className="container">
@@ -92,19 +209,29 @@ class HeaderMiddle extends Component {
             {/* Begin Header Middle Right Area */}
             <div className="col-lg-9 pl-0 ml-sm-15 ml-xs-15">
               {/* Begin Header Middle Searchbox Area */}
-              <form className="hm-searchbox" >
+              <form className="hm-searchbox" autoComplete='off' >
                 <input
+                  className='input-search'
                   name="textSearch"
                   value={textSearch}
                   onChange={this.handleChange}
+                  onFocus={this.handleOnFocus}
+                  onBlur={this.handleOnBlur}
                   type="text"
                   placeholder="Tìm kiếm sản phẩm ..." />
-                {/* <button className="li-btn" type="submit"></button> */}
-                <Link
-                  onClick={this.handleClick}
-                  to={`#`}>
-                  <button className="li-btn" type="button"><i className="fa fa-search" /></button>
-                </Link>
+                <ul className='history-search'>
+                  <li className='history-search__header'>Lịch sử tìm kiếm</li>
+                  <li className='history-search__item' onClick={this.handleClickHS1}>{localStorage.getItem('historySearch1')}</li>
+                  <li className='history-search__item' onClick={this.handleClickHS2}>{localStorage.getItem('historySearch2')}</li>
+                  <li className='history-search__item' onClick={this.handleClickHS3}>{localStorage.getItem('historySearch3')}</li>
+                  <li className='history-search__item' onClick={this.handleClickHS4}>{localStorage.getItem('historySearch4')}</li>
+                  <li className='history-search__item' onClick={this.handleClickHS5}>{localStorage.getItem('historySearch5')}</li>
+                </ul>
+                <button className="li-btn"
+                  type="button"
+                  onClick={this.handleClick}>
+                  <i className="fa fa-search" />
+                </button>
               </form>
               {/* Header Middle Searchbox Area End Here */}
               {/* Begin Header Middle Right Area */}
@@ -125,13 +252,26 @@ class HeaderMiddle extends Component {
                     <Link to="/cart">
                       <div className="hm-minicart-trigger">
                         <span
-                          className="item-icon fa-cart-arrow-down"
+                          className="item-icon fa-cart-shopping"
                           style={{ margin: "auto auto" }}
                         >
+
+                          {
+                            cart.length === 0 || !cart ?
+                              (
+                                null
+                              )
+                              :
+                              (
+                                <span className="cart-item-count">
+                                  {cart.length}
+                                </span>
+                              )
+                          }
+
+
                         </span>
-                        {/* <span className="item-text">
-                          <span className="cart-item-count">{count}</span>
-                        </span> */}
+
                       </div>
                     </Link>
                     <span />
@@ -148,7 +288,7 @@ class HeaderMiddle extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    countCart: state.cart,
+    cart: state.cart,
     countWishList: state.wishlist
   }
 }

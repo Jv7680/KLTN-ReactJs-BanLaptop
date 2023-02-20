@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import 'react-toastify/dist/ReactToastify.css';
 import BeautyStars from 'beauty-stars';
 import './style.css'
+import Swal from 'sweetalert2';
 toast.configure()
 let token, id;
 id = parseInt(localStorage.getItem("_id"));
@@ -49,9 +50,13 @@ class TopTreddingProductItems extends Component {
     token = localStorage.getItem("_auth");
     id = parseInt(localStorage.getItem("_id"));
     if (!token) {
-      this.setState({
-        redirectYourLogin: true
+      Swal.fire({
+        returnFocus: false,
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'Bạn cần đăng nhập để thực hiện chức năng này!',
       })
+      this.props.history.push(`/login`);
     }
     else {
       this.setState({

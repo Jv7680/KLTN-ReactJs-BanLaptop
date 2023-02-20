@@ -4,6 +4,10 @@ import TopDiscountProduct from '../components/HomePage/Content/TopDiscountProduc
 import TopTreddingProduct from '../components/HomePage/Content/TrenddingProduct/TopTreddingProduct'
 export default class HomPage extends Component {
     render() {
+        setTimeout(() => {
+            console.log('xxxsx');
+            window.scrollTo(0, 0);
+        }, 100);
         return (
             <div>
                 <Slider></Slider>

@@ -2,6 +2,7 @@ import * as Types from '../../constants/ActionType';
 import callApi from '../../utils/apiCaller';
 import { actShowLoading, actHiddenLoading } from './loading'
 
+import store from '../..';
 
 // lấy 12 sản phẩm mỗi page
 export const actFetchProductsRequest = (page, newKey) => {
@@ -68,8 +69,8 @@ export const actGetProductOfKeyRequest = (key, page) => {
                         localStorage.setItem("_keyword", newKey)
                         console.log("actGetProductOfKeyRequest res", res)
                         const newKeyPage = { key: newKey, totalPage: res.data.totalPage }
-                        dispatch(actFetchProducts(res.data.listProducts));
-                        dispatch(actFetchKeySearch(newKeyPage));
+                        store.dispatch(actFetchProducts(res.data.listProducts));
+                        store.dispatch(actFetchKeySearch(newKeyPage));
                         console.log("lưu search", newKeyPage)
                         resolve(res.data);
                         //setTimeout(function () { dispatch(actHiddenLoading()) }, 200);

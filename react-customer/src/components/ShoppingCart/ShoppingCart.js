@@ -4,6 +4,10 @@ import ShoppingCartItems from './ShoppingCartItems'
 import { actFetchCartRequest } from '../../redux/actions/cart';
 import { connect } from 'react-redux'
 import SumTotal from './SumTotal';
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
+const MySwal = withReactContent(Swal)
+
 let token;
 let id;
 class ShoppingCart extends Component {
@@ -19,12 +23,19 @@ class ShoppingCart extends Component {
   componentDidMount() {
     token = localStorage.getItem("_auth");
     id = localStorage.getItem("_id");
-    if (!token) {
+    if (!token || !id) {
+      Swal.fire({
+        returnFocus: false,
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'Bạn cần đăng nhập để thực hiện chức năng này!',
+      })
       this.setState({ redirectYourLogin: true })
     }
     else {
+      this.props.fetch_items(id, token);
     }
-    this.props.fetch_items(id, token);
+
 
 
 

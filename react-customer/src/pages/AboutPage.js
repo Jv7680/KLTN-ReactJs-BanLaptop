@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 
 export default class AboutPage extends Component {
   render() {
+    setTimeout(() => {
+      console.log('xxxsx');
+      window.scrollTo(0, 0);
+    }, 100);
     return (
       <div>
         <div className="breadcrumb-area">

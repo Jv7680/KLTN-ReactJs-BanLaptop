@@ -2,10 +2,10 @@ import * as Types from '../../constants/ActionType';
 import { toast } from 'react-toastify';
 import callApi from '../../utils/apiCaller';
 import 'react-toastify/dist/ReactToastify.css';
-import Swal from "sweetalert2";
 import { actShowLoading, actHiddenLoading } from './loading'
 import withReactContent from "sweetalert2-react-content";
-
+import Swal from "sweetalert2";
+const MySwal = withReactContent(Swal)
 
 
 export const actAddCartRequest = (customerId, product, quantity, token) => {
@@ -29,8 +29,9 @@ export const actAddCartRequest = (customerId, product, quantity, token) => {
         console.log("dữ liệu chuẩn bị gửi về", res)
 
         if (res && res.status === 200) {
-            //dispatch(actFetchCart(res.data.cartEntities));
+            dispatch(actFetchCartRequest(dataguidi.accountId));;
             Swal.fire({
+                returnFocus: false,
                 position: 'center',
                 icon: 'success',
                 title: 'Đã thêm vào giỏ',
@@ -51,6 +52,7 @@ export const actAddCart = (item) => {
 // lấy dữ liệu giỏ hàng
 export const actFetchCartRequest = (id, token) => {
     console.log("dữ liệu chuẩn bị gửi đi", id)
+
     return async dispatch => {
         console.log("dữ liệu chuẩn bị gửi đi", id)
         let token = localStorage.getItem('_auth');

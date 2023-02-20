@@ -4,6 +4,10 @@ import ActiveAccount from '../components/LoginRegister/ActiveAccount';
 
 export default class ActiveAccountPage extends Component {
     render() {
+        setTimeout(() => {
+            console.log('xxxsx');
+            window.scrollTo(0, 210);
+        }, 100);
         const url = this.props.match.match.url;
         return (
             <div>

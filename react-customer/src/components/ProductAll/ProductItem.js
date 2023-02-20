@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import BeautyStars from 'beauty-stars';
 import './style.css'
 import { set } from 'nprogress';
+import Swal from "sweetalert2";
 toast.configure()
 let token, id;
 id = parseInt(localStorage.getItem("_id"));
@@ -48,6 +49,12 @@ class ProductItem extends Component {
     id = parseInt(localStorage.getItem("_id"));
     token = localStorage.getItem("_auth");
     if (!token) {
+      Swal.fire({
+        returnFocus: false,
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'Bạn cần đăng nhập để thực hiện chức năng này!',
+      })
       this.setState({
         redirectYourLogin: true
       })

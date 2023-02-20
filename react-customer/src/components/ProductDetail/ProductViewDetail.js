@@ -14,6 +14,9 @@ import "./style.css";
 import { is_empty } from "../../utils/validations";
 import Slider from "react-slick";
 import { result } from "lodash";
+import Swal from "sweetalert2";
+import { withRouter } from 'react-router-dom';
+
 toast.configure();
 
 let token;
@@ -139,6 +142,17 @@ class ProductViewDetail extends Component {
     let idProduct = localStorage.getItem('_idproduct');
 
     let token = localStorage.getItem('_auth');
+    //chưa đăng nhập
+    if (!token) {
+      Swal.fire({
+        returnFocus: false,
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'Bạn cần đăng nhập để thực hiện chức năng này!',
+      })
+      this.props.history.push(`/login`);
+      return;
+    }
 
     let body = {
       orderId: parseInt(idOrder),
@@ -601,4 +615,4 @@ const mapDispatchToProps = dispatch => {
 
   }
 };
-export default connect(mapStateToProps, mapDispatchToProps)(ProductViewDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProductViewDetail));

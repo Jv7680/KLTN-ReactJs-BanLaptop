@@ -1828,7 +1828,7 @@ textarea:focus {
 } */
 .cart-item-count {
 	position: absolute;
-	top: -12px !important;
+	top: -12px;
 	left: -60px;
 	display: block;
 	overflow: hidden;

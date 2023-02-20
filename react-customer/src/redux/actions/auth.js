@@ -7,6 +7,7 @@ import { startLoading, doneLoading } from '../../utils/loading';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { actFetchCartRequest } from './cart';
 
 const MySwal = withReactContent(Swal)
 
@@ -27,6 +28,7 @@ export const actLoginRequest = (user) => {
             localStorage.setItem('_username', res.data.username);
             dispatch(actLogin(token));
             dispatch(actFetchUserRequset(id));
+            dispatch(actFetchCartRequest(id));
         }
     };
 }
