@@ -50,7 +50,6 @@ class ProductItem extends Component {
     token = localStorage.getItem("_auth");
     if (!token) {
       Swal.fire({
-        returnFocus: false,
         icon: 'error',
         title: 'Lỗi',
         text: 'Bạn cần đăng nhập để thực hiện chức năng này!',
@@ -169,8 +168,8 @@ class ProductItem extends Component {
                     :
                     (
                       <div>
-                        <li className="add-cart active"><Link to="#" onClick={() => this.addItemToCart(product)} >Thêm vào giỏ</Link></li>
-                        <li><Link to="#" onClick={(id) => this.getInfoProduct(product.productId)} title="chi tiểt" className="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><i className="fa fa-eye" /></Link></li>
+                        <li className="add-cart active"><a onClick={() => this.addItemToCart(product)} >Thêm vào giỏ</a></li>
+                        <li><a onClick={(id) => this.getInfoProduct(product.productId)} title="chi tiểt" className="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><i className="fa fa-eye" /></a></li>
                         {/* <li><Link to="#" onClick={() => this.addItemToFavorite(product.productId)} className="links-details" title="yêu thích" ><i className="fa fa-heart-o" /></Link></li> */}
                       </div>
                     )

@@ -5,7 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { actShowLoading, actHiddenLoading } from './loading'
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
-const MySwal = withReactContent(Swal)
+
+// const MySwal = withReactContent(Swal)
 
 
 export const actAddCartRequest = (customerId, product, quantity, token) => {
@@ -29,15 +30,14 @@ export const actAddCartRequest = (customerId, product, quantity, token) => {
         console.log("dữ liệu chuẩn bị gửi về", res)
 
         if (res && res.status === 200) {
-            dispatch(actFetchCartRequest(dataguidi.accountId));;
+            dispatch(actFetchCartRequest(dataguidi.accountId));
             Swal.fire({
-                returnFocus: false,
-                position: 'center',
                 icon: 'success',
                 title: 'Đã thêm vào giỏ',
-                showConfirmButton: false,
-                timer: 1000
-            })
+                // showConfirmButton: false,
+                // timer: 1000
+            });
+
         };
     }
 }

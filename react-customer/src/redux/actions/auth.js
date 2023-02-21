@@ -114,7 +114,8 @@ export const actForgotPasswordRequest = (body) => {
             //const mes = res.data.message ? res.data.message : "Vui lòng xác nhận email để đổi mật khẩu";
             //localStorage.setItem('_mailreset', body.email);
             //toast.success(mes)
-            MySwal.fire({
+            Swal.fire({
+                returnFocus: false,
                 icon: 'success',
                 title: 'Xác Thực Mail Thành Công',
                 //text: 'Vui lòng điền đoạn mã đã được gửi đến mail của bạn!'

@@ -29,6 +29,8 @@ class HeaderTop extends Component {
     startLoading();
     await this.props.setTokenRedux(token);
     doneLoading();
+
+    this.setState(this.state);
   }
 
   loadingPage = () => {
@@ -61,8 +63,12 @@ class HeaderTop extends Component {
                       !token ?
                         (
                           <div className='right-header-top'>
-                            <Link to="/login" className="fix-link-color language-selector-wrapper"> Đăng nhập </Link>
-                            <Link to="/register" className="fix-link-color language-selector-wrapper"> Đăng ký </Link>
+                            <>
+                              <Link to="/login" className="fix-link-color language-selector-wrapper"> Đăng nhập </Link>
+                            </>
+                            <>
+                              <Link to="/register" className="fix-link-color language-selector-wrapper"> Đăng ký </Link>
+                            </>
                           </div>
                         )
                         :
@@ -76,7 +82,7 @@ class HeaderTop extends Component {
                             <div className="fix-text-item dropdown-menu ht-setting-list " aria-labelledby="dropdownMenuLink">
                               <Link className="fix-text-item dropdown-item" to="/profile">Cá nhân</Link>
                               <Link className="fix-text-item dropdown-item" to="/order/status1">Đơn Hàng</Link>
-                              <Link onClick={this.logOut} to="/" className="fix-text-item dropdown-item" href="/">Đăng xuất</Link>
+                              <Link onClick={this.logOut} to="/" className="fix-text-item dropdown-item">Đăng xuất</Link>
                             </div>
                           </div>
                         )

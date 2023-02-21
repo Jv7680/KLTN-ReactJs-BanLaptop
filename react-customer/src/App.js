@@ -35,6 +35,7 @@ class App extends Component {
           !loading ?
             (
               <div className="wrap">
+                {/* hiệu ứng load trang */}
                 <Loading loadingActive={loading} loadingCSS={cssPulseLoader}></Loading>
                 <Header></Header>
                 {this.showContentMenus(routes)}

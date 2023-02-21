@@ -39,7 +39,8 @@ export default async function callApi(endpoint, method = 'GET', body, token) {
         store.dispatch(actFetchCart([]));
       }
       else {
-        MySwal.fire({
+        Swal.fire({
+          returnFocus: false,
           icon: 'error',
           title: 'Lỗi',
           text: `${error}`
@@ -47,7 +48,8 @@ export default async function callApi(endpoint, method = 'GET', body, token) {
       }
 
     } else {
-      MySwal.fire({
+      Swal.fire({
+        returnFocus: false,
         icon: 'error',
         title: 'Lỗi Server',
         text: 'không thể kết nối server!'
