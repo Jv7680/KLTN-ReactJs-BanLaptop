@@ -19,3 +19,7 @@
     background: rgba(71, 74, 240, 0.7);
     ;
 }
+
+body {
+    scroll-behavior: smooth;
+}

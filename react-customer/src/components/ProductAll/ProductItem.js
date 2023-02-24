@@ -84,10 +84,10 @@ class ProductItem extends Component {
     }
 
     return (
-      <div className="col-lg-3 col-md-4 col-sm-6 mt-40">
+      <div className="col-lg-3 col-md-4 col-sm-6 mt-30">
         {/* single-product-wrap start */}
         <div className="single-product-wrap">
-          <div className="fix-img-div product-image">
+          <div className="fix-img-div-for-item product-image">
             <Link onClick={(id) => this.getInfoProduct(product.productId)} >
               {/* <img className="fix-img" src={product.productImageSet[0].image} alt="Li's Product " /> */}
               <img className="fix-img" src={product.image} alt="Li's Product " />

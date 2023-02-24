@@ -32,27 +32,31 @@ class App extends Component {
     return (
       <Router>
         {
-          !loading ?
-            (
-              <div className="wrap">
-                {/* hiệu ứng load trang */}
-                <Loading loadingActive={loading} loadingCSS={cssPulseLoader}></Loading>
-                <Header></Header>
-                {this.showContentMenus(routes)}
-                <Footer></Footer>
-              </div>
-            )
-            :
-            (
-              <div className="wrap">
-                <Loading loadingActive={loading} loadingCSS={cssPulseLoader}></Loading>
-                <Header></Header>
-                {this.showContentMenus(routes)}
-                <Footer></Footer>
-              </div>
-
-            )
+          // !loading ?
+          //   (
+          //     <div className="wrap">
+          //       {/* hiệu ứng load trang */}
+          //       <Loading loadingActive={loading} loadingCSS={cssPulseLoader}></Loading>
+          //       <Header></Header>
+          //       {this.showContentMenus(routes)}
+          //       <Footer></Footer>
+          //     </div>
+          //   )
+          //   :
+          //   (
+          //     <div className="wrap">
+          //       <Loading loadingActive={loading} loadingCSS={cssPulseLoader}></Loading>
+          //       <Header></Header>
+          //       {this.showContentMenus(routes)}
+          //       <Footer></Footer>
+          //     </div>
+          //   )
         }
+        <div className="wrap">
+          <Header></Header>
+          {this.showContentMenus(routes)}
+          <Footer></Footer>
+        </div>
       </Router>
     )
   }

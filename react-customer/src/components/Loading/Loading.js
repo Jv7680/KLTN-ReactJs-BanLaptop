@@ -16,12 +16,12 @@ class Loading extends Component {
         if (loadingActive === true) {
             displayStyle = "flex";
             document.getElementsByTagName('body')[0].classList.add('show-scrollbar');
-            window.onscroll = function () { window.scrollTo(0, 0); };
+            // window.onscroll = function () { window.scrollTo(0, 0); };
         }
         else {
             displayStyle = "none";
             document.getElementsByTagName('body')[0].classList.remove('show-scrollbar');
-            window.onscroll = function () { };
+            // window.onscroll = function () { };
         }
 
         return (

@@ -3,13 +3,15 @@ import ProductItem from "./ProductItem";
 import { connect } from "react-redux";
 import { actFetchProductsRequest } from "../../redux/actions/products";
 import Paginator from 'react-js-paginator';
+import FilterProduct from "./FilterProduct";
+import SortProduct from "./SortProduct";
 
 class ProductAll extends Component {
   constructor(props) {
     super(props);
     this.state = {
       total: 0,
-      currentPage: 1
+      currentPage: 1,
     };
   }
 
@@ -36,7 +38,6 @@ class ProductAll extends Component {
     window.scrollTo(0, 0);
   }
 
-
   render() {
     let { products } = this.props;
     const { total } = this.state;
@@ -55,51 +56,59 @@ class ProductAll extends Component {
                   />
                 </a>
               </div>
-              {/* Li's Banner Area End Here *presentation/}
-              {/* shop-top-bar start */}
+              {/* Li's Banner Area End Here *presentation/} */}
 
-              {/* shop-top-bar end */}
-              {/* shop-products-wrapper start */}
-              <div className="shop-products-wrapper">
-                <div className="tab-content">
-                  <div
-                    id="grid-view"
-                    className="tab-pane fade active show"
-                    role="tabpanel"
-                  >
-                    <div className="product-area shop-product-area">
-                      <div className="row">
-                        {products && products.length
-                          ? products.map((item, index) => {
-                            return (
-                              <ProductItem
-                                key={index}
-                                product={item}
-                              ></ProductItem>
-                            );
-                          })
-                          : null}
+              {/* row chứa phần filter và list sản phẩm */}
+              <div className="row ">
+                {/* Cột chứa phần filter */}
+                <FilterProduct></FilterProduct>
+
+                {/* Cột chứa danh sách sản phẩm và sort, trong cột này có 1 row cho phần sort và 1 cho phần danh sách*/}
+                <div className="col shop-products-wrapper">
+                  <SortProduct></SortProduct>
+                  <div className="tab-content">
+                    <div
+                      id="grid-view"
+                      className="tab-pane fade active show"
+                      role="tabpanel"
+                    >
+                      <div className="product-area shop-product-area">
+                        <div className="row">
+                          {products && products.length
+                            ? products.map((item, index) => {
+                              return (
+                                <ProductItem
+                                  key={index}
+                                  product={item}
+                                ></ProductItem>
+                              );
+                            })
+                            : null}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="paginatoin-area">
+                    <div className="row">
+                      <div className="col-lg-6 col-md-6">
+                        <p>Xem từ 1-12 sản phẩm</p>
+                      </div>
+                      <div className="col-lg-6 col-md-6">
+                        <ul className="pagination-box">
+                          <Paginator
+                            pageSize={1}
+                            totalElements={total}
+                            onPageChangeCallback={(e) => { this.pageChange(e) }}
+                          />
+                        </ul>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="paginatoin-area">
-                  <div className="row">
-                    <div className="col-lg-6 col-md-6">
-                      <p>Xem từ 1-12 sản phẩm</p>
-                    </div>
-                    <div className="col-lg-6 col-md-6">
-                      <ul className="pagination-box">
-                        <Paginator
-                          pageSize={1}
-                          totalElements={total}
-                          onPageChangeCallback={(e) => { this.pageChange(e) }}
-                        />
-                      </ul>
-                    </div>
-                  </div>
-                </div>
               </div>
+
+
+
             </div>
             {/* shop-products-wrapper end */}
           </div>

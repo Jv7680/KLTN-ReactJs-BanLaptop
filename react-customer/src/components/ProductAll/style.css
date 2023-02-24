@@ -1,8 +1,15 @@
-.fix-img-div {
-  height: 220px;
-  width: 230px;
+.divider {
+  border: 1px solid #e4e5f0;
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.fix-img-div-for-item {
+  height: auto !important;
+  width: auto !important;
   overflow: hidden;
 }
+
 .fix-img {
   height: 90%;
   width: 90% !important;
@@ -10,4 +17,116 @@
   padding: 10px;
 }
 
+.filer-area {
+  border: 1px solid black;
+  padding-top: 40px;
+  background-color: white;
+  background-clip: content-box;
+}
 
+.sort-area {
+  border: 1px solid black;
+  /* border-radius: 5px; */
+  margin-left: 0;
+  padding-top: 40px;
+  background-color: white;
+  background-clip: content-box;
+}
+
+.sort-area>.col-auto {
+  display: flex;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.sort-title {
+  font-weight: 600;
+}
+
+.sort-item {
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sort-item:hover {
+  background-color: #f3f3f3;
+}
+
+.sort-item--active,
+.sort-item--active:hover {
+  border-color: #474af0;
+  color: #474af0;
+  background-color: #e6eeff;
+}
+
+
+
+.price-range-area {
+  position: relative;
+}
+
+.from-price-range,
+.to-price-range {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* .from {
+  margin-right: 3px;
+}
+
+.to {
+  margin-left: 3px;
+} */
+
+.input-range {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 90%;
+  font-size: 12px;
+  text-align: center;
+  padding: 0;
+  background-color: white;
+  border: 1px solid rgb(228, 229, 240);
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+
+.filer-tittle {
+  margin-left: 4px;
+  margin-bottom: 6px;
+  margin-top: 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+
+.screen-size-item,
+.producer-item,
+.CPU-item,
+.ram-item,
+.graphics-card-item {
+  display: flex;
+  align-items: center;
+}
+
+.input-checkbox {
+  width: 17px;
+  height: 17px;
+  margin-left: 4px;
+  margin-right: 4px;
+  opacity: 0.7;
+}
+
+.input-checkbox~span {
+  cursor: default;
+  user-select: none;
+}

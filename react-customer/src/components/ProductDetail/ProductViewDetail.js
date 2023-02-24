@@ -398,7 +398,6 @@ class ProductViewDetail extends Component {
                           <div>
                             <Link
                               onClick={() => this.addItemToCart(product)}
-                              to="#"
                               className="add-to-cart button-hover-addcart button"
                             >
                               Thêm vào giỏ

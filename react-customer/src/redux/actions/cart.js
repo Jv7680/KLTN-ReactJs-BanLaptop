@@ -34,8 +34,8 @@ export const actAddCartRequest = (customerId, product, quantity, token) => {
             Swal.fire({
                 icon: 'success',
                 title: 'Đã thêm vào giỏ',
-                // showConfirmButton: false,
-                // timer: 1000
+                showConfirmButton: false,
+                timer: 1000
             });
 
         };

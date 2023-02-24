@@ -28,6 +28,22 @@ class HeaderMiddle extends Component {
       }
     }
 
+    setTimeout(() => {
+      let input = document.getElementsByClassName("input-search")[0];
+
+      // Execute a function when the user presses a key on the keyboard
+      input.addEventListener("keypress", (event) => {
+        // If the user presses the "Enter" key on the keyboard
+        if (event.key === "Enter") {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementsByClassName("li-btn")[0].click();
+          // this.handleClick();
+        }
+      });
+    }, 500);
+
     token = localStorage.getItem("_auth");
     id = localStorage.getItem("_id");
     if (token) {
@@ -47,6 +63,7 @@ class HeaderMiddle extends Component {
       [name]: value
     });
   }
+
   handleClick = async () => {
     const { textSearch } = this.state;
     if (textSearch === '' || textSearch === null) {

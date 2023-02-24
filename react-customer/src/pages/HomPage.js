@@ -5,7 +5,6 @@ import TopTreddingProduct from '../components/HomePage/Content/TrenddingProduct/
 export default class HomPage extends Component {
     render() {
         setTimeout(() => {
-            console.log('xxxsx');
             window.scrollTo(0, 0);
         }, 100);
         return (
