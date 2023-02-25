@@ -1,13 +1,13 @@
 import * as Types from './../../constants/ActionType';
 let initialState = [];
 
-const product = (state = initialState, action) => {
+const filter = (state = initialState, action) => {
     switch (action.type) {
-        case Types.FETCH_PRODUCT:
-            state = action.product;
+        case Types.UPDATE_FILTER:
+            state = action.filter;
             return { ...state };
         default: return { ...state };
     }
 };
 
-export default product;
+export default filter;

@@ -9,59 +9,10 @@ class SortProduct extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fromPriceRange: 0,
-            toPriceRange: 100000000,
-            sz116: false,
-            sz13: false,
-            sz133: false,
-            sz134: false,
-            sz135: false,
-            sz14: false,
-            sz145: false,
-            sz156: false,
-            sz16: false,
-            sz161: false,
-            sz17: false,
-            sz173: false,
-            sz18: false,
-            pAcer: false,
-            pAsus: false,
-            pAvita: false,
-            pDell: false,
-            pGigabyte: false,
-            pHP: false,
-            pHuawei: false,
-            pLG: false,
-            pLenovo: false,
-            pMSI: false,
-            celeron: false,
-            pentium: false,
-            snapdragon: false,
-            coreI3: false,
-            coreI5: false,
-            coreI7: false,
-            coreI9: false,
-            ryzen3: false,
-            ryzen5: false,
-            ryzen7: false,
-            ryzen9: false,
-            ram4: false,
-            ram8: false,
-            ram16: false,
-            ram32: false,
-            ssd1: false,
-            ssd512: false,
-            ssd256: false,
-            ssd128: false,
+            pricesGoUp: false,
+            pricesGoDown: false,
+            mostSold: false,
         }
-    }
-
-    handleChange = event => {
-        const name = event.target.name;
-        const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
-        this.setState({
-            [name]: value
-        });
     }
 
     handleOnClickSortItem = (event) => {
@@ -70,9 +21,17 @@ class SortProduct extends Component {
 
         for (let i = 0; i <= 2; i++) {
             listSortItem[i].classList.remove('sort-item--active');
+            this.setState({
+                pricesGoUp: false,
+                pricesGoDown: false,
+                mostSold: false,
+            });
         }
 
         listSortItem[name].classList.add('sort-item--active');
+        this.setState({
+            [name]: true,
+        });
     }
 
     handleOnClickBtnFilter = (event) => {
@@ -81,7 +40,6 @@ class SortProduct extends Component {
 
         let classListOfFilterArea = document.getElementsByClassName('filter-area')[0].classList;
         let clearClassListOfFilterArea = false;
-        console.log('xxxx', btnFilter);
 
         //check xem filter-area--show đã đc add chưa, add rồi thì xóa
         for (let i = 0; i < classListOfFilterArea.length; i++) {
@@ -110,8 +68,13 @@ class SortProduct extends Component {
     }
 
     render() {
-        //price range
-        const { fromPriceRange, toPriceRange, disablePriceRange } = this.state;
+        const { pricesGoUp, pricesGoDown, mostSold } = this.state;
+
+        //biến sort này sẽ được cập nhập mỗi khi state thay đổi
+        const sort = { pricesGoUp, pricesGoDown, mostSold };
+        console.log('sort:', sort);
+        //gọi API mối lần thay đổi giá trị sort
+
         return (
             <div className="row sort-area">
                 <div className='col-auto'>

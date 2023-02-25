@@ -5,6 +5,11 @@ import Slider from 'react-input-slider';
 import Swal from "sweetalert2";
 import { toast } from 'react-toastify';
 import './style.css'
+import { formatNumberToVND } from '../../config/TYPE';
+
+import { connect } from 'react-redux';
+import store from '../..';
+import { actUpdateFilter } from '../../redux/actions/filter';
 
 const sliderStyleFrom = {
     track: {
@@ -92,6 +97,13 @@ class FilterProduct extends Component {
             ssd512: false,
             ssd256: false,
             ssd128: false,
+            gcAMDRadeonR5520: false,
+            gcGTX1650: false,
+            gcGTX1650Ti: false,
+            gcGeForceMX130: false,
+            gcGeForceMX330: false,
+            gcRTX1650: false,
+            gcRTX2050: false,
         }
     }
 
@@ -116,6 +128,10 @@ class FilterProduct extends Component {
         }
     }
 
+    handleFilterChange = () => {
+
+    }
+
     render() {
         //price range
         const { fromPriceRange, toPriceRange } = this.state;
@@ -129,6 +145,21 @@ class FilterProduct extends Component {
         const { ram4, ram8, ram16, ram32 } = this.state;
         //ssd
         const { ssd1, ssd512, ssd256, ssd128 } = this.state;
+        //graphic card
+        const { gcAMDRadeonR5520, gcGTX1650, gcGTX1650Ti, gcGeForceMX130, gcGeForceMX330, gcRTX1650, gcRTX2050 } = this.state;
+
+        //biến filter này sẽ được cập nhập mỗi khi state thay đổi
+        const filter = {
+            priceRange: [fromPriceRange, toPriceRange],
+            screenSize: { sz116, sz13, sz133, sz134, sz135, sz14, sz145, sz156, sz16, sz161, sz17, sz173, sz18 },
+            producer: { pAcer, pAsus, pAvita, pDell, pGigabyte, pHP, pHuawei, pLG, pLenovo, pMSI },
+            cpu: { celeron, pentium, snapdragon, coreI3, coreI5, coreI7, coreI9, ryzen3, ryzen5, ryzen7, ryzen9 },
+            ram: { ram4, ram8, ram16, ram32 },
+            ssd: { ssd1, ssd512, ssd256, ssd128 },
+            graphicCard: { gcAMDRadeonR5520, gcGTX1650, gcGTX1650Ti, gcGeForceMX130, gcGeForceMX330, gcRTX1650, gcRTX2050 },
+        };
+        console.log('filter', filter)
+        //gọi API mối lần thay đổi giá trị filter
 
         return (
             <div className="col-2 filter-area">
@@ -139,7 +170,7 @@ class FilterProduct extends Component {
                         <span className="filter-area-tittle">Khoảng giá</span>
                     </div>
                     <div className="col from-price-range text-center">
-                        <span className="input-range">{fromPriceRange}</span>
+                        <span className="input-range">{formatNumberToVND(fromPriceRange)}</span>
                         <Slider
                             styles={sliderStyleFrom}
                             axis="x"
@@ -151,7 +182,7 @@ class FilterProduct extends Component {
                         />
                     </div>
                     <div className="col to-price-range text-center">
-                        <span className="input-range">{toPriceRange}</span>
+                        <span className="input-range">{formatNumberToVND(toPriceRange)}</span>
                         <Slider
                             styles={sliderStyleTo}
                             axis="x"
@@ -329,20 +360,32 @@ class FilterProduct extends Component {
                         <span className="filter-area-tittle">Card đồ họa</span>
                     </div>
                     <div className="col-12 graphics-card-item">
-                        <input className="input-checkbox" type="checkbox" name='ssd1' checked={ssd1} onChange={(event) => { this.handleChange(event) }} />
-                        <span>SSD 1 TB</span>
+                        <input className="input-checkbox" type="checkbox" name='gcAMDRadeonR5520' checked={gcAMDRadeonR5520} onChange={(event) => { this.handleChange(event) }} />
+                        <span>AMD Radeon R5 520</span>
                     </div>
                     <div className="col-12 graphics-card-item">
-                        <input className="input-checkbox" type="checkbox" name='ssd512' checked={ssd512} onChange={(event) => { this.handleChange(event) }} />
-                        <span>SSD 512 GB</span>
+                        <input className="input-checkbox" type="checkbox" name='gcGTX1650' checked={gcGTX1650} onChange={(event) => { this.handleChange(event) }} />
+                        <span>GTX 1650</span>
                     </div>
                     <div className="col-12 graphics-card-item">
-                        <input className="input-checkbox" type="checkbox" name='ssd256' checked={ssd256} onChange={(event) => { this.handleChange(event) }} />
-                        <span>SSD 256 GB</span>
+                        <input className="input-checkbox" type="checkbox" name='gcGTX1650Ti' checked={gcGTX1650Ti} onChange={(event) => { this.handleChange(event) }} />
+                        <span>GTX 1650Ti</span>
                     </div>
                     <div className="col-12 graphics-card-item">
-                        <input className="input-checkbox" type="checkbox" name='ssd128' checked={ssd128} onChange={(event) => { this.handleChange(event) }} />
-                        <span>SSD 128 GB</span>
+                        <input className="input-checkbox" type="checkbox" name='gcGeForceMX130' checked={gcGeForceMX130} onChange={(event) => { this.handleChange(event) }} />
+                        <span>GeForce MX130</span>
+                    </div>
+                    <div className="col-12 graphics-card-item">
+                        <input className="input-checkbox" type="checkbox" name='gcGeForceMX330' checked={gcGeForceMX330} onChange={(event) => { this.handleChange(event) }} />
+                        <span>GeForce MX330</span>
+                    </div>
+                    <div className="col-12 graphics-card-item">
+                        <input className="input-checkbox" type="checkbox" name='gcRTX1650' checked={gcRTX1650} onChange={(event) => { this.handleChange(event) }} />
+                        <span>RTX 1650</span>
+                    </div>
+                    <div className="col-12 graphics-card-item">
+                        <input className="input-checkbox" type="checkbox" name='gcRTX2050' checked={gcRTX2050} onChange={(event) => { this.handleChange(event) }} />
+                        <span>RTX 2050</span>
                     </div>
                 </div>
 
@@ -414,8 +457,17 @@ class FilterProduct extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        getProduct: state.product
+        filter: state.filter
     }
 }
 
-export default withRouter(FilterProduct)
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         fetch_products: (page) => {
+//             return dispatch(actFetchProductsRequest(page));
+//         }
+//     };
+// };
+
+export default connect(mapStateToProps)(withRouter(FilterProduct))
+

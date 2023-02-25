@@ -78,7 +78,7 @@ class ProductItem extends Component {
   render() {
     const { product } = this.props;
     const { quantity, redirectYourLogin } = this.state;
-    console.log(product)
+    // console.log(product)
     if (redirectYourLogin) {
       return <Redirect to='/login'></Redirect>
     }
