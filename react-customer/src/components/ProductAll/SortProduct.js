@@ -75,11 +75,48 @@ class SortProduct extends Component {
         listSortItem[name].classList.add('sort-item--active');
     }
 
+    handleOnClickBtnFilter = (event) => {
+        let btnFilter = document.getElementsByClassName('btn-filter')['btnFilter'].classList;
+        let clearBtnFilter = false;
+
+        let classListOfFilterArea = document.getElementsByClassName('filter-area')[0].classList;
+        let clearClassListOfFilterArea = false;
+        console.log('xxxx', btnFilter);
+
+        //check xem filter-area--show đã đc add chưa, add rồi thì xóa
+        for (let i = 0; i < classListOfFilterArea.length; i++) {
+            if (classListOfFilterArea[i] === 'filter-area--show') {
+                classListOfFilterArea.remove('filter-area--show');
+                clearClassListOfFilterArea = true;
+            }
+        }
+        //nếu chưa đc add thì thêm
+        if (!clearClassListOfFilterArea) {
+            classListOfFilterArea.add('filter-area--show');
+        }
+
+        //check xem btn-filter--active đã đc add chưa, add rồi thì xóa
+        for (let i = 0; i < btnFilter.length; i++) {
+            if (btnFilter[i] === 'btn-filter--active') {
+                btnFilter.remove('btn-filter--active');
+                clearBtnFilter = true;
+            }
+        }
+        //nếu chưa đc add thì thêm
+        if (!clearBtnFilter) {
+            btnFilter.add('btn-filter--active');
+        }
+        // document.getElementsByClassName('filter-area')[0].classList.add('filter-area--show');
+    }
+
     render() {
         //price range
         const { fromPriceRange, toPriceRange, disablePriceRange } = this.state;
         return (
             <div className="row sort-area">
+                <div className='col-auto'>
+                    <span className='btn-filter' onClick={(event) => { this.handleOnClickBtnFilter(event) }} name='btnFilter'><i class="fa fa-filter"></i> Bộ lọc</span>
+                </div>
                 <div className='col-auto'>
                     <span className='sort-title'>Sắp xếp theo</span>
                 </div>

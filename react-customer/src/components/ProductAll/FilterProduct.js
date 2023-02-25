@@ -131,12 +131,12 @@ class FilterProduct extends Component {
         const { ssd1, ssd512, ssd256, ssd128 } = this.state;
 
         return (
-            <div className="col-2 filer-area">
-                <span className="filer-tittle"><i class="fa fa-filter"></i> Bộ lọc tìm kiếm</span>
-                {/* Phần filer giá */}
+            <div className="col-2 filter-area">
+                <span className="filter-tittle"><i class="fa fa-filter"></i> Bộ lọc tìm kiếm</span>
+                {/* Phần filter giá */}
                 <div className="row no-gutters price-range-area">
                     <div className="col-12">
-                        <span className="filer-area-tittle">Khoảng giá &#40;Triệu đồng&#41;</span>
+                        <span className="filter-area-tittle">Khoảng giá</span>
                     </div>
                     <div className="col from-price-range text-center">
                         <span className="input-range">{fromPriceRange}</span>
@@ -167,10 +167,10 @@ class FilterProduct extends Component {
                 {/* Phân cách giữa các phần */}
                 <div className='row no-gutters divider'></div>
 
-                {/* Phần filer hãng sản xuất */}
+                {/* Phần filter hãng sản xuất */}
                 <div className="row no-gutters producer-area">
                     <div className="col-12">
-                        <span className="filer-area-tittle">Hãng sản xuất</span>
+                        <span className="filter-area-tittle">Hãng sản xuất</span>
                     </div>
                     <div className="col-6 producer-item">
                         <input className="input-checkbox" type="checkbox" name='pAcer' checked={pAcer} onChange={(event) => { this.handleChange(event) }} />
@@ -217,10 +217,10 @@ class FilterProduct extends Component {
                 {/* Phân cách giữa các phần */}
                 <div className='row no-gutters divider'></div>
 
-                {/* Phần filer CPU */}
+                {/* Phần filter CPU */}
                 <div className="row no-gutters producer-area">
                     <div className="col-12">
-                        <span className="filer-area-tittle">CPU</span>
+                        <span className="filter-area-tittle">CPU</span>
                     </div>
                     <div className="col-12 CPU-item">
                         <input className="input-checkbox" type="checkbox" name='celeron' checked={celeron} onChange={(event) => { this.handleChange(event) }} />
@@ -271,10 +271,10 @@ class FilterProduct extends Component {
                 {/* Phân cách giữa các phần */}
                 <div className='row no-gutters divider'></div>
 
-                {/* Phần filer RAM */}
+                {/* Phần filter RAM */}
                 <div className="row no-gutters producer-area">
                     <div className="col-12">
-                        <span className="filer-area-tittle">RAM</span>
+                        <span className="filter-area-tittle">RAM</span>
                     </div>
                     <div className="col-6 ram-item">
                         <input className="input-checkbox" type="checkbox" name='ram4' checked={ram4} onChange={(event) => { this.handleChange(event) }} />
@@ -297,10 +297,10 @@ class FilterProduct extends Component {
                 {/* Phân cách giữa các phần */}
                 <div className='row no-gutters divider'></div>
 
-                {/* Phần filer Ổ cứng */}
+                {/* Phần filter Ổ cứng */}
                 <div className="row no-gutters producer-area">
                     <div className="col-12">
-                        <span className="filer-area-tittle">Ổ cứng</span>
+                        <span className="filter-area-tittle">Ổ cứng</span>
                     </div>
                     <div className="col-12 ram-item">
                         <input className="input-checkbox" type="checkbox" name='ssd1' checked={ssd1} onChange={(event) => { this.handleChange(event) }} />
@@ -323,10 +323,10 @@ class FilterProduct extends Component {
                 {/* Phân cách giữa các phần */}
                 <div className='row no-gutters divider'></div>
 
-                {/* Phần filer Card đồ họa */}
+                {/* Phần filter Card đồ họa */}
                 <div className="row no-gutters producer-area">
                     <div className="col-12">
-                        <span className="filer-area-tittle">Card đồ họa</span>
+                        <span className="filter-area-tittle">Card đồ họa</span>
                     </div>
                     <div className="col-12 graphics-card-item">
                         <input className="input-checkbox" type="checkbox" name='ssd1' checked={ssd1} onChange={(event) => { this.handleChange(event) }} />
@@ -349,10 +349,10 @@ class FilterProduct extends Component {
                 {/* Phân cách giữa các phần */}
                 <div className='row no-gutters divider'></div>
 
-                {/* Phần filer kích thước màn hình */}
+                {/* Phần filter kích thước màn hình */}
                 <div className="row no-gutters screen-size-area">
                     <div className="col-12">
-                        <span className="filer-area-tittle">Kích thước màn hình</span>
+                        <span className="filter-area-tittle">Kích thước màn hình</span>
                     </div>
                     <div className="col-6 screen-size-item">
                         <input className="input-checkbox" type="checkbox" name='sz116' checked={sz116} onChange={(event) => { this.handleChange(event) }} />
