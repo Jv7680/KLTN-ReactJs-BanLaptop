@@ -5,7 +5,7 @@ import { actAddNewRequest, actEditNewRequest } from '../../../redux/actions/new'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom';
 import callApi from '../../../utils/apiCaller';
-import { uploadImage } from '../../../utils/upload'
+// import { uploadImage } from '../../../utils/upload'
 import { css } from '@emotion/core';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { toast } from 'react-toastify';

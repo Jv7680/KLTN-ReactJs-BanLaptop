@@ -6,12 +6,12 @@ import { actAddProductRequest, actEditProductRequest } from '../../../redux/acti
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom';
 import callApi from '../../../utils/apiCaller';
-import { uploadImage } from '../../../utils/upload'
-import Dropzone from 'react-dropzone';
 import { css } from '@emotion/core';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { toast } from 'react-toastify';
 import validateProduct from '../../../utils/validations/validateProduct';
+import Image from './Image';
+import Image360 from './Image360';
 
 let token;
 let id;
@@ -28,20 +28,29 @@ class ActionProduct extends Component {
 
   constructor(props) {
     super(props);
-    this.onDrop = (files) => {
-      let data = this.state.filesImage
-      data = data.concat(files)
+    // this.onDrop = (files) => {
+    //   let data = this.state.filesImage
+    //   data = data.concat(files)
 
-      this.setState({
-        filesImage: data
-      })
-    };
+    //   this.setState({
+    //     filesImage: data
+    //   })
+    // };
 
     this.state = {
       productName: '',
       quantity: 0,
       productImageSet: [],
       filesImage: [],
+
+      listImageDropzoneFile: [],
+
+      listImageURL: [],
+      listImageRef: [],
+
+      listImage360URL: [],
+      listImage360Ref: [],
+
       discount: 0,
       unitPrice: 0,
       descriptionProduct: '',
@@ -50,8 +59,6 @@ class ActionProduct extends Component {
       categoryId: 1,
       supplierId: 1,
       image: '',
-      renderImageLink: false,
-      // hình để đưa ra giao diện
       redirectToProduct: false,
       loading: false,
     };
@@ -78,23 +85,8 @@ class ActionProduct extends Component {
           //supplierId: res.data.supplierFKDto.supplierId,
 
         })
-
-        //đưa ảnh hiện tại vào imgLinkCheckOld
-        setTimeout(() => {
-          let { image } = this.state;
-          document.getElementById('imgLinkCheckOld').attributes.src.nodeValue = image;
-        }, 100);
       }
     }
-
-    //Chưa có api
-    // const resCategories = await callApi('category/all', 'GET');
-    // if (resCategories && resCategories.status === 200) {
-    //   this.setState({
-    //     dataCategories: resCategories.data
-    //   })
-    // }
-    //console.log("dữ liệu trả về 2", resCategories.data)
 
     const resSupplieres = await callApi('admin/supplier/all', 'GET', null, token);
     console.log("dữ liệu trả về suplier", resSupplieres.data)
@@ -103,9 +95,6 @@ class ActionProduct extends Component {
         dataSupplieres: resSupplieres.data
       })
     }
-
-    //console.log("dữ liệu trả về 3", resSupplieres.data)
-
   }
 
   handleChange = (event) => {
@@ -115,25 +104,6 @@ class ActionProduct extends Component {
     this.setState({
       [name]: value
     });
-  }
-
-  handleCheckImage = (event) => {
-    let { image, renderImageLink } = this.state;
-    console.log('imageLink là:', image);
-
-    //Check lỗi độ dài
-    if (!validateProduct.image(image)) {
-      return false;
-    }
-
-    this.setState({
-      renderImageLink: true,
-    });
-
-    setTimeout(() => {
-      document.getElementById('imgLinkCheck').attributes.src.nodeValue = image;
-    }, 100);
-
   }
 
   handleChangeSelecProducer = (event) => {
@@ -153,26 +123,7 @@ class ActionProduct extends Component {
   handleChangeEditor = (value) => {
     this.setState({ descriptionProduct: value })
   }
-  removeImage = (id, isImage) => {
-    let { productImageSet, filesImage } = this.state
-    if (isImage) {
-      productImageSet.splice(id, 1)
-      this.setState({
-        productImageSet
-      })
-    }
-    else {
 
-
-      filesImage.splice(id, 1)
-      console.log("vaof rooif", filesImage)
-
-      this.setState({
-        filesImage
-      })
-    }
-
-  }
   handleSubmit = async (event) => {
     event.preventDefault();
     const {
@@ -269,12 +220,13 @@ class ActionProduct extends Component {
 
   render() {
     //const { productName, quantity, productImageSet, filesImage, discount, unitPrice, descriptionProduct, dataSupplieres, categoryId, dataCategories, supplierId, loading, redirectToProduct } = this.state;
-    const { productName, quantity, productImageSet, filesImage, discount, unitPrice, descriptionProduct, dataSupplieres, categoryId, dataCategories, supplierId, image, renderImageLink, loading, redirectToProduct } = this.state;
-    console.log(productName);
+    const { productName, quantity, productImageSet, filesImage, discount, unitPrice, descriptionProduct, dataSupplieres, categoryId, dataCategories, supplierId, image, loading, redirectToProduct } = this.state;
+    // console.log('listImageURL:', listImageURL)
+    // console.log(productName);
     if (redirectToProduct) {
       return <Redirect to='/products'></Redirect>
     }
-    console.log(productImageSet)
+    // console.log(productImageSet)
     return (
       <div className="content-inner">
         {/* Page Header*/}
@@ -307,7 +259,7 @@ class ActionProduct extends Component {
         </div>
         {/* Forms Section*/}
         <section className="forms">
-          <div className="container-fluid">
+          <div className="container">
             <div className="row">
               {/* Form Elements */}
               <div className="col-lg-12">
@@ -376,49 +328,7 @@ class ActionProduct extends Component {
                         </div>
                       </div>
                       <div className="line" />
-                      {/* loại sản phẩm */}
-                      {/* <div className="form-group row">
-                        <label
-                          className="col-sm-3 form-control-label">
-                          Loại sản phẩm
-                        </label>
-                        <div className="col-sm-9">
-                          {dataCategories && dataCategories.length ?
-                            dataCategories.map((item, index) => {
-                              return (
-                                <div key={item.categoryId}
-                                  className="i-checks"
-                                  style={{ display: 'inline-block', paddingRight: 35 }} >
-                                  {
-                                    item.categoryId === categoryId ?
-                                      <input
-                                        id={item.categoryId}
-                                        name="categoryId"
-                                        checked
-                                        // value={categoryId}
-                                        onChange={this.handleChange}
-                                        type="radio"
-                                        value={item.categoryId}
-                                        className="radio-template" />
-                                      :
-                                      <input
-                                        id={item.categoryId}
-                                        name="categoryId"
-                                        // value={categoryId}
-                                        onChange={this.handleChange}
-                                        type="radio"
-                                        value={item.categoryId}
-                                        className="radio-template" />
-                                  }
-                                  <label>{item.categoryName}</label>
-                                </div>
-                              )
-                            })
-                            : null
-                          }
-                        </div>
-                      </div> */}
-                      <div className="line" />
+
                       {/* nhà cung cấp */}
                       <div className="form-group row">
                         <label
@@ -443,107 +353,21 @@ class ActionProduct extends Component {
                       <div className="form-group row">
                         <label htmlFor="fileInput" className="col-sm-3 form-control-label">Ảnh</label>
                         <div className="col-9 col-sm-9" >
-                          {/* <Dropzone onDrop={this.onDrop}>
-                            {({ getRootProps, getInputProps }) => (
-                              <section style={{ border: '1px dotted' }}>
-                                <div {...getRootProps({ className: 'dropzone' })}>
-                                  <input {...getInputProps()} />
-                                  <h2 className='ml-3'>Chọn ảnh tại đây!!!</h2>
-                                </div>
-                                <aside>
-
-                                  <div>
-                                    {
-                                      productImageSet && productImageSet.length > 0 ?
-                                        productImageSet.map((itemImage, index) => {
-                                          return (
-                                            < span key={index}>
-                                              <div className='model m-3'>
-                                                <div className="modal-content">
-                                                  <div className="modal-header">
-                                                    <button type="button"
-                                                      onClick={() => this.removeImage(index, true)}
-                                                      className="close_button" >
-                                                      <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                  </div>
-                                                  <img src={itemImage} style={{ height: 100, width: 100 }} alt="notfound" />
-                                                </div>
-                                              </div>
-                                            </span>
-                                          )
-                                        })
-                                        : null
-                                    }
-                                  </div>
-                                </aside>
-                              </section>
-                            )}
-                          </Dropzone> */}
-
-                          {/* Xử lý image */}
-                          <input
-                            type="text"
-                            onChange={this.handleChange}
-                            value={image}
-                            name="image"
-                            className="form-control"
-                            style={{ width: "89%", display: "inline" }}
-                          />
-                          <button
-                            className="btn btn-primary"
-                            type='button'
-                            onClick={(event) => { this.handleCheckImage(event) }}
-                            style={{ margin: "0 5px" }}
-                          >
-                            Check
-                          </button>
-                          {/* Dành cho edit sản phẩm */}
-                          {
-                            this.props.id ?
-                              (
-                                <p>
-                                  <img
-                                    id='imgLinkCheckOld'
-                                    src="" alt="not found"
-                                    style={{
-                                      width: "200px",
-                                      marginRight: "50px"
-                                    }}
-                                  />
-                                  <span style={{ fontSize: "20px", color: "#5f68df" }}>(Ảnh Hiện Tại)</span>
-                                </p>
-                              )
-                              :
-                              (
-                                null
-                              )
-                          }
-                          {
-                            !renderImageLink ?
-                              (
-                                null
-                              )
-                              :
-                              (
-                                <p>
-                                  <img
-                                    id='imgLinkCheck'
-                                    src="" alt="not found"
-                                    style={{
-                                      width: "200px",
-                                      marginRight: "50px"
-                                    }}
-                                  />
-                                  <span style={{ fontSize: "20px", color: "#5f68df" }}>(Ảnh Mới)</span>
-                                </p>
-                              )
-                          }
-
-
+                          <Image productID={id}></Image>
                         </div>
                       </div>
-                      {/* chức năng */}
+
+                      <div className="line" />
+
+                      {/* image360 */}
+                      <div className="form-group row">
+                        <label htmlFor="fileInput" className="col-sm-12 form-control-label">Ảnh 360 độ</label>
+                        <Image360 productID={id}></Image360>
+                      </div>
+
+                      <div className="line" />
+
+                      {/* chức năng thoát/lưu */}
                       <div className="form-group row">
                         <div className="col-sm-4 offset-sm-3">
                           <Link to='/products' type="reset" className="btn btn-secondary" style={{ marginRight: 2 }}>Thoát</Link>

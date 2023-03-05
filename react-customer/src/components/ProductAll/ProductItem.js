@@ -12,17 +12,30 @@ import BeautyStars from 'beauty-stars';
 import './style.css'
 import { set } from 'nprogress';
 import Swal from "sweetalert2";
+import { getProductFirstImageURL } from '../../firebase/CRUDImage';
+import { async } from '@firebase/util';
 toast.configure()
 let token, id;
 id = parseInt(localStorage.getItem("_id"));
+
 class ProductItem extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       offset: 0,
-      quantity: 1
+      quantity: 1,
+      productID: this.props.product.productId,
+      imageURL: "",
     }
+  }
+
+  componentDidMount = async () => {
+    let { productID } = this.state;
+    let imageURL = await getProductFirstImageURL(productID);
+    this.setState({
+      imageURL: imageURL,
+    });
   }
 
   handleChange = event => {
@@ -77,7 +90,7 @@ class ProductItem extends Component {
 
   render() {
     const { product } = this.props;
-    const { quantity, redirectYourLogin } = this.state;
+    const { quantity, redirectYourLogin, imageURL } = this.state;
     // console.log(product)
     if (redirectYourLogin) {
       return <Redirect to='/login'></Redirect>
@@ -89,8 +102,16 @@ class ProductItem extends Component {
         <div className="single-product-wrap">
           <div className="fix-img-div-for-item product-image">
             <Link onClick={(id) => this.getInfoProduct(product.productId)} >
-              {/* <img className="fix-img" src={product.productImageSet[0].image} alt="Li's Product " /> */}
-              <img className="fix-img" src={product.image} alt="Li's Product " />
+              {
+                imageURL === "" ?
+                  (
+                    <img className="fix-img" src={process.env.PUBLIC_URL + '/images/logo/logoPTCustomer.png'} alt="Not found" />
+                  )
+                  :
+                  (
+                    <img className="fix-img" src={imageURL} alt="Not found" />
+                  )
+              }
             </Link>
             {
               product.discount === 0 ?

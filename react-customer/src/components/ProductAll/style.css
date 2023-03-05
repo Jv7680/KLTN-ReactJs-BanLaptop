@@ -5,8 +5,11 @@
 }
 
 .fix-img-div-for-item {
-  height: auto !important;
   width: auto !important;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 

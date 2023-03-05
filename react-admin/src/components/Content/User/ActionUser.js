@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import callApi from '../../../utils/apiCaller';
-import {  actEditUserRequest } from '../../../redux/actions/user';
+import { actEditUserRequest } from '../../../redux/actions/user';
 import { Redirect } from 'react-router-dom';
-import { uploadImage } from '../../../utils/upload'
+// import { uploadImage } from '../../../utils/upload'
 import { css } from '@emotion/core';
 import ClipLoader from 'react-spinners/ClipLoader';
 
@@ -25,7 +25,7 @@ class ActionUser extends Component {
         super(props);
         this.state = {
             lastName: '',
-            firstName:'',
+            firstName: '',
             userCustomer: '',
             gmailCustomer: '',
             phoneNumber: '',
@@ -38,10 +38,10 @@ class ActionUser extends Component {
     async componentDidMount() {
         if (id) {
             const res = await callApi(`customer/${id}`, 'GET');
-            console.log("user",res.data)
+            console.log("user", res.data)
             this.setState({
                 lastName: res.data.lastName,
-                firstName:res.data.firstName,
+                firstName: res.data.firstName,
                 userCustomer: res.data.userCustomer,
                 gmailCustomer: res.data.gmailCustomer,
                 phoneNumber: res.data.phoneNumberCustomer,
@@ -79,7 +79,7 @@ class ActionUser extends Component {
                 phoneNumber: newPhone,
                 address: newAddress
             }
-           
+
             await this.props.edit_user(id, editUser);
             this.setState({
                 loading: false,
@@ -90,7 +90,7 @@ class ActionUser extends Component {
 
 
     render() {
-        const {firstName,lastName ,gmailCustomer, phoneNumber, address, redirectToUser, loading } = this.state;
+        const { firstName, lastName, gmailCustomer, phoneNumber, address, redirectToUser, loading } = this.state;
         if (redirectToUser) {
             return <Redirect to="/customers"></Redirect>
         }
@@ -170,7 +170,7 @@ class ActionUser extends Component {
                     </div>
                 </section>
                 {/* Page Footer*/}
-                
+
             </div>
         )
     }

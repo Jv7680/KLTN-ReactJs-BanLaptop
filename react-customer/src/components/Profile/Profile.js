@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import './style.css'
 import Modal from "react-modal";
 import { css } from '@emotion/core';
-import { uploadImage } from '../../utils/upload'
 import callApi from '../../utils/apiCaller';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { actUpdateMeRequset, actChangePasswordMeRequset, actFetchUserRequset } from '../../redux/actions/user';

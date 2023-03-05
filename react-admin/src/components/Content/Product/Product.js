@@ -10,9 +10,10 @@ import withReactContent from 'sweetalert2-react-content'
 import MyFooter from '../../MyFooter/MyFooter'
 import Paginator from 'react-js-paginator';
 import { is_empty } from '../../../utils/validations';
+import callApi from '../../../utils/apiCaller';
 const MySwal = withReactContent(Swal)
 
-let token;
+let token = localStorage.getItem('_auth');
 
 
 class Product extends Component {
@@ -36,12 +37,19 @@ class Product extends Component {
         total: res.data.totalPage,
         currentPage: res.data.currentPage
       })
+
+      // Tạo biến lưu id product tiếp theo trong local storage
+      // Dùng trong trường hợp thêm mới product để up ảnh firebase
+      const resNew = await callApi(`admin/product/all?page=${res.data.totalPage}&size=10`, 'GET', null, token);
+      if (resNew && resNew.status === 200) {
+        let dataFinalPage = resNew.data.listProducts;
+        // newProductID sẽ bằng id mới nhất + 1 
+        let newProductID = dataFinalPage[dataFinalPage.length - 1].productId + 1;
+        localStorage.setItem('_newProductID', newProductID);
+      }
     }
-    // if (resCatagory && resCatagory.status == 200) {
-    //   this.setState({
-    //     dataCategory: resCatagory.data
-    //   })
-    // }
+
+
 
   }
   async pageChange(content) {

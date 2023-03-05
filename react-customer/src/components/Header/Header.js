@@ -9,20 +9,15 @@ import './header-middle.css';
 import './header-bottom.css';
 
 export default class Header extends Component {
-  reRenderHeader = () => {
-    console.log('vào reRenderHeader');
-    this.setState(this.state);
-  }
-
   render() {
     return (
       <header>
         {/* Begin Header Top Area */}
-        <HeaderTop reRenderHeader={this.reRenderHeader}></HeaderTop>
+        <HeaderTop></HeaderTop>
         {/* End Header Top Area */}
 
         {/* Begin Header Middle Area */}
-        <HeaderMiddle reRenderHeader={this.reRenderHeader}></HeaderMiddle>
+        <HeaderMiddle></HeaderMiddle>
         {/* End Header Middle Area */}
 
         {/* Begin Header Bottom Menu Area */}

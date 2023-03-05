@@ -9,7 +9,6 @@ import { formatNumberToVND } from '../../config/TYPE';
 
 import { connect } from 'react-redux';
 import store from '../..';
-import { actUpdateFilter } from '../../redux/actions/filter';
 
 const sliderStyleFrom = {
     track: {
@@ -52,6 +51,7 @@ const sliderStyleTo = {
 class FilterProduct extends Component {
     constructor(props) {
         super(props);
+        this.filter = {};
         this.state = {
             fromPriceRange: 0,
             toPriceRange: 100000000,
@@ -107,29 +107,65 @@ class FilterProduct extends Component {
         }
     }
 
+    // componentDidUpdate = () => {
+    //     //cập nhập filter ở ProductAll(thông qua call back) để truyền xuống Productlist
+    //     this.props.updateFilter(this.filter);
+    //     console.log('updateFilter');
+    // }
+
     handleChange = event => {
         const name = event.target.name;
         const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
         this.setState({
             [name]: value
         });
+
+        setTimeout(() => {
+            //cập nhập filter ở ProductAll(thông qua call back) để truyền xuống Productlist
+            this.props.updateFilter(this.filter);
+        }, 500);
     }
 
-    checkPriceRange = () => {
+    handleChangeFromPriceRange = (x) => {
         let { fromPriceRange, toPriceRange } = this.state;
-        let different = toPriceRange - fromPriceRange;
-        console.log('check', different)
+        let different = toPriceRange - x;
         if (different <= 10000000) {
-            console.log('vào if')
             this.setState({
-                fromPriceRange: (toPriceRange - 10000000),
-                toPriceRange: (fromPriceRange + 10000000)
+                fromPriceRange: x,
+                toPriceRange: (x + 10000000)
             });
         }
+        else {
+            this.setState({
+                fromPriceRange: x
+            });
+        }
+
+        setTimeout(() => {
+            //cập nhập filter ở ProductAll(thông qua call back) để truyền xuống Productlist
+            this.props.updateFilter(this.filter);
+        }, 500);
     }
 
-    handleFilterChange = () => {
+    handleChangeToPriceRange = (x) => {
+        let { fromPriceRange, toPriceRange } = this.state;
+        let different = x - fromPriceRange;
+        if (different <= 10000000) {
+            this.setState({
+                fromPriceRange: (x - 10000000),
+                toPriceRange: x
+            });
+        }
+        else {
+            this.setState({
+                toPriceRange: x
+            });
+        }
 
+        setTimeout(() => {
+            //cập nhập filter ở ProductAll(thông qua call back) để truyền xuống Productlist
+            this.props.updateFilter(this.filter);
+        }, 500);
     }
 
     render() {
@@ -148,9 +184,9 @@ class FilterProduct extends Component {
         //graphic card
         const { gcAMDRadeonR5520, gcGTX1650, gcGTX1650Ti, gcGeForceMX130, gcGeForceMX330, gcRTX1650, gcRTX2050 } = this.state;
 
-        //biến filter này sẽ được cập nhập mỗi khi state thay đổi
-        const filter = {
-            priceRange: [fromPriceRange, toPriceRange],
+        //biến newFilter này sẽ được cập nhập mỗi khi state thay đổi
+        const newFilter = {
+            priceRange: { fromPriceRange, toPriceRange },
             screenSize: { sz116, sz13, sz133, sz134, sz135, sz14, sz145, sz156, sz16, sz161, sz17, sz173, sz18 },
             producer: { pAcer, pAsus, pAvita, pDell, pGigabyte, pHP, pHuawei, pLG, pLenovo, pMSI },
             cpu: { celeron, pentium, snapdragon, coreI3, coreI5, coreI7, coreI9, ryzen3, ryzen5, ryzen7, ryzen9 },
@@ -158,8 +194,9 @@ class FilterProduct extends Component {
             ssd: { ssd1, ssd512, ssd256, ssd128 },
             graphicCard: { gcAMDRadeonR5520, gcGTX1650, gcGTX1650Ti, gcGeForceMX130, gcGeForceMX330, gcRTX1650, gcRTX2050 },
         };
-        console.log('filter', filter)
-        //gọi API mối lần thay đổi giá trị filter
+        //gán newFilter cho filter
+        this.filter = newFilter;
+
 
         return (
             <div className="col-2 filter-area">
@@ -178,7 +215,7 @@ class FilterProduct extends Component {
                             xmax={90000000}
                             xstep={500000}
                             x={fromPriceRange}
-                            onChange={({ x }) => { this.checkPriceRange(); this.setState({ fromPriceRange: x }); }}
+                            onChange={({ x }) => { this.handleChangeFromPriceRange(x) }}
                         />
                     </div>
                     <div className="col to-price-range text-center">
@@ -190,7 +227,7 @@ class FilterProduct extends Component {
                             xmax={100000000}
                             xstep={500000}
                             x={toPriceRange}
-                            onChange={({ x }) => { this.checkPriceRange(); this.setState({ toPriceRange: x }) }}
+                            onChange={({ x }) => { this.handleChangeToPriceRange(x) }}
                         />
                     </div>
                 </div>
@@ -455,19 +492,5 @@ class FilterProduct extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        filter: state.filter
-    }
-}
-
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         fetch_products: (page) => {
-//             return dispatch(actFetchProductsRequest(page));
-//         }
-//     };
-// };
-
-export default connect(mapStateToProps)(withRouter(FilterProduct))
+export default withRouter(FilterProduct)
 

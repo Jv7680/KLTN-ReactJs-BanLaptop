@@ -2,13 +2,133 @@ import React, { Component } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import BeautyStars from "beauty-stars";
 import { is_empty } from "../../utils/validations";
-
 import { Rating } from 'react-simple-star-rating';
+import Modal from "react-modal";
+import { actGetProductRequest, actFetchProductsRequest } from "../../redux/actions/products";
+import store from "../..";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+import callApi from "../../utils/apiCaller";
+import { withRouter } from 'react-router-dom';
 
-export default class RatingView extends Component {
+
+const modalStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "50%"
+  }
+};
+
+class RatingView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cmtContent: '',
+      cmtRating: 1,
+      modalIsOpen: false,
+    }
+  }
+
+  handleChange = event => {
+    const name = event.target.name;
+    const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+    this.setState({
+      [name]: value
+    });
+  }
+
+  openModalSubmitCMT = () => {
+    this.setState({ modalIsOpen: true });
+  }
+
+  closeModalSubmitCMT = () => {
+    this.setState({ modalIsOpen: false });
+  }
+
+  handleSubmitCMT = (event) => {
+    let { cmtContent, cmtRating } = this.state;
+    let idOrder = localStorage.getItem('_orderId');
+    let idAccount = localStorage.getItem('_idaccount');
+    let idProduct = localStorage.getItem('_idproduct');
+
+    let token = localStorage.getItem('_auth');
+    //chưa đăng nhập
+    if (!token) {
+      Swal.fire({
+        returnFocus: false,
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'Bạn cần đăng nhập để thực hiện chức năng này!',
+      })
+      this.props.history.push(`/login`);
+      return;
+    }
+
+    let body = {
+      orderId: parseInt(idOrder),
+      accountId: parseInt(idAccount),
+      productId: parseInt(idProduct),
+      contents: cmtContent,
+      rate: cmtRating,
+    }
+    //gọi api
+    let res = callApi('reviews', 'POST', body, token)
+      .then(result => {
+        toast.success('Đánh giá thành công.');
+        console.log('handleSubmitCMT result', result);
+
+        //cập nhật lại sản phẩm hiện tại
+        store.dispatch(actGetProductRequest(idProduct));
+      });
+  }
+
+  handleOnclickRating = (startRating) => {
+    //1 sao
+    if (startRating === 20) {
+      this.setState({
+        cmtRating: 1,
+      });
+    }
+    //2 sao
+    else if (startRating === 40) {
+      this.setState({
+        cmtRating: 2,
+      });
+    }
+    //3 sao
+    else if (startRating === 60) {
+      this.setState({
+        cmtRating: 3,
+      });
+    }
+    //4 sao
+    else if (startRating === 80) {
+      this.setState({
+        cmtRating: 4,
+      });
+    }
+    //5 sao
+    else if (startRating === 100) {
+      this.setState({
+        cmtRating: 5,
+      });
+    }
+
+    setTimeout(() => {
+      console.log('cmtRating:', this.state.cmtRating);
+    }, 1000);
+  }
 
   render() {
-    const { rating, listReviews } = this.props;
+    const { commented, rating, listReviews } = this.props;
+    const { modalIsOpen } = this.state;
+    let token = localStorage.getItem('_auth');
+
     let count = 0;
     let showFixRating = "0";
 
@@ -58,11 +178,13 @@ export default class RatingView extends Component {
     }
 
     return (
-      <div className="container mt-2">
+      <div className="container">
         <div className="row">
-          <div className="col-sm-6">
+          <div className="col-12">
+            <h4>Đánh giá sản phẩm</h4>
+          </div>
+          <div className="col-md-5">
             <div className="rating-block">
-              <h5>Đánh giá sản phẩm</h5>
               <h2 className="bold padding-bottom-7">
                 {showFixRating}
                 <small>/5</small>
@@ -82,9 +204,7 @@ export default class RatingView extends Component {
               </div>
             </div>
           </div>
-
-
-          <div className="col-sm-3">
+          <div className="col-md-3">
             <div className="pull-left">
               <div
                 className="pull-left"
@@ -297,9 +417,83 @@ export default class RatingView extends Component {
             </div>
 
           </div>
+          <div className="col-md-4 submit-rating-area">
+            {
+              !token ?
+                (
+                  <span className="bold">Bạn cần đăng nhập để đánh giá sản phẩm này</span>
+                )
+                :
+                (
+                  commented ?
+                    (
+                      <span className="bold">Bạn đã đánh giá sản phẩm này</span>
+                    )
+                    :
+                    (
+                      <>
+                        <span className="bold">Bạn chưa đánh giá sản phẩm này</span>
+                        <button className="btn-submit-rating" type="button" onClick={() => { this.openModalSubmitCMT() }}>Gửi đánh giá</button>
+                        <Modal
+                          isOpen={modalIsOpen}
+                          onRequestClose={this.closeModalSubmitCMT}
+                          style={modalStyles}
+                          ariaHideApp={false}
+                          contentLabel="Example Modal"
+                        >
+                          <div className="cmtArea">
+                            <br />
+                            <span
+                              style={{ fontSize: "15px", fontWeight: "bold" }}
+                            >
+                              Bạn chưa đánh giá sản phẩm này.
+                            </span>
+                            <br />
+                            <span
+                              style={{ marginLeft: "20px" }}
+                            >
+                              Đánh giá:&emsp;
+                              <Rating
+                                initialValue={1}
+                                readonly={false}
+                                size={18}
+                                onClick={(startRating) => { this.handleOnclickRating(startRating) }}
+                              />
+                              {null}
+                            </span>
+                            <textarea placeholder="Nhập comment của bạn"
+                              rows="5"
+                              name="cmtContent"
+                              value={this.state.cmtContent}
+                              onChange={this.handleChange}
+                              style={{ resize: "none", marginLeft: "20px" }}
+                            >
+                            </textarea>
+                            <br />
+                            <button
+                              className="btn btn-primary"
+                              onClick={this.handleSubmitCMT}
+                              style={{ marginLeft: "20px" }}
+                            >
+                              Gửi
+                            </button>
+                            <button onClick={this.closeModalSubmitCMT} className="btn-close-rating-modal">
+                              Thoát
+                            </button>
+                            <br />
+                            <br />
+                          </div>
+                        </Modal>
+                      </>
+                    )
+                )
+            }
+          </div>
         </div>
       </div>
     )
   }
 
 }
+
+export default withRouter(RatingView);

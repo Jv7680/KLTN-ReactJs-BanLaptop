@@ -189,7 +189,7 @@ class HeaderMiddle extends Component {
     setTimeout(() => {
       //ẩn các dòng historySearch empty
       let ulHistorySearch = document.getElementsByClassName("history-search")[0].children;
-      console.log("ulHistorySearch: ", ulHistorySearch);
+      // console.log("ulHistorySearch: ", ulHistorySearch);
       for (let i = 1; i <= 5; i++) {
         if (ulHistorySearch[i].innerText === '') {
           ulHistorySearch[i].style.display = "none";

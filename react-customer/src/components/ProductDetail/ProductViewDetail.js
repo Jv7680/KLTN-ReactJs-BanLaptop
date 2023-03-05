@@ -12,10 +12,15 @@ import BeautyStars from "beauty-stars";
 import RatingView from "./RatingView"
 import "./style.css";
 import { is_empty } from "../../utils/validations";
-import Slider from "react-slick";
 import { result } from "lodash";
 import Swal from "sweetalert2";
 import { withRouter } from 'react-router-dom';
+import { getProductListImageURL, getProductListImage360URL } from "../../firebase/CRUDImage";
+
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Modal from "react-modal";
 
 toast.configure();
 
@@ -29,9 +34,37 @@ const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    width: "500px"
+    width: "94vw",
+    height: "96vw",
+    maxHeight: "96vh",
+    overflow: "hidden",
   }
 };
+
+const settings = {
+  dots: false,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  initialSlide: 0,
+  // autoplay: true,
+  // autoplaySpeed: 5000,
+};
+
+const settings360 = {
+  dots: false,
+  infinite: true,
+  speed: 10,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 300,
+  fade: true,
+  swipe: false,
+  arrows: false,
+};
+
 class ProductViewDetail extends Component {
   constructor(props) {
     super(props);
@@ -42,12 +75,23 @@ class ProductViewDetail extends Component {
       cmtRating: 1,
       ratingState: '',
       checkCommented: false,
+      listImageURL: [],
+      listImage360URL: [],
+      modalIsOpen: false,
+      modalState: 1,
     };
   }
 
   componentWillMount = async () => {
 
     await this.props.get_product(this.props.id);
+
+    let listImage = await getProductListImageURL(this.props.id);
+    let listImage360 = await getProductListImage360URL(this.props.id);
+    this.setState({
+      listImageURL: listImage.images,
+      listImage360URL: listImage360.images360,
+    });
   }
 
   // componentDidMount = () => {
@@ -60,43 +104,6 @@ class ProductViewDetail extends Component {
     this.setState({
       [name]: value
     });
-  }
-
-  handleOnclickRating = (startRating) => {
-    //1 sao
-    if (startRating === 20) {
-      this.setState({
-        cmtRating: 1,
-      });
-    }
-    //2 sao
-    else if (startRating === 40) {
-      this.setState({
-        cmtRating: 2,
-      });
-    }
-    //3 sao
-    else if (startRating === 60) {
-      this.setState({
-        cmtRating: 3,
-      });
-    }
-    //4 sao
-    else if (startRating === 80) {
-      this.setState({
-        cmtRating: 4,
-      });
-    }
-    //5 sao
-    else if (startRating === 100) {
-      this.setState({
-        cmtRating: 5,
-      });
-    }
-
-    setTimeout(() => {
-      console.log('cmtRating:', this.state.cmtRating);
-    }, 1000);
   }
 
   renderMyCMT = () => {
@@ -133,63 +140,6 @@ class ProductViewDetail extends Component {
     }
 
     return null;
-  }
-
-  handleSubmitCMT = (event) => {
-    let { cmtContent, cmtRating } = this.state;
-    let idOrder = localStorage.getItem('_orderId');
-    let idAccount = localStorage.getItem('_idaccount');
-    let idProduct = localStorage.getItem('_idproduct');
-
-    let token = localStorage.getItem('_auth');
-    //chưa đăng nhập
-    if (!token) {
-      Swal.fire({
-        returnFocus: false,
-        icon: 'error',
-        title: 'Lỗi',
-        text: 'Bạn cần đăng nhập để thực hiện chức năng này!',
-      })
-      this.props.history.push(`/login`);
-      return;
-    }
-
-    let body = {
-      orderId: parseInt(idOrder),
-      accountId: parseInt(idAccount),
-      productId: parseInt(idProduct),
-      contents: cmtContent,
-      rate: cmtRating,
-    }
-    //gọi api
-    let res = callApi('reviews', 'POST', body, token)
-      .then(result => {
-        toast.success('Đánh giá thành công.');
-        console.log('handleSubmitCMT result', result);
-
-        //cập nhật lại sản phẩm hiện tại
-        store.dispatch(actGetProductRequest(idProduct));
-      });
-
-    // setTimeout(() => {
-    //   //kiểm tra tài khoản này đã từng comment chưa
-    //   if (this.checkCommented()) {
-    //     let { product } = this.props;
-    //     let idAccount = localStorage.getItem('_idaccount');
-    //     let listReviews = product.reviewsResponses.listReviews;
-
-    //     for (let i = 0; i < product.reviewsResponses.listReviews.length; i++) {
-    //       if (listReviews[i].accountId === parseInt(idAccount)) {
-    //         //tài khoản này đã comment
-    //         this.setState({
-    //           cmtContent: listReviews[i].contents,
-    //           cmtRating: listReviews[i].rating,
-    //           checkCommented: true,
-    //         });
-    //       }
-    //     }
-    //   }
-    // }, 3000);
   }
 
   checkCommented = () => {
@@ -253,69 +203,215 @@ class ProductViewDetail extends Component {
       this.props.addCart(id, product, quantity, token);
     }
 
-  };
+  }
+
+  openModalViewImage = () => {
+    this.setState({
+      modalIsOpen: true,
+      modalState: 1,
+    });
+
+    setTimeout(() => {
+      let modalHeader1 = document.getElementsByClassName('modal-image-header1')[0];
+      modalHeader1.classList.add('modal-image-header--active');
+
+      let sliderState1 = document.getElementsByClassName('slider-state1')[0];
+      sliderState1.style.opacity = '1';
+      sliderState1.style.display = 'block';
+      let sliderState2 = document.getElementsByClassName('slider-state2')[0];
+      sliderState2.style.opacity = '0';
+      sliderState2.style.display = 'none';
+    }, 200);
+  }
+
+  openModalViewImage360 = () => {
+    this.setState({
+      modalIsOpen: true,
+      modalState: 2,
+    });
+
+    setTimeout(() => {
+      let modalHeader2 = document.getElementsByClassName('modal-image-header2')[0];
+      modalHeader2.classList.add('modal-image-header--active');
+
+      let sliderState1 = document.getElementsByClassName('slider-state1')[0];
+      sliderState1.style.opacity = '0';
+      sliderState1.style.display = 'none';
+      let sliderState2 = document.getElementsByClassName('slider-state2')[0];
+      sliderState2.style.opacity = '1';
+      sliderState2.style.display = 'block';
+    }, 200);
+  }
+
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
+  }
+
+  handleOnClickSpan1 = () => {
+    let sliderState1 = document.getElementsByClassName('slider-state1')[0];
+    sliderState1.style.opacity = '1';
+    sliderState1.style.display = 'block';
+    let sliderState2 = document.getElementsByClassName('slider-state2')[0];
+    sliderState2.style.opacity = '0';
+    sliderState2.style.display = 'none';
+
+    let modalHeader1 = document.getElementsByClassName('modal-image-header1')[0];
+    let modalHeader2 = document.getElementsByClassName('modal-image-header2')[0];
+
+    modalHeader1.classList.add('modal-image-header--active');
+    modalHeader2.classList.remove('modal-image-header--active');
+
+    // this.setState({
+    //   modalState: 1,
+    // });
+  }
+
+  handleOnClickSpan2 = () => {
+    let sliderState1 = document.getElementsByClassName('slider-state1')[0];
+    sliderState1.style.opacity = '0';
+    sliderState1.style.display = 'none';
+    let sliderState2 = document.getElementsByClassName('slider-state2')[0];
+    sliderState2.style.opacity = '1';
+    sliderState2.style.display = 'block';
+
+    let modalHeader1 = document.getElementsByClassName('modal-image-header1')[0];
+    let modalHeader2 = document.getElementsByClassName('modal-image-header2')[0];
+
+    modalHeader1.classList.remove('modal-image-header--active');
+    modalHeader2.classList.add('modal-image-header--active');
+
+    // this.setState({
+    //   modalState: 2,
+    // });
+  }
 
   render() {
-    const settings = {
-      customPaging: function (i) {
-        return (
-          <Link to="#">
-            <img style={{ height: 70, width: "auto" }} src={product.productImageList[i].image} alt="not found" />
-          </Link>
-        );
-      },
-      dots: true,
-      dotsClass: "slick-dots slick-thumb",
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1
-    };
     const { product, user } = this.props;
-    console.log('product state của redux: ', product);
-    const { quantity, redirectYourLogin, cmtContent, cmtRating, ratingState, checkCommented } = this.state;
+    const { quantity, redirectYourLogin, cmtContent, cmtRating, ratingState, checkCommented, listImageURL, listImage360URL } = this.state;
+    const { modalIsOpen, modalState } = this.state;
     if (redirectYourLogin) {
       return <Redirect to="/login"></Redirect>
     }
     const idAccount = parseInt(localStorage.getItem('_idaccount'));
+    const commented = this.checkCommented();
+
     return (
       <div className="content-wraper">
-        <div className="container">
-          <div className="row single-product-area">
-            <div className="col-lg-5 col-md-6 mt-2">
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          ariaHideApp={false}
+          contentLabel="Example Modal"
+        >
+          <div className="container-fluid">
+            {/* row modal header */}
+            <div className="row modal-image-header">
+              <div className="col-md-2-auto modal-image-header1">
+                <span onClick={() => { this.handleOnClickSpan1() }}>Thư viện ảnh</span>
+              </div>
+              <div className="col-md-2-auto modal-image-header2">
+                <span onClick={() => { this.handleOnClickSpan2() }}>Ảnh 360 độ</span>
+              </div>
+              <span className="btn-close-modal" onClick={() => { this.closeModal() }}><i class="fa-solid fa-xmark"></i></span>
+            </div>
+            {/* row modal body */}
+            <div className="row">
+              <div className="col">
+                {
+                  <>
+                    <div className="slider-state1">
+                      <Slider  {...settings}>
+                        {
+                          listImageURL.length > 0 ?
+                            (
+                              listImageURL.map((url, index) => {
+                                return (
+                                  <div key={index} className="image-in-slider-modal">
+                                    <img src={url} alt="not found" />
+                                  </div>
+                                );
+                              })
+                            )
+                            :
+                            (
+                              <div className="not-upadted">Chúng tôi đang cập nhật mục này</div>
+                            )
+                        }
+                      </Slider>
+                    </div>
+                    <div className="slider-state2">
+                      <Slider  {...settings360}>
+                        {
+                          listImage360URL.length > 0 ?
+                            (
+                              listImage360URL.map((url, index) => {
+                                return (
+                                  <div key={index} className="image-in-slider-modal">
+                                    <img src={url} alt="not found" />
+                                  </div>
+                                );
+                              })
+                            )
+                            :
+                            (
+                              <div className="not-upadted">Chúng tôi đang cập nhật mục này</div>
+                            )
+                        }
+                      </Slider>
+                    </div>
+                  </>
+                }
+              </div>
+            </div>
+          </div>
 
-              <div className="product-details-left">
-                <div className="product-details-images slider-navigation-1">
-                  {/* <div className="lg-image"> */}
-                  <div className="fix-width-slick">
-                    {/* <Slider  {...settings}>
-                      {product.productImageList && product.productImageList.length
-                        ? product.productImageList.map((item, index) => {
+        </Modal>
+        <div className="container">
+          {/* row product-detail-header */}
+          <div className="row product-detail-header">
+            {/* slider hình ảnh sản phẩm */}
+            <div className="col-md-5">
+              {/* row slider */}
+              <div className="silder-image-product">
+                <Slider  {...settings}>
+                  {
+                    listImageURL.length > 0 ?
+                      (
+                        listImageURL.map((url, index) => {
                           return (
-                            <div key={index} className="fix-img-div-slick">
-                              <img className="fix-img-slick" src={item.image} alt="not found" />
+                            <div key={index} className="image-in-slider">
+                              <img src={url} alt="not found" />
                             </div>
                           );
                         })
-                        : null}
-                      <div className="fix-img-div-slick">
-                        <img className="fix-img-slick" src={product.image} alt="not found" />
-                      </div>
-                    </Slider> */}
-
-                    {/* <img className="fix-img" src={product.productImage} alt="Li's Product " /> */}
-                    <div className="fix-img-div-slick">
-                      <br /><br />
-                      <img className="fix-img-slick" src={product.image} alt="not found" />
-                    </div>
-                  </div>
-                </div>
+                      )
+                      :
+                      (
+                        null
+                      )
+                  }
+                </Slider>
+              </div>
+              {/* row chức năng */}
+              <div className="btn-open-library">
+                {/* nút xem thư viện ảnh */}
+                <button type="button" onClick={() => { this.openModalViewImage() }}>
+                  <img src={process.env.PUBLIC_URL + '/icon/icon-image.png'} alt="Not found" />
+                  <span className="btn-span">Xem thư viện</span>
+                </button>
+                {/* nút xem ảnh 360 */}
+                <button type="button" onClick={() => { this.openModalViewImage360() }}>
+                  <img src={process.env.PUBLIC_URL + '/icon/icon-360-degrees.png'} alt="Not found" />
+                  <span className="btn-span">Ảnh 360 độ</span>
+                </button>
               </div>
             </div>
-            <div className="col-lg-7 col-md-6">
-              <div className="product-details-view-content sp-normal-content pt-60">
+            {/* THông tin về giá, khuyến mãi, tồn kho, thêm vào giỏ */}
+            <div className="col-md-7">
+              <div className="product-details-view-content sp-normal-content">
                 <div className="product-info">
-                  <h2>{product.productName}</h2>
+                  <span className="product-name">{product.productName}</span>
                   {/* Xử lý ngừng kinh doanh, hết hàng, và có discount */}
                   {
                     product.isDeleted === 'yes' ?
@@ -412,187 +508,100 @@ class ProductViewDetail extends Component {
               </div>
             </div>
           </div>
-          <div className="li-product-tab pt-30">
-            <ul className="nav li-product-menu">
-              <li>
-                <a className="active" data-toggle="tab" href="#description">
-                  <span>Thông tin sản phẩm</span>
-                </a>
-              </li>
-            </ul>
-
-          </div>
-
-
-          <div className="tab-content">
-            <div
-              id="description"
-              className="tab-pane active show"
-              role="tabpanel"
-            >
-              <div className="product-description">
+          {/* row product-detail-body */}
+          <div className="row product-detail-body">
+            {/* col product description */}
+            <div className="col-md-9">
+              <div className="product-description-title">
+                Mô tả sản phẩm
+              </div>
+              <div className="product-description-content">
                 <span dangerouslySetInnerHTML={{ __html: product.description }}></span>
-                {console.log('product.reviewsResponses: ', product)}
-
-                {/* đánh giá tổng quát của sản phẩm */}
-                <RatingView rating={product.reviewsResponses.rating} listReviews={product.reviewsResponses.listReviews}></RatingView>
-
-                {/* thêm comment của bản thân */}
-                {
-                  this.checkCommented() ?
-                    (
-                      <div className="cmtedArea">
-                        <br />
-                        <span
-                          style={{ fontSize: "15px", fontWeight: "bold" }}
-                        >
-                          Bạn đã đánh giá sản phẩm này.
-                        </span>
-                        <br />
-                        {/* <span
-                          style={{ marginLeft: "20px" }}
-                        >
-                          Đánh giá:&emsp;
-                          <Rating
-                            initialValue={5}
-                            readonly={true}
-                            size={18}
-                          />
-                          {null}
-                        </span>
-                        <textarea placeholder="Nhập comment của bạn"
-                          rows="5"
-                          name="cmtContent"
-                          value={this.state.cmtContent}
-                          onChange={this.handleChange}
-                          style={{ resize: "none", marginLeft: "20px" }}
-                        >
-                        </textarea>
-                        <br /> */}
-                      </div>
-                    )
-                    :
-                    (
-                      <div
-                        className="cmtArea"
-                      // style={{
-                      //   borderTop: "1px solid #3596ff",
-                      //   borderBottom: "1px solid #3596ff",
-                      //   borderLeft: "1px solid #3596ff",
-                      // }}
-                      >
-                        <br />
-                        <span
-                          style={{ fontSize: "15px", fontWeight: "bold" }}
-                        >
-                          Bạn chưa đánh giá sản phẩm này.
-                        </span>
-                        <br />
-                        <span
-                          style={{ marginLeft: "20px" }}
-                        >
-                          Đánh giá:&emsp;
-                          <Rating
-                            initialValue={1}
-                            readonly={false}
-                            size={18}
-                            onClick={(startRating) => { this.handleOnclickRating(startRating) }}
-                          />
-                          {null}
-                        </span>
-                        <textarea placeholder="Nhập comment của bạn"
-                          rows="5"
-                          name="cmtContent"
-                          value={this.state.cmtContent}
-                          onChange={this.handleChange}
-                          style={{ resize: "none", marginLeft: "20px" }}
-                        >
-                        </textarea>
-                        <br />
-                        <button
-                          className="btn btn-primary"
-                          onClick={this.handleSubmitCMT}
-                          style={{ marginLeft: "20px" }}
-                        >
-                          Gửi Bình Luận
-                        </button>
-                        <br />
-                        <br />
-                      </div>
-                    )
-                }
-
-
-
-                {/* danh sách comment */}
-                {
-                  product.reviewsResponses.listReviews ?
-                    (
-                      product.reviewsResponses.listReviews.length > 0 ?
-                        (
-                          <div className="comment-list">
-                            <h5 className="text-muted mt-40">
-                              <span className="badge badge-success">{product.reviewsResponses.listReviews.length}</span>
-                              {" "}Comment
-                            </h5>
-                            {/* Render ra comment của bản thân trước */}
-                            {
-                              this.renderMyCMT()
-                            }
-                            {/* Render ra comment của những người còn lại */}
-                            {
-                              product.reviewsResponses.listReviews.map((cmt, index) => {
-                                if (cmt.accountId === idAccount) {
-                                  return null;
-                                }
-                                return (
-                                  <div key={index} class="comment-item media border p-3">
-                                    <div className="media-body">
-                                      <h5>
-                                        <span style={{ fontSize: "14px" }}>
-                                          {cmt.username}
-                                        </span>
-                                        <span style={{ fontSize: "14px", fontStyle: "italic", float: "right" }}>
-                                          {cmt.reviewsDate}&nbsp;
-                                        </span>
-                                        <div className="mt-10">
-                                          <Rating
-                                            initialValue={cmt.rating}
-                                            readonly={true}
-                                            size={18}
-                                          />
-                                        </div>
-                                      </h5>
-                                      <p> {cmt.contents}</p>
-                                    </div>
-                                  </div>
-                                )
-                              })
-                            }
-                          </div>
-                        )
-                        :
-                        (
-                          <div className="comment-list">
-                            <h5 className="text-muted mt-40">
-                              <span className="badge badge-success">Chưa Có Comment</span>
-                            </h5>
-                          </div>
-                        )
-                    )
-                    :
-                    (
-                      <h1>không có danh sách đánh giá sản phẩm</h1>
-                    )
-                }
-
+              </div>
+            </div>
+            {/* col product configuration */}
+            <div className="col-md-3">
+              <div className="product-configuration-title">
+                Thông tin chi tiết
+              </div>
+              <div className="product-configuration-content">
+                <span> RAM ROM CPU...</span>
               </div>
             </div>
           </div>
 
+          {/* row product-detail-rating */}
+          <div className="row product-detail-rating">
+            {/* đánh giá tổng quát của sản phẩm */}
+            <div className="col-12">
+              <RatingView commented={commented} rating={product.reviewsResponses.rating} listReviews={product.reviewsResponses.listReviews}></RatingView>
+            </div>
 
+            {/* danh sách comment */}
+            <div className="col-12">
+              {
+                product.reviewsResponses.listReviews ?
+                  (
+                    product.reviewsResponses.listReviews.length > 0 ?
+                      (
+                        <div className="comment-list">
+                          <h5 className="text-muted mt-40">
+                            <span className="badge badge-success">{product.reviewsResponses.listReviews.length}</span>
+                            {" "}Comment
+                          </h5>
+                          {/* Render ra comment của bản thân trước */}
+                          {
+                            this.renderMyCMT()
+                          }
+                          {/* Render ra comment của những người còn lại */}
+                          {
+                            product.reviewsResponses.listReviews.map((cmt, index) => {
+                              if (cmt.accountId === idAccount) {
+                                return null;
+                              }
+                              return (
+                                <div key={index} class="comment-item media border p-3">
+                                  <div className="media-body">
+                                    <h5>
+                                      <span style={{ fontSize: "14px" }}>
+                                        {cmt.username}
+                                      </span>
+                                      <span style={{ fontSize: "14px", fontStyle: "italic", float: "right" }}>
+                                        {cmt.reviewsDate}&nbsp;
+                                      </span>
+                                      <div className="mt-10">
+                                        <Rating
+                                          initialValue={cmt.rating}
+                                          readonly={true}
+                                          size={18}
+                                        />
+                                      </div>
+                                    </h5>
+                                    <p> {cmt.contents}</p>
+                                  </div>
+                                </div>
+                              )
+                            })
+                          }
+                        </div>
+                      )
+                      :
+                      (
+                        <div className="comment-list">
+                          <h5 className="text-muted mt-40">
+                            <span className="badge badge-success">Chưa Có Comment</span>
+                          </h5>
+                        </div>
+                      )
+                  )
+                  :
+                  (
+                    <h1>không có danh sách đánh giá sản phẩm</h1>
+                  )
+              }
+            </div>
+          </div>
         </div>
-
       </div >
     );
   }

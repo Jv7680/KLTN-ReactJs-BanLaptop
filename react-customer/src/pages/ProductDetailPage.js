@@ -5,8 +5,7 @@ import LinkHere from '../components/LinkHere/LinkHere'
 export default class ProductDetailPage extends Component {
   render() {
     const url = this.props.match.match.url;
-    const {id} = this.props.match.match.params
-    window.scrollTo(0, 0);
+    const { id } = this.props.match.match.params
     return (
       <div>
         <LinkHere url='/ Chi tiết sản phẩm'></LinkHere>

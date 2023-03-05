@@ -27,7 +27,7 @@ class App extends Component {
     this.props.add_token_redux(token);
   }
   render() {
-    const { loading } = this.props;
+    // const { loading } = this.props;
     // const loading = true;
     return (
       <Router>
@@ -77,11 +77,11 @@ class App extends Component {
     return <Switch>{result}</Switch>;
   };
 }
-const mapStateToProps = (state) => {
-  return {
-    loading: state.loading
-  }
-}
+// const mapStateToProps = (state) => {
+//   return {
+//     // loading: state.loading
+//   }
+// }
 const mapDispatchToProps = dispatch => {
   return {
     add_token_redux: token => {
@@ -93,4 +93,4 @@ const mapDispatchToProps = dispatch => {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(undefined, mapDispatchToProps)(App);

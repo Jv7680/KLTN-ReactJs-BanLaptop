@@ -12,8 +12,15 @@ class SortProduct extends Component {
             pricesGoUp: false,
             pricesGoDown: false,
             mostSold: false,
-        }
+        };
+        this.sort = {};
     }
+
+    // componentDidUpdate = () => {
+    //     //cập nhập sort ở ProductAll(thông qua call back) để truyền xuống Productlist
+    //     this.props.updateSort(this.sort);
+    //     console.log('updateSort');
+    // }
 
     handleOnClickSortItem = (event) => {
         let name = event.target.attributes.name.nodeValue;
@@ -32,6 +39,11 @@ class SortProduct extends Component {
         this.setState({
             [name]: true,
         });
+
+        setTimeout(() => {
+            //cập nhập sort ở ProductAll(thông qua call back) để truyền xuống Productlist
+            this.props.updateSort(this.sort);
+        }, 500);
     }
 
     handleOnClickBtnFilter = (event) => {
@@ -71,9 +83,9 @@ class SortProduct extends Component {
         const { pricesGoUp, pricesGoDown, mostSold } = this.state;
 
         //biến sort này sẽ được cập nhập mỗi khi state thay đổi
-        const sort = { pricesGoUp, pricesGoDown, mostSold };
-        console.log('sort:', sort);
-        //gọi API mối lần thay đổi giá trị sort
+        const newSort = { pricesGoUp, pricesGoDown, mostSold };
+        //gán newSort cho sort
+        this.sort = newSort;
 
         return (
             <div className="row sort-area">
@@ -94,12 +106,6 @@ class SortProduct extends Component {
                 </div>
             </div>
         )
-    }
-}
-
-const mapStateToProps = (state) => {
-    return {
-        getProduct: state.product
     }
 }
 

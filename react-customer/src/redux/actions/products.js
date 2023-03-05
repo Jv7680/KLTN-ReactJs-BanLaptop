@@ -7,9 +7,9 @@ import store from '../..';
 // lấy 12 sản phẩm mỗi page
 export const actFetchProductsRequest = (page, newKey) => {
     const newPage = page === null || page === undefined ? 1 : page
-    return dispatch => {
-        dispatch(actShowLoading());
-        return new Promise((resolve, reject) => {
+    return async (dispatch) => {
+        // dispatch(actShowLoading());
+        return await new Promise((resolve, reject) => {
             callApi(`product/search?page=${newPage}&size=12&keyword=`, 'GET')
                 .then(res => {
                     if (res && res.status === 200) {
@@ -17,13 +17,13 @@ export const actFetchProductsRequest = (page, newKey) => {
                         console.log("đây là trả về", res.data.listProducts);
                         dispatch(actFetchProducts(res.data.listProducts));
                         resolve(res.data);
-                        setTimeout(function () { dispatch(actHiddenLoading()) }, 200);
+                        // setTimeout(function () { dispatch(actHiddenLoading()) }, 200);
                     }
                 })
                 .catch(err => {
                     console.log(err);
                     reject(err);
-                    setTimeout(function () { dispatch(actHiddenLoading()) }, 200);
+                    // setTimeout(function () { dispatch(actHiddenLoading()) }, 200);
                 });
         });
     };

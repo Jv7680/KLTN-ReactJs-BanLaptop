@@ -22,7 +22,6 @@ import addresses from './address';
 import wishlist from './wishlist';
 import news from './news';
 import _new from './new';
-import filter from './filter';
 
 const appReducers = combineReducers({
     categories,
@@ -42,7 +41,6 @@ const appReducers = combineReducers({
     addresses,
     user,
     wishlist,
-    filter
 });
 
 export default appReducers;
