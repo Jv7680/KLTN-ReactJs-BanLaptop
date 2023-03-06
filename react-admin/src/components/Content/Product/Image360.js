@@ -5,6 +5,8 @@ import Swal from "sweetalert2";
 import { async } from "@firebase/util";
 
 import Slider from "react-slick";
+import { React360Viewer } from "react-360-product-viewer";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -66,6 +68,16 @@ class Image360 extends React.Component {
                 listImage360Ref: listImage.listImage360Ref,
             });
         }
+
+        setTimeout(() => {
+            const { listImage360URL } = this.state;
+            // Thay thế lần luotj theo thứ tự src hiện tại của component bằng link ảnh
+            if (listImage360URL.length > 0) {
+                for (let i = 0; i < listImage360URL.length; i++) {
+                    document.getElementsByClassName('sc-beySbM hmghSZ')[i].setAttribute('src', listImage360URL[i])
+                }
+            }
+        }, 800);
 
     }
 
@@ -217,7 +229,7 @@ class Image360 extends React.Component {
                 {/* vùng xoay ảnh */}
                 <div className="col-sm-4" style={{ border: '1px solid black', height: '244px' }}>
                     <div className="silder-image-product">
-                        <Slider  {...settings}>
+                        {/* <Slider  {...settings}>
                             {
                                 listImage360URL.length > 0 ?
                                     (
@@ -234,13 +246,18 @@ class Image360 extends React.Component {
                                         null
                                     )
                             }
-                            {/* <div className="image-in-slider">
-                                <img src='https://cdn.tgdd.vn/Products/Images/44/266898/Image360/msi-modern-14-b11mou-i3-1027vn-org-8.jpg' alt="not found" />
-                            </div>
-                            <div className="image-in-slider">
-                                <img src='https://cdn.tgdd.vn/Products/Images/44/266898/Image360/msi-modern-14-b11mou-i3-1027vn-org-8.jpg' alt="not found" />
-                            </div> */}
-                        </Slider>
+                        </Slider> */}
+                        <div className="image-360-area image-in-slider">
+                            <React360Viewer
+                                imagesBaseUrl={''}
+                                imagesCount={listImage360URL.length}
+                                imagesFiletype="jpg"
+                                mouseDragSpeed={7}
+                                autoplay={true}
+                                autoplaySpeed={7}
+                            // reverse={true}
+                            />
+                        </div>
                     </div>
                 </div>
             </>

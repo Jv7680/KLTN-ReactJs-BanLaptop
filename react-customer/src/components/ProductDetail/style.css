@@ -397,6 +397,7 @@
 
 .image-in-slider-modal img {
   /* bằng height của .silder-image-product */
+  width: auto;
   height: var(--slick-list-img-height-modal);
 }
 

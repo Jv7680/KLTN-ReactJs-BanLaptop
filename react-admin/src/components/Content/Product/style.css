@@ -124,6 +124,7 @@
 .image-in-slider img {
   /* bằng height của .silder-image-product */
   height: var(--slick-list-img-height);
+  width: auto;
 }
 
 /* overide css Slider React Slick */

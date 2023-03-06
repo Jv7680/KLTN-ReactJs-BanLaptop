@@ -17,6 +17,7 @@ import Swal from "sweetalert2";
 import { withRouter } from 'react-router-dom';
 import { getProductListImageURL, getProductListImage360URL } from "../../firebase/CRUDImage";
 
+import Image360 from "./Image360";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -50,19 +51,6 @@ const settings = {
   initialSlide: 0,
   // autoplay: true,
   // autoplaySpeed: 5000,
-};
-
-const settings360 = {
-  dots: false,
-  infinite: true,
-  speed: 10,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  autoplay: true,
-  autoplaySpeed: 300,
-  fade: true,
-  swipe: false,
-  arrows: false,
 };
 
 class ProductViewDetail extends Component {
@@ -341,24 +329,7 @@ class ProductViewDetail extends Component {
                       </Slider>
                     </div>
                     <div className="slider-state2">
-                      <Slider  {...settings360}>
-                        {
-                          listImage360URL.length > 0 ?
-                            (
-                              listImage360URL.map((url, index) => {
-                                return (
-                                  <div key={index} className="image-in-slider-modal">
-                                    <img src={url} alt="not found" />
-                                  </div>
-                                );
-                              })
-                            )
-                            :
-                            (
-                              <div className="not-upadted">Chúng tôi đang cập nhật mục này</div>
-                            )
-                        }
-                      </Slider>
+                      <Image360 listImage360URL={listImage360URL}></Image360>
                     </div>
                   </>
                 }
