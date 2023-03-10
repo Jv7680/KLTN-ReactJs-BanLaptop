@@ -13,6 +13,7 @@ import ActiveAccount from "./components/LoginRegister/ActiveAccount";
 import OrderInfo from "./components/Order/OrderInfo";
 
 import Loading from "./components/Loading/Loading";
+import { startLoading, stopLoading } from "./components/Loading/setLoadingState";
 import './app.css'
 
 const cssPulseLoader = css`
@@ -31,27 +32,10 @@ class App extends Component {
     // const loading = true;
     return (
       <Router>
-        {
-          // !loading ?
-          //   (
-          //     <div className="wrap">
-          //       {/* hiệu ứng load trang */}
-          //       <Loading loadingActive={loading} loadingCSS={cssPulseLoader}></Loading>
-          //       <Header></Header>
-          //       {this.showContentMenus(routes)}
-          //       <Footer></Footer>
-          //     </div>
-          //   )
-          //   :
-          //   (
-          //     <div className="wrap">
-          //       <Loading loadingActive={loading} loadingCSS={cssPulseLoader}></Loading>
-          //       <Header></Header>
-          //       {this.showContentMenus(routes)}
-          //       <Footer></Footer>
-          //     </div>
-          //   )
-        }
+        <>
+          {/* hiệu ứng load trang */}
+          <Loading loadingCSS={cssPulseLoader}></Loading>
+        </>
         <div className="wrap">
           <Header></Header>
           {this.showContentMenus(routes)}

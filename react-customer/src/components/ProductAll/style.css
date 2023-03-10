@@ -22,6 +22,7 @@
 
 .filter-area {
   opacity: 0;
+  height: fit-content;
   margin-right: -210px;
   padding-bottom: 8px;
   transform: translateX(-210px);

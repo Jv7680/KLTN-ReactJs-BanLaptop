@@ -226,6 +226,14 @@
   font-weight: 600;
 }
 
+.product-configuration-title-modal {
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 10px;
+}
+
 .product-description-content {
   padding: 15px 0px;
 }
@@ -280,8 +288,9 @@
 }
 
 .btn-open-library button {
-  width: 90px;
+  width: 70px;
   height: 46px;
+  margin-bottom: 45px !important;
   display: flex;
   position: relative;
   justify-content: center;
@@ -325,7 +334,7 @@
   cursor: pointer;
   position: absolute;
   top: 4px;
-  right: 4px;
+  right: 6px;
 }
 
 .btn-close-modal:hover {
@@ -342,8 +351,10 @@
 .slider-state1,
 .slider-state2 {
   transition: all linear 0.2s;
-  display: none;
-  opacity: 0;
+}
+
+.slider-state3 {
+  padding: 15px 15%;
 }
 
 .modal-image-header {
@@ -358,7 +369,8 @@
 }
 
 .modal-image-header1,
-.modal-image-header2 {
+.modal-image-header2,
+.modal-image-header3 {
   padding: 0 4px;
   border-bottom: 2px solid #e1e1e1;
   cursor: pointer;
@@ -366,7 +378,8 @@
 }
 
 .modal-image-header1 span,
-.modal-image-header2 span {
+.modal-image-header2 span,
+.modal-image-header3 span {
   font-size: 16px;
   font-weight: 600;
 }
@@ -400,6 +413,49 @@
   width: auto;
   height: var(--slick-list-img-height-modal);
 }
+
+.image-360-area {
+  display: none !important;
+}
+
+.image-360-area--show {
+  display: flex !important;
+}
+
+.product-configuration-content {
+  margin-top: 10px;
+  margin-left: 0;
+  margin-right: 0;
+  border-radius: 4px;
+  padding: 4px 0;
+}
+
+.product-configuration-content__title {
+  font-weight: 600;
+}
+
+.product-configuration-content--grey {
+  background-color: #f5f5f5;
+}
+
+.product-configuration-content:last-child {
+  justify-content: center;
+  align-items: center;
+}
+
+.product-configuration-content__btn {
+  width: 70%;
+  color: #7275e9;
+  background-color: transparent;
+  border: 1px solid #7275e9;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* .product-configuration-content__btn:hover {
+  color: #474af0;
+  border-color: #474af0;
+} */
 
 /* overide css Slider React Slick */
 .slick-list {

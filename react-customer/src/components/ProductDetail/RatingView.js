@@ -167,8 +167,8 @@ class RatingView extends Component {
         count++;
       })
 
-      console.log('1 sao có:', oneStart);
-      console.log('list review:', listReviews);
+      // console.log('1 sao có:', oneStart);
+      // console.log('list review:', listReviews);
 
       showOneStart = ((oneStart / count) * 100).toFixed(0);
       showTwoStart = ((twoStart / count) * 100).toFixed(0);

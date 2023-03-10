@@ -18,6 +18,7 @@ import { withRouter } from 'react-router-dom';
 import { getProductListImageURL, getProductListImage360URL } from "../../firebase/CRUDImage";
 
 import Image360 from "./Image360";
+import ProductInfor from "./ProductInfor";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -38,7 +39,7 @@ const customStyles = {
     width: "94vw",
     height: "96vw",
     maxHeight: "96vh",
-    overflow: "hidden",
+    overflow: "auto",
   }
 };
 
@@ -70,21 +71,51 @@ class ProductViewDetail extends Component {
     };
   }
 
-  componentWillMount = async () => {
+  componentDidMount = async () => {
 
     await this.props.get_product(this.props.id);
 
     let listImage = await getProductListImageURL(this.props.id);
-    let listImage360 = await getProductListImage360URL(this.props.id);
+    // let listImage360 = await getProductListImage360URL(this.props.id);
+    this.getListImage360URL();
     this.setState({
       listImageURL: listImage.images,
+      // listImage360URL: listImage360.images360,
+    });
+  }
+
+  componentDidUpdate = () => {
+    let { modalState } = this.state;
+    setTimeout(() => {
+      let modalHeader1 = document.getElementsByClassName('modal-image-header1')[0];
+      let modalHeader2 = document.getElementsByClassName('modal-image-header2')[0];
+      let modalHeader3 = document.getElementsByClassName('modal-image-header3')[0];
+
+      if (modalState === 1 && modalHeader1) {
+        modalHeader1.classList.add('modal-image-header--active');
+        modalHeader2.classList.remove('modal-image-header--active');
+        modalHeader3.classList.remove('modal-image-header--active');
+      }
+      else if (modalState === 2 && modalHeader2) {
+        modalHeader1.classList.remove('modal-image-header--active');
+        modalHeader2.classList.add('modal-image-header--active');
+        modalHeader3.classList.remove('modal-image-header--active');
+      }
+      else if (modalState === 3 && modalHeader3) {
+        modalHeader1.classList.remove('modal-image-header--active');
+        modalHeader2.classList.remove('modal-image-header--active');
+        modalHeader3.classList.add('modal-image-header--active');
+      }
+    }, 150);
+  }
+
+  getListImage360URL = async () => {
+    let listImage360 = await getProductListImage360URL(this.props.id);
+    this.setState({
       listImage360URL: listImage360.images360,
     });
   }
 
-  // componentDidMount = () => {
-  //   this.props.get_product(this.props.id);
-  // }
 
   handleChange = event => {
     const name = event.target.name;
@@ -103,7 +134,7 @@ class ProductViewDetail extends Component {
       if (listReviews[i].accountId === parseInt(idAccount)) {
         //tài khoản này đã comment
         return (
-          <div class="comment-item media border p-3">
+          <div className="comment-item media border p-3">
             <div className="media-body">
               <h5>
                 <span style={{ fontSize: "14px", fontStyle: "italic" }}>
@@ -132,6 +163,9 @@ class ProductViewDetail extends Component {
 
   checkCommented = () => {
     let { product } = this.props;
+    if (Object.keys(product).length === 0) {
+      return false;
+    }
     let idAccount = localStorage.getItem('_idaccount');
     let listReviews = product.reviewsResponses.listReviews;
 
@@ -180,9 +214,13 @@ class ProductViewDetail extends Component {
     token = localStorage.getItem("_auth");
     id = parseInt(localStorage.getItem("_id"));
     if (!token) {
-      this.setState({
-        redirectYourLogin: true
+      Swal.fire({
+        returnFocus: false,
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'Bạn cần đăng nhập để thực hiện chức năng này!',
       })
+      this.props.history.push(`/login`);
     }
     else {
       this.setState({
@@ -193,90 +231,24 @@ class ProductViewDetail extends Component {
 
   }
 
-  openModalViewImage = () => {
+  openModal = (modalState) => {
+    document.getElementsByTagName('body')[0].classList.add('prevent-scroll-body');
     this.setState({
       modalIsOpen: true,
-      modalState: 1,
+      modalState: modalState,
     });
-
-    setTimeout(() => {
-      let modalHeader1 = document.getElementsByClassName('modal-image-header1')[0];
-      modalHeader1.classList.add('modal-image-header--active');
-
-      let sliderState1 = document.getElementsByClassName('slider-state1')[0];
-      sliderState1.style.opacity = '1';
-      sliderState1.style.display = 'block';
-      let sliderState2 = document.getElementsByClassName('slider-state2')[0];
-      sliderState2.style.opacity = '0';
-      sliderState2.style.display = 'none';
-    }, 200);
-  }
-
-  openModalViewImage360 = () => {
-    this.setState({
-      modalIsOpen: true,
-      modalState: 2,
-    });
-
-    setTimeout(() => {
-      let modalHeader2 = document.getElementsByClassName('modal-image-header2')[0];
-      modalHeader2.classList.add('modal-image-header--active');
-
-      let sliderState1 = document.getElementsByClassName('slider-state1')[0];
-      sliderState1.style.opacity = '0';
-      sliderState1.style.display = 'none';
-      let sliderState2 = document.getElementsByClassName('slider-state2')[0];
-      sliderState2.style.opacity = '1';
-      sliderState2.style.display = 'block';
-    }, 200);
   }
 
   closeModal = () => {
+    document.getElementsByTagName('body')[0].classList.remove('prevent-scroll-body');
     this.setState({ modalIsOpen: false });
-  }
-
-  handleOnClickSpan1 = () => {
-    let sliderState1 = document.getElementsByClassName('slider-state1')[0];
-    sliderState1.style.opacity = '1';
-    sliderState1.style.display = 'block';
-    let sliderState2 = document.getElementsByClassName('slider-state2')[0];
-    sliderState2.style.opacity = '0';
-    sliderState2.style.display = 'none';
-
-    let modalHeader1 = document.getElementsByClassName('modal-image-header1')[0];
-    let modalHeader2 = document.getElementsByClassName('modal-image-header2')[0];
-
-    modalHeader1.classList.add('modal-image-header--active');
-    modalHeader2.classList.remove('modal-image-header--active');
-
-    // this.setState({
-    //   modalState: 1,
-    // });
-  }
-
-  handleOnClickSpan2 = () => {
-    let sliderState1 = document.getElementsByClassName('slider-state1')[0];
-    sliderState1.style.opacity = '0';
-    sliderState1.style.display = 'none';
-    let sliderState2 = document.getElementsByClassName('slider-state2')[0];
-    sliderState2.style.opacity = '1';
-    sliderState2.style.display = 'block';
-
-    let modalHeader1 = document.getElementsByClassName('modal-image-header1')[0];
-    let modalHeader2 = document.getElementsByClassName('modal-image-header2')[0];
-
-    modalHeader1.classList.remove('modal-image-header--active');
-    modalHeader2.classList.add('modal-image-header--active');
-
-    // this.setState({
-    //   modalState: 2,
-    // });
   }
 
   render() {
     const { product, user } = this.props;
     const { quantity, redirectYourLogin, cmtContent, cmtRating, ratingState, checkCommented, listImageURL, listImage360URL } = this.state;
     const { modalIsOpen, modalState } = this.state;
+    let listProductInfor;
     if (redirectYourLogin) {
       return <Redirect to="/login"></Redirect>
     }
@@ -296,42 +268,62 @@ class ProductViewDetail extends Component {
             {/* row modal header */}
             <div className="row modal-image-header">
               <div className="col-md-2-auto modal-image-header1">
-                <span onClick={() => { this.handleOnClickSpan1() }}>Thư viện ảnh</span>
+                <span onClick={() => { this.openModal(1) }}>Thư viện ảnh</span>
               </div>
               <div className="col-md-2-auto modal-image-header2">
-                <span onClick={() => { this.handleOnClickSpan2() }}>Ảnh 360 độ</span>
+                <span onClick={() => { this.openModal(2) }}>Ảnh 360 độ</span>
               </div>
-              <span className="btn-close-modal" onClick={() => { this.closeModal() }}><i class="fa-solid fa-xmark"></i></span>
+              <div className="col-md-2-auto modal-image-header3">
+                <span onClick={() => { this.openModal(3) }}>Thông số kĩ thuật</span>
+              </div>
+              <span className="btn-close-modal" onClick={() => { this.closeModal() }}><i className="fa-solid fa-xmark"></i></span>
             </div>
             {/* row modal body */}
             <div className="row">
               <div className="col">
                 {
-                  <>
-                    <div className="slider-state1">
-                      <Slider  {...settings}>
+                  modalState === 1 ?
+                    (
+                      <div className="slider-state1">
+                        <Slider  {...settings}>
+                          {
+                            listImageURL.length > 0 ?
+                              (
+                                listImageURL.map((url, index) => {
+                                  return (
+                                    <div key={index} className="image-in-slider-modal">
+                                      <img src={url} alt="not found" />
+                                    </div>
+                                  );
+                                })
+                              )
+                              :
+                              (
+                                <div className="not-upadted">Chúng tôi đang cập nhật mục này</div>
+                              )
+                          }
+                        </Slider>
+                      </div>
+                    )
+                    :
+                    (
+                      <>
                         {
-                          listImageURL.length > 0 ?
+                          modalState === 2 ?
                             (
-                              listImageURL.map((url, index) => {
-                                return (
-                                  <div key={index} className="image-in-slider-modal">
-                                    <img src={url} alt="not found" />
-                                  </div>
-                                );
-                              })
+                              <div className="slider-state2">
+                                <Image360 listImage360URL={listImage360URL}></Image360>
+                              </div>
                             )
                             :
                             (
-                              <div className="not-upadted">Chúng tôi đang cập nhật mục này</div>
+                              <div className="slider-state3">
+                                <ProductInfor listImage360URL={listImage360URL}></ProductInfor>
+                              </div>
                             )
                         }
-                      </Slider>
-                    </div>
-                    <div className="slider-state2">
-                      <Image360 listImage360URL={listImage360URL}></Image360>
-                    </div>
-                  </>
+                      </>
+                    )
                 }
               </div>
             </div>
@@ -367,14 +359,19 @@ class ProductViewDetail extends Component {
               {/* row chức năng */}
               <div className="btn-open-library">
                 {/* nút xem thư viện ảnh */}
-                <button type="button" onClick={() => { this.openModalViewImage() }}>
+                <button type="button" onClick={() => { this.openModal(1) }}>
                   <img src={process.env.PUBLIC_URL + '/icon/icon-image.png'} alt="Not found" />
                   <span className="btn-span">Xem thư viện</span>
                 </button>
                 {/* nút xem ảnh 360 */}
-                <button type="button" onClick={() => { this.openModalViewImage360() }}>
+                <button type="button" onClick={() => { this.openModal(2) }}>
                   <img src={process.env.PUBLIC_URL + '/icon/icon-360-degrees.png'} alt="Not found" />
                   <span className="btn-span">Ảnh 360 độ</span>
+                </button>
+                {/* nút xem thông tin chi tiết */}
+                <button type="button" onClick={() => { this.openModal(3) }}>
+                  <img src={process.env.PUBLIC_URL + '/icon/icon-product-infor.png'} alt="Not found" />
+                  <span className="btn-span">Thông tin chi tiết</span>
                 </button>
               </div>
             </div>
@@ -463,13 +460,13 @@ class ProductViewDetail extends Component {
                             </div>
                           </div>
                           <div>
-                            <Link
+                            <span
                               onClick={() => this.addItemToCart(product)}
                               className="add-to-cart button-hover-addcart button"
                             >
                               Thêm vào giỏ
-                              <i class="fa fa-shopping-cart"></i>
-                            </Link>
+                              <i className="fa fa-shopping-cart"></i>
+                            </span>
                           </div>
                         </form>
                       </div>
@@ -482,7 +479,7 @@ class ProductViewDetail extends Component {
           {/* row product-detail-body */}
           <div className="row product-detail-body">
             {/* col product description */}
-            <div className="col-md-9">
+            <div className="col-md-8">
               <div className="product-description-title">
                 Mô tả sản phẩm
               </div>
@@ -491,12 +488,36 @@ class ProductViewDetail extends Component {
               </div>
             </div>
             {/* col product configuration */}
-            <div className="col-md-3">
-              <div className="product-configuration-title">
-                Thông tin chi tiết
+            <div className="col-md-4">
+              <div className="row product-configuration-title">
+                <div className="col">Thông tin chi tiết</div>
               </div>
-              <div className="product-configuration-content">
-                <span> RAM ROM CPU...</span>
+              <div className="row product-configuration-content product-configuration-content--grey">
+                <div className="col-4 product-configuration-content__title">CPU:</div>
+                <div className="col product-configuration-content__content">Nội dung</div>
+              </div>
+              <div className="row product-configuration-content">
+                <div className="col-4 product-configuration-content__title">RAM:</div>
+                <div className="col product-configuration-content__content">Nội dung</div>
+              </div>
+              <div className="row product-configuration-content product-configuration-content--grey">
+                <div className="col-4 product-configuration-content__title">Ổ cứng:</div>
+                <div className="col product-configuration-content__content">Nội dung</div>
+              </div>
+              <div className="row product-configuration-content">
+                <div className="col-4 product-configuration-content__title">Màn hình:</div>
+                <div className="col product-configuration-content__content">Nội dung</div>
+              </div>
+              <div className="row product-configuration-content product-configuration-content--grey">
+                <div className="col-4 product-configuration-content__title">Hệ điều hành:</div>
+                <div className="col product-configuration-content__content">Nội dung</div>
+              </div>
+              <div className="row product-configuration-content">
+                <div className="col-4 product-configuration-content__title">Khối lượng:</div>
+                <div className="col product-configuration-content__content">Nội dung</div>
+              </div>
+              <div className="row product-configuration-content">
+                <button className="product-configuration-content__btn" type="button" onClick={() => { this.openModal(3) }}><i className="fa-solid fa-plus"></i> Xem thêm</button>
               </div>
             </div>
           </div>
@@ -505,13 +526,16 @@ class ProductViewDetail extends Component {
           <div className="row product-detail-rating">
             {/* đánh giá tổng quát của sản phẩm */}
             <div className="col-12">
-              <RatingView commented={commented} rating={product.reviewsResponses.rating} listReviews={product.reviewsResponses.listReviews}></RatingView>
+              <RatingView
+                commented={commented}
+                rating={product.reviewsResponses ? product.reviewsResponses.rating : 0}
+                listReviews={product.reviewsResponses ? product.reviewsResponses.listReviews : []}></RatingView>
             </div>
 
             {/* danh sách comment */}
             <div className="col-12">
               {
-                product.reviewsResponses.listReviews ?
+                product.reviewsResponses ?
                   (
                     product.reviewsResponses.listReviews.length > 0 ?
                       (
@@ -531,7 +555,7 @@ class ProductViewDetail extends Component {
                                 return null;
                               }
                               return (
-                                <div key={index} class="comment-item media border p-3">
+                                <div key={index} className="comment-item media border p-3">
                                   <div className="media-body">
                                     <h5>
                                       <span style={{ fontSize: "14px" }}>

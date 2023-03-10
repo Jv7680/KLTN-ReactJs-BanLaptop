@@ -84,7 +84,7 @@ class TopDiscountProductItems extends Component {
 
       <div className="single-product-wrap" >
         <div className="fix-img-div-new product-image">
-          <Link onClick={(id) => this.getInfoProduct(product.productId)} >
+          <Link to='' onClick={(id) => this.getInfoProduct(product.productId)} >
             <img className="fix-img" src={product.image} alt="Li's Product " />
           </Link>
           {
@@ -101,7 +101,7 @@ class TopDiscountProductItems extends Component {
         <div className="product_desc">
           <div className="product_desc_info">
             <h4>
-              <Link className="product_name text-truncate" onClick={(id) => this.getInfoProduct(product.productId)} >{product.productName}</Link>
+              <Link to='' className="product_name text-truncate" onClick={(id) => this.getInfoProduct(product.productId)} >{product.productName}</Link>
             </h4>
             {
               product.discount > 0 ?

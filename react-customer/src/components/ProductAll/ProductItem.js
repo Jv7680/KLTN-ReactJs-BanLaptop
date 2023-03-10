@@ -31,11 +31,18 @@ class ProductItem extends Component {
   }
 
   componentDidMount = async () => {
-    let { productID } = this.state;
-    let imageURL = await getProductFirstImageURL(productID);
-    this.setState({
-      imageURL: imageURL,
-    });
+    let { productId } = this.props.product;
+    // console.log('vào componentDidMount pItem:', productId);
+    let imageURL = await getProductFirstImageURL(productId);
+    // console.log(`vào componentDidMount imageURL ${productId}:`, imageURL);
+
+    if (imageURL === '') {
+      imageURL = process.env.PUBLIC_URL + '/images/logo/logoPTCustomer.png';
+      document.getElementsByClassName(`image-product-${productId}`)[0].setAttribute('src', imageURL);
+    }
+    else {
+      document.getElementsByClassName(`image-product-${productId}`)[0].setAttribute('src', imageURL);
+    }
   }
 
   handleChange = event => {
@@ -91,7 +98,9 @@ class ProductItem extends Component {
   render() {
     const { product } = this.props;
     const { quantity, redirectYourLogin, imageURL } = this.state;
-    // console.log(product)
+
+    console.log('vào render');
+
     if (redirectYourLogin) {
       return <Redirect to='/login'></Redirect>
     }
@@ -101,17 +110,18 @@ class ProductItem extends Component {
         {/* single-product-wrap start */}
         <div className="single-product-wrap">
           <div className="fix-img-div-for-item product-image">
-            <Link onClick={(id) => this.getInfoProduct(product.productId)} >
-              {
+            <Link to='' onClick={(id) => this.getInfoProduct(product.productId)} >
+              {/* {
                 imageURL === "" ?
                   (
-                    <img className="fix-img" src={process.env.PUBLIC_URL + '/images/logo/logoPTCustomer.png'} alt="Not found" />
+                    <img className="fix-img image-product-item" src={process.env.PUBLIC_URL + '/images/logo/logoPTCustomer.png'} alt="Not found" />
                   )
                   :
                   (
-                    <img className="fix-img" src={imageURL} alt="Not found" />
+                    <img className="fix-img image-product-item" src={imageURL} alt="Not found" />
                   )
-              }
+              } */}
+              <img className={`fix-img image-product-${product.productId}`} src='' alt={'/images/logo/logoPTCustomer.png'} />
             </Link>
             {
               product.discount === 0 ?
@@ -127,7 +137,7 @@ class ProductItem extends Component {
           <div className="product_desc">
             <div className="product_desc_info">
               <h4>
-                <Link className="product_name text-truncate" onClick={(id) => this.getInfoProduct(product.productId)} >{product.productName}</Link>
+                <Link to='' className="product_name text-truncate" onClick={(id) => this.getInfoProduct(product.productId)} >{product.productName}</Link>
               </h4>
               {
                 product.discount > 0 ?

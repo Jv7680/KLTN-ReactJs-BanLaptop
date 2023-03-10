@@ -10,7 +10,11 @@ import { actTokenRequest, actGetNameRole } from "./redux/actions/auth";
 import { actShowLoading } from "./redux/actions/loading";
 import Header from './components/Header/Header';
 import NavBar from './components/NavBar/NavBar';
-import LoginPage from './pages/LoginPage'
+import LoginPage from './pages/LoginPage';
+import Loading from './components/Loading/Loading';
+
+import { startLoading, stopLoading } from './components/Loading/setLoadingState';
+
 import "./style.css";
 const override = css`
   display: block;
@@ -22,8 +26,14 @@ const override = css`
   z-index: 9999;
 `;
 
+const cssPulseLoader = css`
+    margin: auto;
+    z-index: 9999;
+    display: block;
+`;
 
 let token;
+
 class App extends Component {
 
   async componentDidMount() {
@@ -36,50 +46,78 @@ class App extends Component {
     const { auth, loading } = this.props;
     //const [auth, loading] = [true, false];
     return (
+      // <Router>
+      //   {auth ?
+      //     (
+      //       <React.Fragment>
+      //         {/* hiệu ứng load trang */}
+      //         <Loading loadingActive={true} loadingCSS={cssPulseLoader}></Loading>
+      //         {!loading ?
+      //           (
+      //             <div>
+      //               <div className="sweet-loading">
+      //                 <ClipLoader
+      //                   css={override}
+      //                   sizeUnit={"px"}
+      //                   size={35}
+      //                   color={"#796aeebd"}
+      //                   loading={loading}
+      //                 />
+      //               </div>
+      //               <div className="page-content d-flex align-items-stretch">
+      //                 <NavBar token={token}></NavBar>
+      //                 {this.showContentMenus(routes)}
+      //               </div>
+      //             </div>
+      //           )
+      //           :
+      //           (
+      //             <div className="hidden-loading">
+      //               <div className="sweet-loading">
+      //                 <ClipLoader
+      //                   css={override}
+      //                   sizeUnit={"px"}
+      //                   size={35}
+      //                   color={"#796aeebd"}
+      //                   loading={loading}
+      //                 />
+      //               </div>
+      //               <div className="page-content d-flex align-items-stretch">
+      //                 <NavBar token={token}></NavBar>
+      //                 {
+      //                   /* Trả về component <Switch /> */
+      //                   this.showContentMenus(routes)
+      //                 }
+      //               </div>
+      //             </div>
+      //           )
+      //         }
+      //       </React.Fragment>
+      //     )
+      //     :
+      //     (
+      //       <>
+      //         <LoginPage></LoginPage>
+      //       </>
+      //     )
+      //   }
+      // </Router>
+
       <Router>
+        <>
+          {/* hiệu ứng load trang */}
+          <Loading loadingCSS={cssPulseLoader}></Loading>
+        </>
         {auth ?
           (
             <React.Fragment>
-              {!loading ?
-                (
-                  <div>
-                    <div className="sweet-loading">
-                      <ClipLoader
-                        css={override}
-                        sizeUnit={"px"}
-                        size={35}
-                        color={"#796aeebd"}
-                        loading={loading}
-                      />
-                    </div>
-                    <div className="page-content d-flex align-items-stretch">
-                      <NavBar token={token}></NavBar>
-                      {this.showContentMenus(routes)}
-                    </div>
-                  </div>
-                )
-                :
-                (
-                  <div className="hidden-loading">
-                    <div className="sweet-loading">
-                      <ClipLoader
-                        css={override}
-                        sizeUnit={"px"}
-                        size={35}
-                        color={"#796aeebd"}
-                        loading={loading}
-                      />
-                    </div>
-                    <div className="page-content d-flex align-items-stretch">
-                      <NavBar token={token}></NavBar>
-                      {
-                        /* Trả về component <Switch /> */
-                        this.showContentMenus(routes)
-                      }
-                    </div>
-                  </div>
-                )
-              }
+              <div className="page-content d-flex align-items-stretch">
+                <NavBar token={token}></NavBar>
+                {
+                  /* Trả về component <Switch /> */
+                  this.showContentMenus(routes)
+                }
+              </div>
             </React.Fragment>
           )
           :

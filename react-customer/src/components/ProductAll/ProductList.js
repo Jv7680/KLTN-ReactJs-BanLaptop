@@ -18,11 +18,11 @@ class ProductList extends Component {
     }
 
     componentDidMount = async () => {
-        this.fetch_reload_data();
+        await this.fetch_reload_data();
     }
 
-    fetch_reload_data() {
-        this.props.fetch_products().then(res => {
+    async fetch_reload_data() {
+        await this.props.fetch_products().then(res => {
             this.setState({
                 total: res.totalPage
             });
@@ -31,9 +31,9 @@ class ProductList extends Component {
         })
     }
 
-    pageChange(content) {
+    async pageChange(content) {
         const page = content;
-        this.props.fetch_products(page);
+        await this.props.fetch_products(page);
         this.setState({
             currentPage: content
         })
@@ -48,11 +48,11 @@ class ProductList extends Component {
         return (
             <>
                 <div className="row">
-                    {products && products.length
+                    {products && products.length > 0
                         ? products.map((item, index) => {
                             return (
                                 <ProductItem
-                                    key={index}
+                                    key={item.productId}
                                     product={item}
                                 ></ProductItem>
                             );

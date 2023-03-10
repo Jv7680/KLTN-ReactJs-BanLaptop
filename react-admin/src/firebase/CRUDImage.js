@@ -1,6 +1,7 @@
 // import firebase from 'firebase';
 import { storage } from './firebaseConfig';
 import { ref, getDownloadURL, listAll, uploadBytes, deleteObject } from "firebase/storage";
+import { startLoading, stopLoading } from '../components/Loading/setLoadingState';
 import Swal from 'sweetalert2';
 
 // Function for user
@@ -9,6 +10,7 @@ import Swal from 'sweetalert2';
 // Function for product
 // Up ảnh lên firebase
 export async function uploadProductImage(productID, imageFile, imageType, imageName) {
+  startLoading();
   if (imageType === 'image360') {
     //upload vào thư mục ảnh 360 độ
     await uploadBytes(ref(storage, `products/p_${productID}/images360/${imageName}`), imageFile)
@@ -16,6 +18,9 @@ export async function uploadProductImage(productID, imageFile, imageType, imageN
         console.log('URL GET', downloadURL, snapshot)
       }))
       .catch(err => console.log(err))
+      .finally(() => {
+        stopLoading();
+      });
   }
   else if (imageType === 'image') {
     //upload vào thư mục ảnh bình thường
@@ -24,8 +29,12 @@ export async function uploadProductImage(productID, imageFile, imageType, imageN
         console.log('URL GET', downloadURL, snapshot)
       }))
       .catch(err => console.log(err))
+      .finally(() => {
+        stopLoading();
+      });
   }
   else {
+    stopLoading();
     return -1;
   }
 
@@ -34,6 +43,8 @@ export async function uploadProductImage(productID, imageFile, imageType, imageN
 // Lấy link ảnh trên firebase
 // Hàm này trả về mảng chứa danh sách image URL
 export async function getProductListImageURL(productID) {
+  startLoading();
+
   // biến lưu danh sách URL và Ref
   let listImage = {
     images: [],
@@ -67,12 +78,16 @@ export async function getProductListImageURL(productID) {
       });
   }
 
+  stopLoading();
   console.log('listImage:', listImage);
   return listImage;
 }
 
 // Hàm này trả về mảng chứa danh sách image360 URL
 export async function getProductListImage360URL(productID) {
+  console.log('start loading getProductListImage360URL');
+  startLoading();
+
   // biến lưu danh sách URL và Ref
   let listImage = {
     images360: [],
@@ -106,17 +121,24 @@ export async function getProductListImage360URL(productID) {
       });
   }
 
+  console.log('stop loading getProductListImage360URL');
+  stopLoading();
   console.log('listImage360:', listImage);
   return listImage;
 }
 
 // Xóa ảnh trên firebase
 export async function deleteImage(imageFile) {
+  startLoading();
+
   await deleteObject(imageFile)
     .then(() => {
 
     }).catch((err) => {
       console.log('err on deleteImage:', err);
+    })
+    .finally(() => {
+      stopLoading();
     });
 }
 
@@ -124,6 +146,8 @@ export async function deleteImage(imageFile) {
 // với thư mục res của list all trả về ở key prefixes, không phải key items
 // Tuy nhiên các firebase không thể delete đc các folder vì chúng trông giống folder chứ ko phải
 export async function deleteAllImageInImages(productID) {
+  startLoading();
+
   let listImageRef = [];
 
   // Tham chiếu đến thư mục images
@@ -148,10 +172,12 @@ export async function deleteAllImageInImages(productID) {
   }
 
   console.log('Xóa xong listImageRef');
+  stopLoading();
 }
 
 // Xóa tất cả ảnh trong một thư mục Images360 trên firebase
 export async function deleteAllImageInImages360(productID) {
+  startLoading();
   let listImage360Ref = [];
 
   // Tham chiếu đến thư mục images360
@@ -176,4 +202,5 @@ export async function deleteAllImageInImages360(productID) {
   }
 
   console.log('Xóa xong listImage360Ref');
+  stopLoading();
 }

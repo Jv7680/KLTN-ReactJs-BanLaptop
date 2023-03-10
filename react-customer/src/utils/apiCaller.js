@@ -5,12 +5,13 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import store from '../index'
 import { actFetchCart } from '../redux/actions/cart'
-
+import { startLoading, stopLoading } from '../components/Loading/setLoadingState';
 
 const MySwal = withReactContent(Swal)
 toast.configure()
 
 export default async function callApi(endpoint, method = 'GET', body, token) {
+  startLoading();
   try {
     let data;
     if (token !== undefined && token !== null && token !== '') {
@@ -55,5 +56,8 @@ export default async function callApi(endpoint, method = 'GET', body, token) {
         text: 'không thể kết nối server!'
       })
     }
+  }
+  finally {
+    stopLoading();
   }
 }

@@ -76,8 +76,8 @@ class HeaderTop extends Component {
                           <div className="dropdown show">
 
                             <Link to="#" className=" fix-link-color dropdown-toggle navList__item-user-link" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <img src={user.image || user.imageLink || "https://i.ibb.co/NCdx7FF/avatar-Default.png"} class="navList__item-user-avatar"></img>
-                              <div class="navList__item-user-name ml-10"> {user.lastname + " " + user.firstname || "not found"}</div>
+                              <img src={user.image || user.imageLink || "https://i.ibb.co/NCdx7FF/avatar-Default.png"} className="navList__item-user-avatar"></img>
+                              <div className="navList__item-user-name ml-10"> {user.lastname + " " + user.firstname || "not found"}</div>
                             </Link>
                             <div className="fix-text-item dropdown-menu ht-setting-list " aria-labelledby="dropdownMenuLink">
                               <Link className="fix-text-item dropdown-item" to="/profile">Cá nhân</Link>
