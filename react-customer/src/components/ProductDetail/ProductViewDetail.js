@@ -328,7 +328,6 @@ class ProductViewDetail extends Component {
               </div>
             </div>
           </div>
-
         </Modal>
         <div className="container">
           {/* row product-detail-header */}

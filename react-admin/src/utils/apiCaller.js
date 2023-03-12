@@ -11,7 +11,7 @@ const MySwal = withReactContent(Swal)
 toast.configure()
 
 export default async function callApi(endpoint, method = 'GET', body, token) {
-  // startLoading();
+  startLoading();
   try {
     let data;
     console.log(token)
@@ -78,6 +78,6 @@ export default async function callApi(endpoint, method = 'GET', body, token) {
     }
   }
   finally {
-    // stopLoading();
+    stopLoading();
   }
 }

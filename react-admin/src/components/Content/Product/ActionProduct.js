@@ -28,15 +28,6 @@ class ActionProduct extends Component {
 
   constructor(props) {
     super(props);
-    // this.onDrop = (files) => {
-    //   let data = this.state.filesImage
-    //   data = data.concat(files)
-
-    //   this.setState({
-    //     filesImage: data
-    //   })
-    // };
-
     this.state = {
       productName: '',
       quantity: 0,
@@ -59,8 +50,35 @@ class ActionProduct extends Component {
       categoryId: 1,
       supplierId: 1,
       image: '',
+
+      cpu_name: '',
+      cpu_core: '',
+      cpu_cache: '',
+      cpu_thread: '',
+      cpu_speed: '',
+
+      harddrive_capacity: null,
+      harddrive_type: null,
+
+      ram_capacity: null,
+      ram_type: null,
+      ram_bus: null,
+
+      screen_size: null,
+      screen_resolution: null,
+      screen_frequency: null,
+
+      graphic_card: null,
+      sound_technology: null,
+
+      weight: null,
+      shell_material: null,
+
+      battery: null,
+      operating_system: null,
+      release_year: null,
+
       redirectToProduct: false,
-      loading: false,
     };
 
     //id của sản phẩm
@@ -112,14 +130,7 @@ class ActionProduct extends Component {
       supplierId: value
     })
   }
-  handleChangeImage = (event) => {
-    if (event.target.files[0]) {
-      const img = event.target.files[0];
-      this.setState(() => ({ img }));
-    }
-    const output = document.getElementById('output');
-    output.src = URL.createObjectURL(event.target.files[0]);
-  }
+
   handleChangeEditor = (value) => {
     this.setState({ descriptionProduct: value })
   }
@@ -173,15 +184,10 @@ class ActionProduct extends Component {
       "supplierId": newSupplierId
     }
 
-    this.setState({
-      loading: true
-    })
-
     if (!id) {
       console.log('addNewProduct: ', addNewProduct);
       await this.props.add_Product(addNewProduct);
       this.setState({
-        loading: false,
         redirectToProduct: true
       })
 
@@ -195,7 +201,6 @@ class ActionProduct extends Component {
       console.log('newProduct: ', newProduct);
       await this.props.edit_Product(id, newProduct);
       this.setState({
-        loading: false,
         redirectToProduct: true
       })
 
@@ -219,8 +224,15 @@ class ActionProduct extends Component {
   ];
 
   render() {
-    //const { productName, quantity, productImageSet, filesImage, discount, unitPrice, descriptionProduct, dataSupplieres, categoryId, dataCategories, supplierId, loading, redirectToProduct } = this.state;
-    const { productName, quantity, productImageSet, filesImage, discount, unitPrice, descriptionProduct, dataSupplieres, categoryId, dataCategories, supplierId, image, loading, redirectToProduct } = this.state;
+    const { productName, quantity, productImageSet, filesImage, discount, unitPrice, descriptionProduct, dataSupplieres, categoryId, dataCategories, supplierId, image, redirectToProduct } = this.state;
+    const { cpu_name, cpu_core, cpu_cache, cpu_thread, cpu_speed } = this.state;
+    const { harddrive_capacity, harddrive_type } = this.state;
+    const { ram_capacity, ram_type, ram_bus } = this.state;
+    const { screen_size, screen_resolution, screen_frequency } = this.state;
+    const { graphic_card, sound_technology } = this.state;
+    const { weight, shell_material } = this.state;
+    const { battery, operating_system, release_year } = this.state;
+
     // console.log('listImageURL:', listImageURL)
     // console.log(productName);
     if (redirectToProduct) {
@@ -230,15 +242,6 @@ class ActionProduct extends Component {
     return (
       <div className="content-inner">
         {/* Page Header*/}
-        <div className='sweet-loading'>
-          <ClipLoader
-            css={override}
-            sizeUnit={"px"}
-            size={30}
-            color={'#796aeebd'}
-            loading={loading}
-          />
-        </div>
         <header className="page-header">
           <div className="container-fluid">
             <h2 className="no-margin-bottom">Trang sản phẩm</h2>
@@ -271,7 +274,7 @@ class ActionProduct extends Component {
                     <form className="form-horizontal" onSubmit={(event) => this.handleSubmit(event)} >
                       {/* tên sản phẩm */}
                       <div className="form-group row">
-                        <label className="col-sm-3 form-control-label">Tên sản phẩm</label>
+                        <label className="col-sm-3 form-control-label">Tên sản phẩm*</label>
                         <div className="col-sm-9">
                           <input
                             onChange={this.handleChange}
@@ -284,7 +287,7 @@ class ActionProduct extends Component {
                       <div className="line" />
                       {/* giá, số lượng */}
                       <div className="form-group row">
-                        <label className="col-sm-3 form-control-label">Giá</label>
+                        <label className="col-sm-3 form-control-label">Giá*</label>
                         <div className="col-sm-3">
                           <input
                             onChange={this.handleChange}
@@ -293,7 +296,7 @@ class ActionProduct extends Component {
                             type="number"
                             className="form-control" />
                         </div>
-                        <label className="col-sm-3 form-control-label" style={{ textAlign: 'center' }}>Số lượng</label>
+                        <label className="col-sm-3 form-control-label" style={{ textAlign: 'center' }}>Số lượng*</label>
                         <div className="col-sm-3">
                           <input
                             onChange={this.handleChange}
@@ -302,7 +305,7 @@ class ActionProduct extends Component {
                             type="number"
                             className="form-control" />
                         </div>
-                        <label className="col-sm-3 form-control-label" >Giảm giá</label>
+                        <label className="col-sm-3 form-control-label" >Giảm giá*</label>
                         <div className="col-sm-3">
                           <input
                             onChange={this.handleChange}
@@ -313,27 +316,13 @@ class ActionProduct extends Component {
                         </div>
                       </div>
 
-
-                      <div className="line" />
-                      {/* mô tả */}
-                      <div className="form-group row">
-                        <label className="col-sm-3 form-control-label">Mô tả</label>
-                        <div className="col-sm-9">
-                          <ReactQuill
-                            modules={this.modules}
-                            formats={this.formats}
-                            value={descriptionProduct}
-                            onChange={this.handleChangeEditor}
-                          />
-                        </div>
-                      </div>
                       <div className="line" />
 
                       {/* nhà cung cấp */}
                       <div className="form-group row">
                         <label
                           className="col-sm-3 form-control-label">
-                          Nhà cung cấp
+                          Nhà cung cấp*
                         </label>
                         <div className="col-sm-9">
                           <select className="form-control mb-3" name="supplierId" value={supplierId} onChange={this.handleChangeSelecProducer}>
@@ -347,11 +336,249 @@ class ActionProduct extends Component {
                           </select>
                         </div>
                       </div>
+
+                      <div className="line" />
+
+                      {/* CPU */}
+                      <div className="form-group row">
+                        <label className="col-sm-3 form-control-label">Tên CPU*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={cpu_name}
+                            name="cpu_name"
+                            type="text"
+                            className="form-control" />
+                        </div>
+                        <label className="col-sm-3 form-control-label">Số nhân*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={cpu_core}
+                            name="cpu_core"
+                            type="number"
+                            className="form-control" />
+                        </div>
+                        <label className="col-sm-3 form-control-label" >Số luồng*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={cpu_thread}
+                            name="cpu_thread"
+                            type="number"
+                            className="form-control" />
+                        </div>
+                        <label className="col-sm-3 form-control-label" >Tốc độ CPU*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={cpu_speed}
+                            name="cpu_speed"
+                            type="number"
+                            className="form-control" />
+                        </div>
+                        <label className="col-sm-3 form-control-label" >Bộ nhớ đệm*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={cpu_cache}
+                            name="cpu_cache"
+                            type="number"
+                            className="form-control" />
+                        </div>
+                      </div>
+
+                      <div className="line" />
+
+                      {/* Ổ cứng */}
+                      <div className="form-group row">
+                        <label className="col-sm-3 form-control-label">Dung Lượng ổ cứng*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={harddrive_capacity}
+                            name="harddrive_capacity"
+                            type="number"
+                            className="form-control" />
+                        </div>
+                        <label className="col-sm-3 form-control-label">Loại ổ cứng*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={harddrive_type}
+                            name="harddrive_type"
+                            type="number"
+                            className="form-control" />
+                        </div>
+                      </div>
+
+                      <div className="line" />
+
+                      {/* RAM */}
+                      <div className="form-group row">
+                        <label className="col-sm-3 form-control-label">Dung Lượng RAM*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={ram_capacity}
+                            name="ram_capacity"
+                            type="number"
+                            className="form-control" />
+                        </div>
+                        <label className="col-sm-3 form-control-label">Loại RAM*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={ram_type}
+                            name="ram_type"
+                            type="text"
+                            className="form-control" />
+                        </div>
+                        <label className="col-sm-3 form-control-label">Tốc độ BUS RAM*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={ram_bus}
+                            name="ram_bus"
+                            type="number"
+                            className="form-control" />
+                        </div>
+                      </div>
+
+                      <div className="line" />
+
+                      {/* Màn hình */}
+                      <div className="form-group row">
+                        <label className="col-sm-3 form-control-label">Kích thước màn hình*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={screen_size}
+                            name="screen_size"
+                            type="number"
+                            className="form-control" />
+                        </div>
+                        <label className="col-sm-3 form-control-label">Độ phân giải*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={screen_resolution}
+                            name="screen_resolution"
+                            type="number"
+                            className="form-control" />
+                        </div>
+                        <label className="col-sm-3 form-control-label">Tần số quét*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={screen_frequency}
+                            name="screen_frequency"
+                            type="number"
+                            className="form-control" />
+                        </div>
+                      </div>
+
+                      <div className="line" />
+
+                      {/* Card màn hình */}
+                      <div className="form-group row">
+                        <label className="col-sm-3 form-control-label">Tên card màn hình*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={graphic_card}
+                            name="graphic_card"
+                            type="text"
+                            className="form-control" />
+                        </div>
+                        <label className="col-sm-3 form-control-label">Công nghệ âm thanh*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={sound_technology}
+                            name="sound_technology"
+                            type="text"
+                            className="form-control" />
+                        </div>
+                      </div>
+
+                      <div className="line" />
+
+                      {/* khối lượng và chất liệu */}
+                      <div className="form-group row">
+                        <label className="col-sm-3 form-control-label">Khối lượng*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={weight}
+                            name="weight"
+                            type="number"
+                            className="form-control" />
+                        </div>
+                        <label className="col-sm-3 form-control-label">Chất liệu vỏ*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={shell_material}
+                            name="shell_material"
+                            type="text"
+                            className="form-control" />
+                        </div>
+                      </div>
+
+                      <div className="line" />
+
+                      {/* Thông tin khác */}
+                      <div className="form-group row">
+                        <label className="col-sm-3 form-control-label">Pin*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={battery}
+                            name="battery"
+                            type="text"
+                            className="form-control" />
+                        </div>
+                        <label className="col-sm-3 form-control-label">Hệ điều hành*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={operating_system}
+                            name="operating_system"
+                            type="text"
+                            className="form-control" />
+                        </div>
+                        <label className="col-sm-3 form-control-label">Thời điểm ra mắt*</label>
+                        <div className="col-sm-3">
+                          <input
+                            onChange={this.handleChange}
+                            value={release_year}
+                            name="release_year"
+                            type="text"
+                            className="form-control" />
+                        </div>
+                      </div>
+
+                      <div className="line" />
+
+                      {/* mô tả */}
+                      <div className="form-group row">
+                        <label className="col-sm-3 form-control-label">Mô tả*</label>
+                        <div className="col-sm-9">
+                          <ReactQuill
+                            modules={this.modules}
+                            formats={this.formats}
+                            value={descriptionProduct}
+                            onChange={this.handleChangeEditor}
+                          />
+                        </div>
+                      </div>
+
                       <div className="line" />
 
                       {/* image */}
                       <div className="form-group row">
-                        <label htmlFor="fileInput" className="col-sm-3 form-control-label">Ảnh</label>
+                        <label htmlFor="fileInput" className="col-sm-3 form-control-label">Ảnh*</label>
                         <div className="col-9 col-sm-9" >
                           <Image productID={id}></Image>
                         </div>

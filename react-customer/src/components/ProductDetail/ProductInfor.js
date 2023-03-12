@@ -45,7 +45,7 @@ class ProductInfor extends Component {
                                         (
                                             <>
                                                 {/* Thông tin CPU */}
-                                                <div className="row product-configuration-title-modal product-configuration-content--grey">
+                                                <div className="row product-configuration-title-modal product-configuration-content--grey mt-25">
                                                     <div className="col">Bộ xử lý</div>
                                                 </div>
                                                 <div className="row product-configuration-content">

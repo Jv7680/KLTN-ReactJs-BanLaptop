@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 import 'react-toastify/dist/ReactToastify.css';
 import BeautyStars from 'beauty-stars';
 import Swal from 'sweetalert2';
-import './style.css'
+import './style.css';
 toast.configure()
 let token, id;
 id = parseInt(localStorage.getItem("_id"));
@@ -80,72 +80,74 @@ class TopDiscountProductItems extends Component {
     const { quantity } = this.state;
 
     return (
-
-
-      <div className="single-product-wrap" >
-        <div className="fix-img-div-new product-image">
-          <Link to='' onClick={(id) => this.getInfoProduct(product.productId)} >
-            <img className="fix-img" src={product.image} alt="Li's Product " />
-          </Link>
-          {
-            product.discount === 0 ?
-              (
-                null
-              )
-              :
-              (
-                <span className="sticker">{product.discount}%</span>
-              )
-          }
-        </div>
-        <div className="product_desc">
-          <div className="product_desc_info">
-            <h4>
-              <Link to='' className="product_name text-truncate" onClick={(id) => this.getInfoProduct(product.productId)} >{product.productName}</Link>
-            </h4>
+      <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0 50px' }}>
+        <div className="single-product-wrap" style={{ width: '90%' }}>
+          <div className="fix-img-div-new product-image">
+            <img
+              src={product.image}
+              alt="Li's Product"
+              onClick={(id) => this.getInfoProduct(product.productId)}
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             {
-              product.discount > 0 ?
+              product.discount === 0 ?
                 (
-                  <>
-                    <span className="new-price new-price-2" style={{ color: 'black', textDecoration: "line-through" }}>
-                      {product.unitprice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}  <span>&emsp;-{product.discount}%</span><br />
-                      <span>Chỉ còn: {(product.unitprice * ((100 - product.discount) / 100)).toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</span>
-                    </span>
-
-                  </>
+                  null
                 )
                 :
                 (
-                  <>
-                    <span className="new-price new-price-2" style={{ color: 'black', textDecoration: "none" }}>
-                      {product && product.unitprice ? product.unitprice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }) : null}<br />&emsp;
-                    </span>
-                  </>
+                  <span className="sticker">{product.discount}%</span>
                 )
             }
-
           </div>
-
-          <div className="add-actions">
-            <ul className="add-actions-link">
+          <div className="product_desc">
+            <div className="product_desc_info">
+              <h4>
+                <Link to='' className="product_name text-truncate" onClick={(id) => this.getInfoProduct(product.productId)} >{product.productName}</Link>
+              </h4>
               {
-                product.quantity === 0 ?
+                product.discount > 0 ?
                   (
-                    <h5>Tạm Hết Hàng</h5>
+                    <>
+                      <span className="new-price new-price-2" style={{ color: 'black', textDecoration: "line-through" }}>
+                        {product.unitprice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}  <span>&emsp;-{product.discount}%</span><br />
+                        <span>Chỉ còn: {(product.unitprice * ((100 - product.discount) / 100)).toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</span>
+                      </span>
+
+                    </>
                   )
                   :
                   (
-                    <div>
-                      <li className="add-cart active"><a onClick={() => this.addItemToCart(product)} >Thêm vào giỏ</a></li>
-                      <li><a onClick={(id) => this.getInfoProduct(product.productId)} title="chi tiểt" className="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><i className="fa fa-eye" /></a></li>
-                      {/* <li><Link to="#" onClick={() => this.addItemToFavorite(product.productId)} className="links-details" title="yêu thích" ><i className="fa fa-heart-o" /></Link></li> */}
-                    </div>
+                    <>
+                      <span className="new-price new-price-2" style={{ color: 'black', textDecoration: "none" }}>
+                        {product && product.unitprice ? product.unitprice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }) : null}<br />&emsp;
+                      </span>
+                    </>
                   )
               }
-            </ul>
+
+            </div>
+
+            <div className="add-actions">
+              <ul className="add-actions-link">
+                {
+                  product.quantity === 0 ?
+                    (
+                      <h5>Tạm Hết Hàng</h5>
+                    )
+                    :
+                    (
+                      <div style={{ marginLeft: '15px' }}>
+                        <li className="add-cart active"><a onClick={() => this.addItemToCart(product)} >Thêm vào giỏ</a></li>
+                        <li><a onClick={(id) => this.getInfoProduct(product.productId)} title="chi tiểt" className="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><i className="fa fa-eye" /></a></li>
+                        {/* <li><Link to="#" onClick={() => this.addItemToFavorite(product.productId)} className="links-details" title="yêu thích" ><i className="fa fa-heart-o" /></Link></li> */}
+                      </div>
+                    )
+                }
+              </ul>
+            </div>
           </div>
-        </div>
-      </div >
+        </div >
+      </div>
     )
   }
 }

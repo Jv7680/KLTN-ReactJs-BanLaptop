@@ -17,10 +17,22 @@
   width: 30px !important;
   height: 30px !important;
   border-radius: 15px !important;
+} */
+
+.slider-trending-product .slick-slider .slick-list {
+  background-color: transparent;
 }
 
 .fix-ml {
-  margin-left: 2.5rem!important;
+  margin-left: 2.5rem !important;
+}
+
+.slider-trending-product .slick-slider .slick-prev {
+  left: -20px !important;
+}
+
+.slider-trending-product .slick-slider .slick-next {
+  right: -20px !important;
 }
 
 .fix-img-div-trend {
@@ -29,8 +41,14 @@
   overflow: hidden;
   text-align: center;
 }
+
 .fix-img-trend {
   height: 90%;
   width: 80% !important;
   object-fit: contain;
-} */
+}
+
+.trending-laptop-title {
+  font-size: 20px;
+  font-weight: 500;
+}

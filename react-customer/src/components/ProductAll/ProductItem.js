@@ -110,19 +110,11 @@ class ProductItem extends Component {
         {/* single-product-wrap start */}
         <div className="single-product-wrap">
           <div className="fix-img-div-for-item product-image">
-            <Link to='' onClick={(id) => this.getInfoProduct(product.productId)} >
-              {/* {
-                imageURL === "" ?
-                  (
-                    <img className="fix-img image-product-item" src={process.env.PUBLIC_URL + '/images/logo/logoPTCustomer.png'} alt="Not found" />
-                  )
-                  :
-                  (
-                    <img className="fix-img image-product-item" src={imageURL} alt="Not found" />
-                  )
-              } */}
-              <img className={`fix-img image-product-${product.productId}`} src='' alt={'/images/logo/logoPTCustomer.png'} />
-            </Link>
+            <img
+              className={`fix-img image-product-${product.productId}`}
+              src=''
+              alt={'/images/logo/logoPTCustomer.png'}
+              onClick={(id) => this.getInfoProduct(product.productId)} />
             {
               product.discount === 0 ?
                 (

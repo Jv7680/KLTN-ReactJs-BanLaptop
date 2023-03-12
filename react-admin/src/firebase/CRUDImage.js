@@ -127,6 +127,46 @@ export async function getProductListImage360URL(productID) {
   return listImage;
 }
 
+// Hàm này trả về image URL đầu tiên
+export async function getProductFirstImageURL(productID) {
+  startLoading();
+  // biến lưu danh sách URL và Ref
+  let image = {
+    imageURL: "",
+    imageRef: null,
+  };
+
+  // Tạo vị trí lưu trữ trên storage và tham chiếu đến đó
+  // Tham chiếu đến thư mục images
+  await listAll(ref(storage, `products/p_${productID}/images`))
+    .then(res => {
+      image.imageRef = res.items[0];
+    })
+    .catch(err => {
+      console.log('err on get image.imageRef:', err);
+      return null;
+    }
+    );
+  console.log('image obj:', image);
+
+  // Lưu link ảnh vào object listImage
+  // Lưu vào listImage.images
+  if (image.imageRef) {
+    await getDownloadURL(image.imageRef)
+      .then(url => {
+        image.imageURL = url;
+      })
+      .catch(err => {
+        console.log('err on get image.imageURL:', err);
+        return null;
+      });
+  }
+
+  stopLoading();
+  console.log(`image getProductFirstImageURL ${productID}:`, image);
+  return image.imageURL;
+}
+
 // Xóa ảnh trên firebase
 export async function deleteImage(imageFile) {
   startLoading();

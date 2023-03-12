@@ -7,6 +7,8 @@ import { connect } from "react-redux";
 import { actTokenRequest } from "./redux/actions/auth";
 import { css } from '@emotion/core';
 import { actShowLoading } from "./redux/actions/loading";
+import Chat from "./components/Chat/Chat";
+
 import ClipLoader from 'react-spinners/ClipLoader';
 import PulseLoader from 'react-spinners/PulseLoader';
 import ActiveAccount from "./components/LoginRegister/ActiveAccount";
@@ -40,6 +42,7 @@ class App extends Component {
           <Header></Header>
           {this.showContentMenus(routes)}
           <Footer></Footer>
+          <Chat></Chat>
         </div>
       </Router>
     )

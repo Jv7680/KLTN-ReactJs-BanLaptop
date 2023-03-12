@@ -1,23 +1,19 @@
-.slick-list {
-  height: 461px !important;
-  margin-top: 35px !important;
+.slider-discount-product .slick-slider .slick-list {
+  background-color: transparent;
 }
 
-.slick-arrow slick-prev {
+.slider-discount-product .slick-slider .slick-prev {
+  left: -20px !important;
+}
+
+.slider-discount-product .slick-slider .slick-next {
+  right: -20px !important;
+}
+
+
+/* .slick-arrow slick-prev {
   background: black !important;
-}
-
-.slick-prev,
-.slick-next {
-  top: 33% !important;
-  z-index: 1;
-  background: #f4dd43e3 !important;
-  font-size: 20px !important;
-  font-family: initial;
-  width: 30px !important;
-  height: 30px !important;
-  border-radius: 15px !important;
-}
+} */
 
 .fix-ml {
   margin-left: 2.5rem !important;
@@ -52,4 +48,9 @@
 .sticker {
   font-size: 30px;
   font-weight: 700;
+}
+
+.discount-laptop-title {
+  font-size: 20px;
+  font-weight: 500;
 }

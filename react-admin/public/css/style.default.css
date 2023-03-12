@@ -1714,11 +1714,12 @@ section.charts div[class*="col-"] {
 .form-control:focus {
   color: #495057;
   background-color: #fff;
-  border-color: var(--primary-color);
+  border-color: #5658e4;
 
   outline: none;
-  -webkit-box-shadow: 0 0 0 0.2rem rgba(238, 106, 106, 0.25);
-  box-shadow: 0 0 0 0.2rem rgba(238, 106, 106, 0.25);
+  box-shadow: unset;
+  /* -webkit-box-shadow: 0 0 0 0.2rem rgba(238, 106, 106, 0.25); */
+  /* box-shadow: 0 0 0 0.2rem rgba(238, 106, 106, 0.25); */
 }
 
 .form-control-sm {
@@ -1779,8 +1780,11 @@ select.form-control option {
 }
 
 .form-control-label {
+  display: flex;
+  align-items: center;
   font-size: .9rem;
   color: #777;
+  margin-bottom: 0;
 }
 
 button,

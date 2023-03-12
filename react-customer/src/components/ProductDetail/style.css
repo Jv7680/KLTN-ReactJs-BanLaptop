@@ -5,19 +5,6 @@
   --slick-list-img-height-modal: 80vh;
 }
 
-.fix-img-div {
-  height: 180px !important;
-  width: auto !important;
-  overflow: hidden;
-}
-
-.fix-img {
-  height: 90%;
-  width: 90% !important;
-  object-fit: contain;
-
-}
-
 .fix-rating {
   display: inline-block;
   margin-right: 25px;
@@ -354,7 +341,7 @@
 }
 
 .slider-state3 {
-  padding: 15px 15%;
+  padding: 0px 15% 15px;
 }
 
 .modal-image-header {
@@ -458,35 +445,23 @@
 } */
 
 /* overide css Slider React Slick */
-.slick-list {
+/* .slick-list {
   height: auto !important;
   margin-top: 0px !important;
   background-color: white;
 }
-
-/* .slick-dots li {
-  width: auto !important;
-  padding: 0 !important;
-
-} */
 
 .slick-dots li button:before {
   color: #474af0 !important;
 }
 
 .slick-dots {
-  /* bottom: 30px !important; */
   top: 98%;
 }
 
 .ReactModal__Overlay--after-open {
   z-index: 9999;
 }
-
-/* .slick-list {
-  height: 430px !important;
-  margin-top: 35px !important;
-} */
 
 .slick-prev,
 .slick-next {
@@ -498,7 +473,6 @@
   width: 30px !important;
   height: 30px !important;
   border-radius: 15px !important;
-  /* border: 1px solid #a6aaad !important; */
 }
 
 .slick-prev {
@@ -534,4 +508,4 @@
 .slick-next:hover:before,
 .slick-next:focus:before {
   opacity: 1 !important;
-}
+} */

@@ -11,6 +11,8 @@ import MyFooter from '../../MyFooter/MyFooter'
 import Paginator from 'react-js-paginator';
 import { is_empty } from '../../../utils/validations';
 import callApi from '../../../utils/apiCaller';
+import { getProductFirstImageURL } from '../../../firebase/CRUDImage';
+import ProductItem from './ProductItem';
 const MySwal = withReactContent(Swal)
 
 let token = localStorage.getItem('_auth');
@@ -53,39 +55,6 @@ class Product extends Component {
 
   }
   async pageChange(content) {
-    // const { searchText, category, currentPage } = this.state
-    // const page = content;
-    // if (category == "All") {
-    //   if (is_empty(searchText)) {
-    //     this.props.fetch_products(page);
-    //     this.setState({
-    //       currentPage: content
-    //     })
-    //   }
-    //   else {
-    //     const res = await this.props.find_products(searchText, page)
-    //     if (res && res.status == 200) {
-
-    //       this.setState({
-    //         currentPage: res.data.currentPage,
-    //         total: res.data.totalPage,
-    //       })
-    //     }
-    //   }
-    // }
-    // else {
-    //   const res = await this.props.find_products_by_catagory(category, page)
-    //   if (res && res.status == 200) {
-    //     this.setState(
-    //       {
-    //         currentPage: res.data.currentPage,
-    //         total: res.data.totalPage
-    //       }
-    //     )
-    //   }
-
-    // }
-
     this.props.fetch_products(content);
     this.setState({
       currentPage: content
@@ -260,49 +229,50 @@ class Product extends Component {
                         <tbody>
                           {products && products.length ? products.map((item, index) => {
                             return (
-                              <tr key={index}>
+                              // <tr key={index}>
 
-                                <td>{item.productName}</td>
-                                <td style={{ textAlign: "center" }}>
-                                  <div className="fix-cart">
-                                    <img src={item.image} className="fix-img" alt="not found" />
-                                  </div>
-                                </td>
-                                <td>
-                                  <p className="text-truncate" style={{ width: 300 }}>
-                                    {item.description.replace(/<(?:.|\n)*?>/gm, '').slice(0, 70)}...
-                                  </p>
-                                </td>
-                                <td>{item.unitprice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</td>
-                                <td>{item.quantity}</td>
-                                {/* <td>{item.properties}</td> */}
+                              //   <td>{item.productName}</td>
+                              //   <td style={{ textAlign: "center" }}>
+                              //     <div className="fix-cart">
+                              //       <img src={item.image} className="fix-img" alt="not found" />
+                              //     </div>
+                              //   </td>
+                              //   <td>
+                              //     <p className="text-truncate" style={{ width: 300 }}>
+                              //       {item.description.replace(/<(?:.|\n)*?>/gm, '').slice(0, 70)}...
+                              //     </p>
+                              //   </td>
+                              //   <td>{item.unitprice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</td>
+                              //   <td>{item.quantity}</td>
+                              //   {/* <td>{item.properties}</td> */}
 
-                                <td style={{ textAlign: "center" }}>
-                                  <div>
-                                    <span title='Edit' className="fix-action"><Link to={`/products/edit/${item.productId}`}> <i className="fa fa-edit"></i></Link></span>
-                                    {/* <span
-                                      onClick={() => this.handleRemove(item.productId, item.productName)}
-                                      title='Delete'
-                                      className="fix-action"
-                                    >
-                                      <Link to="#">
-                                        <i className="fa fa-trash" style={{ color: '#ff00008f' }}></i>
-                                      </Link>
-                                    </span> */}
-                                  </div>
+                              //   <td style={{ textAlign: "center" }}>
+                              //     <div>
+                              //       <span title='Edit' className="fix-action"><Link to={`/products/edit/${item.productId}`}> <i className="fa fa-edit"></i></Link></span>
+                              //       {/* <span
+                              //         onClick={() => this.handleRemove(item.productId, item.productName)}
+                              //         title='Delete'
+                              //         className="fix-action"
+                              //       >
+                              //         <Link to="#">
+                              //           <i className="fa fa-trash" style={{ color: '#ff00008f' }}></i>
+                              //         </Link>
+                              //       </span> */}
+                              //     </div>
 
-                                </td>
-                                <td>
-                                  {
-                                    item.isdeleted == 1 ?
-                                      <Switch onChange={() => this.handleActive(item.productId)} checked={true} />
-                                      :
-                                      <Switch onChange={() => this.handleRemove(item.productId)} checked={false} />
+                              //   </td>
+                              //   <td>
+                              //     {
+                              //       item.isdeleted == 1 ?
+                              //         <Switch onChange={() => this.handleActive(item.productId)} checked={true} />
+                              //         :
+                              //         <Switch onChange={() => this.handleRemove(item.productId)} checked={false} />
 
-                                  }
+                              //     }
 
-                                </td>
-                              </tr>
+                              //   </td>
+                              // </tr>
+                              <ProductItem key={item.productId} product={item}></ProductItem>
                             )
                           }) : null}
                         </tbody>

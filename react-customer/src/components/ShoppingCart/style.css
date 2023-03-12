@@ -3,11 +3,7 @@
   width: 80px;
   overflow: hidden;
 }
-.fix-img {
-  height: 100%;
-  width: 100%;
-  object-fit: contain;
-}
+
 .fix-text-discount {
   display: block;
   margin-top: 10px;
@@ -15,6 +11,7 @@
   font-family: sans-serif;
   font-weight: 500;
 }
+
 .fix-text-checkout {
   width: 100%;
   text-align: center;

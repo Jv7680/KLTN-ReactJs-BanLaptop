@@ -14,10 +14,9 @@
 }
 
 .fix-img {
-  height: 90%;
-  width: 90% !important;
+  height: 100%;
+  width: 100% !important;
   object-fit: contain;
-  padding: 10px;
 }
 
 .filter-area {
