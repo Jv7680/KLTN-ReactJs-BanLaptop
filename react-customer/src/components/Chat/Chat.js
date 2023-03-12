@@ -132,29 +132,39 @@ class Chat extends React.Component {
             });
 
             // call api đến openAI
-            console.log('đang call api');
+            console.log('đang call api'); console.log('${process.env.API_KEY}', process.env);
+            console.log('đang call api'); console.log('${process.env.REACT_APP_API_KEY}', process.env.REACT_APP_API_KEY);
             let inputChatContentLoading = document.getElementsByClassName('input-chat-content-loading')[0];
             let handleChange = this.handleChange;
             this.handleChange = () => { };
             inputChatContentLoading.classList.add('input-chat-content-loading--show');
-            let resChatGPT = await axios({
-                method: 'POST',
-                url: `https://api.openai.com/v1/chat/completions`,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer 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'
-                },
-                data: {
-                    "model": "gpt-3.5-turbo",
-                    "messages": [{ "role": "user", "content": `${messageItem.content}` }],
-                    "temperature": 0.7
-                }
-            });
+            let resChatGPT;
+            try {
+                resChatGPT = await axios({
+                    method: 'POST',
+                    url: `https://api.openai.com/v1/chat/completions`,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${process.env.REACT_APP_API_KEY}`
+                    },
+                    data: {
+                        "model": "gpt-3.5-turbo",
+                        "messages": [{ "role": "user", "content": `${messageItem.content}` }],
+                        "temperature": 0.7
+                    }
+                });
+            }
+            catch {
+
+            }
+            finally {
+                this.handleChange = handleChange;
+                inputChatContentLoading.classList.remove('input-chat-content-loading--show');
+            }
 
             console.log('resChatGPT', resChatGPT);
             console.log('resChatGPT data', resChatGPT.data.choices[0].message.content);
-            this.handleChange = handleChange;
-            inputChatContentLoading.classList.remove('input-chat-content-loading--show');
+
 
             let messageItemChatGPT = {
                 user: 'chatGPT',
