@@ -66,7 +66,7 @@ class Chat extends React.Component {
             }
 
             let chatContentTextArea = document.getElementsByClassName("chat-content-textarea")[0];
-            if (chatContentTextArea.scrollHeight < 85) {
+            if (chatContentTextArea && chatContentTextArea.scrollHeight < 85) {
                 chatContentTextArea.style.height = "";
                 chatContentTextArea.style.height = (chatContentTextArea.scrollHeight) + "px";
             }
@@ -74,14 +74,15 @@ class Chat extends React.Component {
             // thêm event enter submit
             // chỉ thêm ở lần update đầu tiên
             // nếu không thì mỗi lần update sẽ bị lỗi thông báo submit
+            console.log('vào ddidd');
+
             if (this.countDidUpdate === 0) {
                 this.countDidUpdate++;
+                console.log(this.countDidUpdate);
                 let chatContentTextArea = document.getElementsByClassName("chat-content-textarea")[0];
                 chatContentTextArea.addEventListener("keypress", (event) => {
-                    // console.log(event);
                     if (event.key === "Enter" && !event.shiftKey) {
                         event.preventDefault();
-                        // console.log('this.state.chatContent', this.state.chatContent);
                         document.getElementsByClassName("fa-paper-plane")[0].click();
                     }
                 });
@@ -93,6 +94,21 @@ class Chat extends React.Component {
         if (chatContentArea) {
             chatContentArea.scrollTo(0, chatContentArea.scrollHeight);
         }
+    }
+
+    componentWillUnmount = () => {
+        this.countDidUpdate = 0;
+    }
+
+    formatChatContent = (stringRes) => {
+        // console.log('stringRes1', stringRes);
+        // cắt 2 \n\n đầu tiên
+        if (stringRes[0] === '\n' && stringRes[1] === '\n') {
+            stringRes = stringRes.slice(2);
+        }
+        // console.log('stringRes2', stringRes);
+        // console.log('stringRes3', stringRes.replaceAll('\n', '<br/>'));
+        return stringRes.replaceAll('\n', '<br/>');
     }
 
     handleChange = event => {
@@ -111,7 +127,7 @@ class Chat extends React.Component {
         }
         let messageItem = {
             user: 'user',
-            content: chatContent,
+            content: this.formatChatContent(chatContent),
         };
 
         if (modalState === 1) {
@@ -131,16 +147,17 @@ class Chat extends React.Component {
                 messageListChatGPT: messageListChatGPT,
             });
 
-            // call api đến openAI
-            console.log('đang call api'); console.log('${process.env.API_KEY}', process.env);
-            console.log('đang call api'); console.log('${process.env.REACT_APP_API_KEY}', process.env.REACT_APP_API_KEY);
+            // console.log('đang call api'); console.log('${process.env.API_KEY}', process.env);
+            // khóa thanh input
             let inputChatContentLoading = document.getElementsByClassName('input-chat-content-loading')[0];
+            inputChatContentLoading.classList.add('input-chat-content-loading--show');
             let handleChange = this.handleChange;
             this.handleChange = () => { };
-            inputChatContentLoading.classList.add('input-chat-content-loading--show');
-            let resChatGPT;
+
+            // call api đến openAI
+            let messageItemChatGPT;
             try {
-                resChatGPT = await axios({
+                await axios({
                     method: 'POST',
                     url: `https://api.openai.com/v1/chat/completions`,
                     headers: {
@@ -152,29 +169,39 @@ class Chat extends React.Component {
                         "messages": [{ "role": "user", "content": `${messageItem.content}` }],
                         "temperature": 0.7
                     }
-                });
-            }
-            catch {
+                })
+                    .then((res) => {
+                        console.log('resChatGPT', res);
+                        // console.log('res data', res.data.choices[0].message.content);
 
+                        messageItemChatGPT = {
+                            user: 'chatGPT',
+                            content: this.formatChatContent(res.data.choices[0].message.content),
+                        };
+                        messageListChatGPT.push(messageItemChatGPT);
+
+                    })
+                    .catch((error) => {
+                        // console.log('er', error);
+                        messageItemChatGPT = {
+                            user: 'chatGPT',
+                            content: error.toString(),
+                        };
+                        messageListChatGPT.push(messageItemChatGPT);
+                    });
+            }
+            catch (error) {
+                console.log('error in chatGPT call API:', error);
             }
             finally {
+                this.setState({
+                    chatContent: '',
+                    messageListChatGPT: messageListChatGPT,
+                });
+                // mở thanh input
                 this.handleChange = handleChange;
                 inputChatContentLoading.classList.remove('input-chat-content-loading--show');
             }
-
-            console.log('resChatGPT', resChatGPT);
-            console.log('resChatGPT data', resChatGPT.data.choices[0].message.content);
-
-
-            let messageItemChatGPT = {
-                user: 'chatGPT',
-                content: resChatGPT.data.choices[0].message.content,
-            };
-            messageListChatGPT.push(messageItemChatGPT);
-            this.setState({
-                chatContent: '',
-                messageListChatGPT: messageListChatGPT,
-            });
         }
 
         console.log('this.state.messageListAdmin', this.state.messageListAdmin);
@@ -189,17 +216,21 @@ class Chat extends React.Component {
         event.target.style.height = (event.target.scrollHeight) + "px";
     }
 
-    openModal = (modalState) => {
+    openModal = (modalStateParam) => {
+        const { modalState } = this.state;
         document.getElementsByTagName('body')[0].classList.add('prevent-scroll-body');
         this.setState({
             modalIsOpen: true,
-            modalState: modalState,
+            modalState: modalStateParam ? modalStateParam : modalState,
         });
     }
 
     closeModal = () => {
         document.getElementsByTagName('body')[0].classList.remove('prevent-scroll-body');
         this.setState({ modalIsOpen: false });
+        setTimeout(() => {
+            this.countDidUpdate = 0;
+        }, 1000);
     }
 
     render() {
@@ -209,7 +240,7 @@ class Chat extends React.Component {
                 <img
                     className="chat-img" src={process.env.PUBLIC_URL + '/images/chat/messenger-chat-img.png'}
                     alt="not found"
-                    onClick={() => { this.openModal(1) }}
+                    onClick={() => { this.openModal() }}
                 />
                 <Modal
                     isOpen={modalIsOpen}

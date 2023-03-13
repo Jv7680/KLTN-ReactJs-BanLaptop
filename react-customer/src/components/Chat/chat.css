@@ -189,7 +189,7 @@
 .chat-item-right {
     max-width: 50%;
     align-self: center;
-    padding: 0 8px;
+    padding: 8px;
     font-size: 16px;
     border-radius: 10px;
 
@@ -209,6 +209,7 @@
     width: 26px;
     height: auto;
     margin-right: 4px;
+    margin-top: 8px;
     align-self: flex-start;
 }
 

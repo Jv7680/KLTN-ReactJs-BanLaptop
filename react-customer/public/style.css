@@ -2266,7 +2266,7 @@ textarea:focus {
 	top: 0;
 	-webkit-transition: all 300ms ease-in 0s;
 	transition: all 300ms ease-in 0s;
-	z-index: 1049;
+	z-index: 555;
 }
 
 .sticky {

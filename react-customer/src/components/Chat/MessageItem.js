@@ -13,7 +13,7 @@ class MessageItem extends React.Component {
                     messageItem.user === 'user' ?
                         (
                             <div className="chat-item-right">
-                                <span>{messageItem.content}</span>
+                                <span dangerouslySetInnerHTML={{ __html: messageItem.content }}></span>
                             </div>
                         )
                         :
@@ -30,7 +30,7 @@ class MessageItem extends React.Component {
                                         )
                                 }
                                 <div className="chat-item-left">
-                                    <span>{messageItem.content}</span>
+                                    <span dangerouslySetInnerHTML={{ __html: messageItem.content }}></span>
                                 </div>
                             </>
                         )
