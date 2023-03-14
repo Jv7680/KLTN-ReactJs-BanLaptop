@@ -8,6 +8,7 @@ import { actTokenRequest } from "./redux/actions/auth";
 import { css } from '@emotion/core';
 import { actShowLoading } from "./redux/actions/loading";
 import Chat from "./components/Chat/Chat";
+import ButtonGoTop from "./components/ButtonGoTop/ButtonGoTop";
 
 import ClipLoader from 'react-spinners/ClipLoader';
 import PulseLoader from 'react-spinners/PulseLoader';
@@ -43,6 +44,7 @@ class App extends Component {
           {this.showContentMenus(routes)}
           <Footer></Footer>
           <Chat></Chat>
+          <ButtonGoTop></ButtonGoTop>
         </div>
       </Router>
     )

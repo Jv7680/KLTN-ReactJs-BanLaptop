@@ -61,8 +61,11 @@ Note: main.js, All Default Scripting Languages For This Theme Included In This F
 	$(window).on('scroll', function () {
 		if ($(this).scrollTop() > 200) {
 			$('.header-sticky').addClass("sticky");
+			$('.keyboard-component').removeClass("keyboard-component--show");
+			$('.button-go-top').addClass("button-go-top--show");
 		} else {
 			$('.header-sticky').removeClass("sticky");
+			$('.button-go-top').removeClass("button-go-top--show");
 		}
 	});
 	/*----------------------------------------*/

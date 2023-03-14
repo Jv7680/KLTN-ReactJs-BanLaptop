@@ -77,6 +77,10 @@
 	--primary-color: rgb(71, 74, 240);
 }
 
+html {
+	scroll-behavior: smooth;
+}
+
 body {
 	color: #242424 !important;
 	font-family: 'Roboto', sans-serif;
@@ -1770,18 +1774,17 @@ textarea:focus {
 	border: 1px solid #e1e1e1;
 	font-size: 20px;
 	color: #242424;
-	width: 45px;
+	width: 60px;
 	border-radius: 10px;
 	text-align: center;
 	height: 45px;
 	line-height: 45px;
 	display: block;
-	transition: all 0.3s ease-in-out;
 }
 
 .hm-wishlist>a:hover {
-	border-color: rgb(71, 74, 240);
-	color: rgb(71, 74, 240);
+	border-color: rgb(71 74 240);
+	background-color: #e6eeff;
 }
 
 /*Header Middle Minicart*/

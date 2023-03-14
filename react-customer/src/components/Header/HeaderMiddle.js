@@ -3,20 +3,21 @@ import { Link, Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux'
 import { actFetchCartRequest } from '../../redux/actions/cart';
-import { startLoading, doneLoading } from '../../utils/loading'
 import { actGetProductOfKeyRequest } from '../../redux/actions/products'
 import { actFetchWishListRequest } from '../../redux/actions/wishlist'
 import { withRouter } from 'react-router-dom';
+import Keyboard from "react-simple-keyboard";
 
 import './header-middle.css';
-
+import "react-simple-keyboard/build/css/index.css";
 
 let token, id;
 class HeaderMiddle extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      textSearch: ''
+      textSearch: '',
+      layoutName: "default",
     }
   }
 
@@ -62,6 +63,9 @@ class HeaderMiddle extends Component {
     this.setState({
       [name]: value
     });
+
+    // set lại chuỗi input của keyboar để đồng bộ với việc nhập trực tiếp ở thanh input
+    this.keyboard.setInput(value);
   }
 
   handleClick = async () => {
@@ -185,6 +189,37 @@ class HeaderMiddle extends Component {
     }, 500);
   }
 
+  showHideKeyboard = () => {
+    let keyboar = document.getElementsByClassName('keyboard-component')[0]
+    if (keyboar.classList.contains('keyboard-component--show')) {
+      keyboar.classList.remove('keyboard-component--show');
+    }
+    else {
+      keyboar.classList.add('keyboard-component--show');
+    }
+  }
+
+  onChangeInputKeyboard = input => {
+    this.setState({
+      textSearch: input
+    });
+    // console.log("Input changed", input);
+  };
+
+  onKeyPress = button => {
+    // console.log("Button pressed", button);
+    if (button === "{shift}" || button === "{lock}") this.handleShift();
+    if (button === "{enter}") this.handleClick();
+  };
+
+  handleShift = () => {
+    const layoutName = this.state.layoutName;
+
+    this.setState({
+      layoutName: layoutName === "default" ? "shift" : "default"
+    });
+  };
+
   render() {
     setTimeout(() => {
       //ẩn các dòng historySearch empty
@@ -201,7 +236,8 @@ class HeaderMiddle extends Component {
     }, 500);
 
     const { textSearch } = this.state;
-    const { cart, countWishList } = this.props;
+    const { cart, xwishList } = this.props;
+    const wishList = [];
 
     return (
       <div className="header-middle pl-sm-0 pr-sm-0 pl-xs-0 pr-xs-0">
@@ -249,6 +285,26 @@ class HeaderMiddle extends Component {
                   onClick={this.handleClick}>
                   <i className="fa fa-search" />
                 </button>
+                <button className="keyboard-btn"
+                  type="button"
+                  onClick={this.showHideKeyboard}
+                >
+                  <i class="fa-regular fa-keyboard"></i>
+                </button>
+                <div className='keyboard-component'>
+                  <Keyboard
+                    keyboardRef={r => (this.keyboard = r)}
+                    layoutName={this.state.layoutName}
+                    onChange={this.onChangeInputKeyboard}
+                    onKeyPress={this.onKeyPress}
+                  />
+                </div>
+                <button className="micro-btn"
+                  type="button"
+                // onClick={this.showHideKeyboard}
+                >
+                  <i class="fa-solid fa-microphone"></i>
+                </button>
               </form>
               {/* Header Middle Searchbox Area End Here */}
               {/* Begin Header Middle Right Area */}
@@ -256,12 +312,25 @@ class HeaderMiddle extends Component {
                 <ul className="hm-menu">
 
                   {/* Begin Header Middle Wishlist Area */}
-                  {/* <li className="hm-wishlist">
+                  <li className="hm-wishlist">
                     <Link to="/wishlist">
-                      <span className="cart-item-count wishlist-item-count"> {countWishList.length}</span>
+                      <span className="cart-item-count wishlist-item-count">
+                        {
+                          wishList.length === 0 || !wishList ?
+                            (
+                              null
+                            )
+                            :
+                            (
+                              <span className="cart-item-count">
+                                {wishList.length}
+                              </span>
+                            )
+                        }
+                      </span>
                       <i className="fa fa-heart-o" />
                     </Link>
-                  </li> */}
+                  </li>
 
                   {/* Header Middle Wishlist Area End Here */}
                   {/* Begin Header Mini Cart Area */}
@@ -272,7 +341,6 @@ class HeaderMiddle extends Component {
                           className="item-icon fa-cart-shopping"
                           style={{ margin: "auto auto" }}
                         >
-
                           {
                             cart.length === 0 || !cart ?
                               (
@@ -285,10 +353,7 @@ class HeaderMiddle extends Component {
                                 </span>
                               )
                           }
-
-
                         </span>
-
                       </div>
                     </Link>
                     <span />

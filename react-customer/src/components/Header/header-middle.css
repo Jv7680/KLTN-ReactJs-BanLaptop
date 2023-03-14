@@ -1,8 +1,6 @@
 .hm-searchbox {
-    /* overflow: hidden; */
+    align-items: center;
 }
-
-.hm-searchbox input {}
 
 button.li-btn {
     display: flex;
@@ -14,6 +12,59 @@ button.li-btn {
     right: 3px;
     border-radius: 5px;
     padding: 0 30px;
+}
+
+button.keyboard-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    right: 72px;
+    border-radius: 5px;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: transparent;
+    border: unset;
+}
+
+.keyboard-component {
+    display: none;
+    position: fixed;
+    bottom: 10px;
+    z-index: 880;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    font-size: 18px;
+}
+
+.keyboard-component .hg-button:hover {
+    border: 1px solid orange;
+}
+
+.keyboard-component--show {
+    display: block;
+}
+
+button.micro-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    right: 104px;
+    border-radius: 5px;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: transparent;
+    border: unset;
 }
 
 .history-search {
