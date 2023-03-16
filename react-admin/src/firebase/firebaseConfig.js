@@ -1,26 +1,3 @@
-
-// import firebase from "firebase/app";
-
-// const firebaseConfig = {
-//     apiKey: "AIzaSyBYyy8Fx87iwI3dHaKY2lnHG9gRJ6EtjDg",
-//     authDomain: "react-image-storage-48250.firebaseapp.com",
-//     projectId: "react-image-storage-48250",
-//     storageBucket: "react-image-storage-48250.appspot.com",
-//     messagingSenderId: "1024894166639",
-//     appId: "1:1024894166639:web:e68bff42d59909df130f9a"
-// };
-
-// //Khởi tạo
-// firebase.initializeApp(firebaseConfig);
-
-
-// const storage = firebase.storage();
-
-// export {
-//     storage, firebase as default
-// }
-
-
 // Khởi tạo firebase app
 import { initializeApp } from "firebase/app";
 //Sử dụng storage
