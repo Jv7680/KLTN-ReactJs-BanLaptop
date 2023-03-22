@@ -50,38 +50,30 @@ class Chat extends React.Component {
             }],
         };
 
+        this.currentModalIsOpen = false;
         this.countDidUpdate = 0;
         this.userId = this.props.user.accountId;
     }
 
     getDatamessageListAdmin = async () => {
-        this.setState({
-            chatContent: '',
-            messageListAdmin: [{
-                user: 'admin',
-                content: 'Laptop PT xin chào quý khách! Chúng tôi có thể hỗ trợ gì cho bạn?'
-            }],
-        });
-        let { messageListAdmin } = this.state;
+        let initMessageListAdmin = [{
+            user: 'admin',
+            content: 'Laptop PT xin chào quý khách! Chúng tôi có thể hỗ trợ gì cho bạn?'
+        }];
+        // get user id
         let userId = parseInt(localStorage.getItem('_idaccount'));
         // get list user chat with admin
         let messageList = await readUserChatData(userId);
         console.log('messageList:', messageList, userId);
 
         // update messageListAdmin state
-        messageListAdmin = messageListAdmin.concat(messageList);
-        console.log('messageListAdmin:', messageListAdmin);
-        setTimeout(() => {
-            this.setState({
-                chatContent: '',
-                messageListAdmin
-            });
-        }, 500);
+        let newMessageListAdmin = initMessageListAdmin.concat(messageList);
+        console.log('newMessageListAdmin:', newMessageListAdmin);
+        this.setState({
+            chatContent: '',
+            messageListAdmin: newMessageListAdmin,
+        });
     }
-
-    // componentDidMount = async () => {
-    //     await this.getDatamessageListAdmin();
-    // }
 
     componentDidUpdate = async () => {
         console.log('vào did update chat', this.userId, this.props.user.accountId);
@@ -125,26 +117,9 @@ class Chat extends React.Component {
                 chatContentTextArea.style.height = "";
                 chatContentTextArea.style.height = (chatContentTextArea.scrollHeight) + "px";
             }
-
-            // thêm event enter submit
-            // chỉ thêm ở lần update đầu tiên
-            // nếu không thì mỗi lần update sẽ bị lỗi thông báo submit
-            console.log('vào ddidd');
-
-            if (this.countDidUpdate === 0) {
-                this.countDidUpdate++;
-                console.log(this.countDidUpdate);
-                let chatContentTextArea = document.getElementsByClassName("chat-content-textarea")[0];
-                chatContentTextArea.addEventListener("keypress", (event) => {
-                    if (event.key === "Enter" && !event.shiftKey) {
-                        event.preventDefault();
-                        document.getElementsByClassName("fa-paper-plane")[0].click();
-                    }
-                });
-            }
         }, 150);
 
-        // scroll contet area xuống cuối cùng mỗi khi update
+        // scroll content area xuống cuối cùng mỗi khi update
         let chatContentArea = document.getElementsByClassName('chat-content-area')[0];
         if (chatContentArea) {
             chatContentArea.scrollTo(0, chatContentArea.scrollHeight);
@@ -269,8 +244,8 @@ class Chat extends React.Component {
             }
         }
 
-        console.log('this.state.messageListAdmin', this.state.messageListAdmin);
-        console.log('this.state.messageListChatGPT', this.state.messageListChatGPT);
+        // console.log('this.state.messageListAdmin', this.state.messageListAdmin);
+        // console.log('this.state.messageListChatGPT', this.state.messageListChatGPT);
     }
 
     handleOnInput = (event) => {
@@ -292,19 +267,26 @@ class Chat extends React.Component {
                 user: 'admin',
                 content: 'Laptop PT xin chào quý khách! Chúng tôi có thể hỗ trợ gì cho bạn?'
             }],
-        });
-
-        setTimeout(async () => {
-            await this.getDatamessageListAdmin();
-        }, 1000);
+        },
+            async () => {
+                await this.getDatamessageListAdmin();
+            });
     }
 
     closeModal = () => {
         document.getElementsByTagName('body')[0].classList.remove('prevent-scroll-body');
         this.setState({ modalIsOpen: false });
-        setTimeout(() => {
-            this.countDidUpdate = 0;
-        }, 1000);
+    }
+
+    onAfterOpenModal = () => {
+        // add envent enter 
+        let chatContentTextArea = document.getElementsByClassName("chat-content-textarea")[0];
+        chatContentTextArea.addEventListener("keypress", (event) => {
+            if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                document.getElementsByClassName("fa-paper-plane")[0].click();
+            }
+        });
     }
 
     render() {
@@ -320,6 +302,7 @@ class Chat extends React.Component {
                 <Modal
                     isOpen={modalIsOpen}
                     onRequestClose={this.closeModal}
+                    onAfterOpen={this.onAfterOpenModal}
                     style={customStyles}
                     ariaHideApp={false}
                     contentLabel="Example Modal"
