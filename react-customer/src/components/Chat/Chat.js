@@ -7,10 +7,11 @@ import PulseLoader from 'react-spinners/PulseLoader';
 import { connect } from 'react-redux';
 import { css } from '@emotion/core';
 import { readUserChatData, writeUserChatData } from "../../firebase/RealtimeDatabase";
+import { realtimeDB } from "../../firebase/firebaseConfig";
+import { ref, onValue, off } from "firebase/database";
 
 import './chat.css';
 import { toast } from "react-toastify";
-import { async } from "@firebase/util";
 
 const cssPulseLoader = css`
     margin: auto;
@@ -75,10 +76,24 @@ class Chat extends React.Component {
         });
     }
 
+    // componentDidMount = async () => {
+    //     if (this.props.user.accountId) {
+    //         // trigger onValue here to listening value change
+    //         await onValue(ref(realtimeDB, 'userChat/' + `${this.props.user.accountId}`), (snapshot) => {
+    //             console.log('trigged onValue(), listening');
+    //             console.log('snap', snapshot);
+    //             console.log('snapshot.val()', snapshot.val());
+    //         });
+    //     }
+    // }
+
     componentDidUpdate = async () => {
         console.log('vào did update chat', this.userId, this.props.user.accountId);
         // update state when logout
         if (this.userId && !this.props.user.accountId) {
+            // unsubcribe listener onValue
+            off(ref(realtimeDB, 'userChat/' + `${this.userId}`));
+
             this.userId = this.props.user.accountId;
             this.setState({
                 chatContent: '',
@@ -96,6 +111,31 @@ class Chat extends React.Component {
         else if (!this.userId && this.props.user.accountId) {
             this.userId = this.props.user.accountId;
             await this.getDatamessageListAdmin();
+
+            // trigger onValue here to listening value change
+            onValue(ref(realtimeDB, 'userChat/' + `${this.props.user.accountId}`), (snapshot) => {
+                console.log('trigged onValue(), listening');
+                console.log('snap', snapshot);
+                console.log('snapshot.val()', snapshot.val());
+                let initMessageListAdmin = [{
+                    user: 'admin',
+                    content: 'Laptop PT xin chào quý khách! Chúng tôi có thể hỗ trợ gì cho bạn?'
+                }];
+                if (snapshot.val()) {
+                    // update messageListAdmin state
+                    let newMessageListAdmin = initMessageListAdmin.concat(snapshot.val());
+                    console.log('newMessageListAdmin snapshot:', newMessageListAdmin);
+                    this.setState({
+                        messageListAdmin: newMessageListAdmin,
+                    });
+                }
+                else {
+                    console.log('newMessageListAdmin snapshot2:', this.state.messageListAdmin);
+                    this.setState({
+                        messageListAdmin: initMessageListAdmin,
+                    });
+                }
+            });
         }
 
         let { modalState } = this.state;
