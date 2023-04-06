@@ -18,10 +18,17 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      username: "",
-      password: "",
+      username: "tin@gmail.com",
+      password: "123456",
 
     }
+  }
+
+  componentDidMount = () => {
+    setTimeout(() => {
+      console.log('xxxsx');
+      window.scrollTo(0, 210);
+    }, 100);
   }
 
   handleChange = event => {
@@ -69,10 +76,6 @@ class Login extends Component {
 
 
   render() {
-    setTimeout(() => {
-      console.log('xxxsx');
-      window.scrollTo(0, 210);
-    }, 100);
     const { username, password } = this.state;
     const { user } = this.props;
     if (user !== null) {

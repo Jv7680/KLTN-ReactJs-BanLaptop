@@ -26,7 +26,7 @@ class ProductItem extends Component {
       offset: 0,
       quantity: 1,
       productID: this.props.product.productId,
-      imageURL: "",
+      imageURL: process.env.PUBLIC_URL + '/images/logo/logoPTCustomer.png',
     }
   }
 
@@ -112,9 +112,11 @@ class ProductItem extends Component {
           <div className="fix-img-div-for-item product-image">
             <img
               className={`fix-img image-product-${product.productId}`}
-              src=''
+              src={imageURL}
               alt={'/images/logo/logoPTCustomer.png'}
-              onClick={(id) => this.getInfoProduct(product.productId)} />
+              onClick={(id) => this.getInfoProduct(product.productId)}
+              style={{ cursor: "pointer" }}
+            />
             {
               product.discount === 0 ?
                 (
@@ -129,13 +131,13 @@ class ProductItem extends Component {
           <div className="product_desc">
             <div className="product_desc_info">
               <h4>
-                <Link to='' className="product_name text-truncate" onClick={(id) => this.getInfoProduct(product.productId)} >{product.productName}</Link>
+                <Link to='' className="product_name text-truncate" onClick={(id) => this.getInfoProduct(product.productId)} style={{ cursor: "pointer" }}>{product.productName}</Link>
               </h4>
               {
                 product.discount > 0 ?
                   (
                     <>
-                      <span className="new-price new-price-2" style={{ color: 'black', textDecoration: "line-through" }}>
+                      <span className="new-price new-price-2" style={{ color: 'black', textDecoration: "line-through", userSelect: "none" }}>
                         {product.unitprice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}  <span>&emsp;-{product.discount}%</span><br />
                         <span>Chỉ còn: {(product.unitprice * ((100 - product.discount) / 100)).toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</span>
                       </span>
@@ -191,9 +193,9 @@ class ProductItem extends Component {
                     :
                     (
                       <div>
-                        <li className="add-cart active"><a onClick={() => this.addItemToCart(product)} >Thêm vào giỏ</a></li>
-                        <li><a onClick={(id) => this.getInfoProduct(product.productId)} title="chi tiểt" className="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><i className="fa fa-eye" /></a></li>
-                        {/* <li><Link to="#" onClick={() => this.addItemToFavorite(product.productId)} className="links-details" title="yêu thích" ><i className="fa fa-heart-o" /></Link></li> */}
+                        <li className="add-cart active"><a style={{ cursor: "pointer" }} onClick={() => this.addItemToCart(product)} >Thêm vào giỏ</a></li>
+                        <li><a style={{ cursor: "pointer" }} onClick={(id) => this.getInfoProduct(product.productId)} title="chi tiểt" className="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><i className="fa fa-eye" /></a></li>
+                        <li><a style={{ cursor: "pointer" }} onClick={() => this.addItemToFavorite(product.productId)} className="links-details" title="yêu thích" ><i className="fa fa-heart-o" /></a></li>
                       </div>
                     )
 
