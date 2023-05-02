@@ -10,13 +10,10 @@ import { actShowLoading } from "./redux/actions/loading";
 import Chat from "./components/Chat/Chat";
 import ButtonGoTop from "./components/ButtonGoTop/ButtonGoTop";
 
-import ClipLoader from 'react-spinners/ClipLoader';
-import PulseLoader from 'react-spinners/PulseLoader';
-import ActiveAccount from "./components/LoginRegister/ActiveAccount";
-import OrderInfo from "./components/Order/OrderInfo";
-
 import Loading from "./components/Loading/Loading";
 import './app.css'
+
+import PaypalCheckoutButton from "./components/CheckOut/PaypalCheckoutButton";
 
 const cssPulseLoader = css`
     margin: auto;
