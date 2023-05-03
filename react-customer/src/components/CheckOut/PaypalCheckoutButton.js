@@ -28,6 +28,7 @@ export default function PaypalCheckoutButton(props) {
         },
         onApprove: async (data, actions) => {
           const order = await actions.order.capture();
+          // const order = await actions.order.authorize();
 
           console.log("success", order);
           setTransactionStatus("success");
