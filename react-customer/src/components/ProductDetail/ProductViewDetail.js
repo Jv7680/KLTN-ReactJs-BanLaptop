@@ -318,7 +318,7 @@ class ProductViewDetail extends Component {
                             :
                             (
                               <div className="slider-state3">
-                                <ProductInfor listImage360URL={listImage360URL} product={product}></ProductInfor>
+                                <ProductInfor product={product}></ProductInfor>
                               </div>
                             )
                         }
