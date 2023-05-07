@@ -93,7 +93,9 @@ class ProductList extends Component {
     }
 
     sortByMostSold = (a, b) => {
-        // chờ change database
+        let x = a.soldQuantity;
+        let y = b.soldQuantity;
+        return y - x;
     }
 
     render() {

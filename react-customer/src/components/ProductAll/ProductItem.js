@@ -140,15 +140,20 @@ class ProductItem extends Component {
                       <span className="new-price new-price-2" style={{ color: 'black', textDecoration: "line-through", userSelect: "none" }}>
                         {product.unitprice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}  <span>&emsp;-{product.discount}%</span><br />
                         <span>Chỉ còn: {(product.unitprice * ((100 - product.discount) / 100)).toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</span>
-                      </span>
-
+                      </span><br />
+                      <span style={{ color: 'black', textDecoration: "none", fontStyle: "italic" }}>Đã bán: {product.soldQuantity || 0}</span>
                     </>
                   )
                   :
                   (
                     <>
                       <span className="new-price new-price-2" style={{ color: 'black', textDecoration: "none" }}>
-                        {product && product.unitprice ? product.unitprice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }) : null}<br />&emsp;
+                        {product && product.unitprice ? product.unitprice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }) : null}
+                        <br />
+                        {/* &emsp; */}
+                        <span style={{ color: 'black', textDecoration: "none", fontStyle: "italic" }}>Đã bán: {product.soldQuantity || 0}</span>
+                        <br />
+                        &emsp;
                       </span>
                     </>
                   )
