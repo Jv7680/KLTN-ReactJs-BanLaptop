@@ -28,7 +28,7 @@ class ProductInfor extends Component {
     }
 
     render() {
-        const { listImage360URL } = this.props;
+        const { listImage360URL, product } = this.props;
 
         return (
             <>
@@ -50,23 +50,23 @@ class ProductInfor extends Component {
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">CPU:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.cpu || "Đang cập nhật"}</div>
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Số nhân:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.cores || "Đang cập nhật"}</div>
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Số luồng:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.threads || "Đang cập nhật"}</div>
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Tốc độ CPU:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.cpuspeed || "Đang cập nhật"}</div>
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Bộ nhớ đệm:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.cache || "Đang cập nhật"}</div>
                                                 </div>
 
                                                 {/* Thông tin ổ cứng */}
@@ -75,11 +75,11 @@ class ProductInfor extends Component {
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Dung lượng:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.storagecapacity || "Đang cập nhật"}</div>
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Loại ổ cứng:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.storagetype || "Đang cập nhật"}</div>
                                                 </div>
 
                                                 {/* Thông tin RAM */}
@@ -88,15 +88,15 @@ class ProductInfor extends Component {
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Dung lượng:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.ram || "Đang cập nhật"}</div>
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Loại RAM:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.ramtype || "Đang cập nhật"}</div>
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Tốc độ BUS RAM:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.rambusspeed || "Đang cập nhật"}</div>
                                                 </div>
 
                                                 {/* Thông tin màn hình */}
@@ -105,15 +105,15 @@ class ProductInfor extends Component {
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Kích thước:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.screensize || "Đang cập nhật"}</div>
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Độ phân giải:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.screenresolution || "Đang cập nhật"}</div>
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Tần số quét:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.screenrefreshrate || "Đang cập nhật"}</div>
                                                 </div>
 
                                                 {/* Thông tin card đồ họa và âm thanh */}
@@ -122,11 +122,11 @@ class ProductInfor extends Component {
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Card màn hình:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.graphicscard || "Đang cập nhật"}</div>
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Công nghệ âm thanh:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.audiotechnology || "Đang cập nhật"}</div>
                                                 </div>
 
                                                 {/* Thông tin khối lượng và chất liệu */}
@@ -135,11 +135,11 @@ class ProductInfor extends Component {
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Khối lượng:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.weight || "Đang cập nhật"}</div>
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Chất liệu vỏ:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.casingmaterial || "Đang cập nhật"}</div>
                                                 </div>
 
                                                 {/* Thông tin khác */}
@@ -148,15 +148,15 @@ class ProductInfor extends Component {
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Pin:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.battery || "Đang cập nhật"}</div>
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Hệ điều hành:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.operatingsystem || "Đang cập nhật"}</div>
                                                 </div>
                                                 <div className="row product-configuration-content">
                                                     <div className="col-4 product-configuration-content__title">Thời điểm ra mắt:</div>
-                                                    <div className="col product-configuration-content__content">Nội dung</div>
+                                                    <div className="col product-configuration-content__content">{product.weight || "Đang cập nhật"}</div>
                                                 </div>
                                             </>
                                         )

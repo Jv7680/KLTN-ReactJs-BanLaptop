@@ -318,7 +318,7 @@ class ProductViewDetail extends Component {
                             :
                             (
                               <div className="slider-state3">
-                                <ProductInfor listImage360URL={listImage360URL}></ProductInfor>
+                                <ProductInfor listImage360URL={listImage360URL} product={product}></ProductInfor>
                               </div>
                             )
                         }
@@ -493,27 +493,27 @@ class ProductViewDetail extends Component {
               </div>
               <div className="row product-configuration-content product-configuration-content--grey">
                 <div className="col-4 product-configuration-content__title">CPU:</div>
-                <div className="col product-configuration-content__content">Nội dung</div>
+                <div className="col product-configuration-content__content">{product.cpu || "Đang cập nhật"}</div>
               </div>
               <div className="row product-configuration-content">
                 <div className="col-4 product-configuration-content__title">RAM:</div>
-                <div className="col product-configuration-content__content">Nội dung</div>
+                <div className="col product-configuration-content__content">{product.ram || "Đang cập nhật"}</div>
               </div>
               <div className="row product-configuration-content product-configuration-content--grey">
                 <div className="col-4 product-configuration-content__title">Ổ cứng:</div>
-                <div className="col product-configuration-content__content">Nội dung</div>
+                <div className="col product-configuration-content__content">{product.storagecapacity || "Đang cập nhật"}</div>
               </div>
               <div className="row product-configuration-content">
                 <div className="col-4 product-configuration-content__title">Màn hình:</div>
-                <div className="col product-configuration-content__content">Nội dung</div>
+                <div className="col product-configuration-content__content">{product.screensize || "Đang cập nhật"}</div>
               </div>
               <div className="row product-configuration-content product-configuration-content--grey">
                 <div className="col-4 product-configuration-content__title">Hệ điều hành:</div>
-                <div className="col product-configuration-content__content">Nội dung</div>
+                <div className="col product-configuration-content__content">{product.operatingsystem || "Đang cập nhật"}</div>
               </div>
               <div className="row product-configuration-content">
                 <div className="col-4 product-configuration-content__title">Khối lượng:</div>
-                <div className="col product-configuration-content__content">Nội dung</div>
+                <div className="col product-configuration-content__content">{product.weight || "Đang cập nhật"}</div>
               </div>
               <div className="row product-configuration-content">
                 <button className="product-configuration-content__btn" type="button" onClick={() => { this.openModal(3) }}><i className="fa-solid fa-plus"></i> Xem thêm</button>
