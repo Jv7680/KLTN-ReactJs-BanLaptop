@@ -78,9 +78,10 @@ export const actLogin = (token) => {
 export const actRegisterRequest = (user) => {
     console.log(user)
     return async () => {
-        const res = await callApi('registration', 'POST', user);
+        const res = await callApi('registration', 'POST', user, undefined, true);
         if (res && res.status === 200) {
-            console.log(res)
+            console.log(res);
+            return res;
         }
     };
 }

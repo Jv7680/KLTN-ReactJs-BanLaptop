@@ -144,7 +144,7 @@ class ProductInfor extends Component {
                 </div>
                 <div className="row product-configuration-content">
                     <div className="col-4 product-configuration-content__title">Thời điểm ra mắt:</div>
-                    <div className="col product-configuration-content__content">{product.weight || "Đang cập nhật"}</div>
+                    <div className="col product-configuration-content__content">{product.releasedate || "Đang cập nhật"}</div>
                 </div>
             </>
         )

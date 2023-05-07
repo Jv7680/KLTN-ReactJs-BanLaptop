@@ -6,9 +6,11 @@ import Swal from "sweetalert2";
 import { toast } from 'react-toastify';
 import './style.css'
 import { formatNumberToVND } from '../../config/TYPE';
-
-import { connect } from 'react-redux';
+import axios from "axios";
+import { API_URL } from '../../constants/Config';
 import store from '../..';
+import { actFetchProducts } from '../../redux/actions/products';
+import { connect } from 'react-redux';
 
 const sliderStyleFrom = {
     track: {
@@ -166,6 +168,58 @@ class FilterProduct extends Component {
             //cập nhập filter ở ProductAll(thông qua call back) để truyền xuống Productlist
             this.props.updateFilter(this.filter);
         }, 500);
+    }
+
+    handleFilter = async () => {
+        console.log("Lọc nè");
+
+        try {
+            await axios({
+                method: 'GET',
+                url: `${API_URL}/product/filter`,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                params: {
+                    fromPriceRange: 1000000,
+                    toPriceRange: 15000000,
+                    // cpu: 12345,
+                    // ram: 12345,
+                    // storagecapacity: 12345,
+                    // storagecapacity: 12345,
+                    // screensize: 12345
+                },
+            })
+                .then((res) => {
+                    console.log('res filter', res);
+
+                    if (res.data.length && res.data.length > 0) {
+                        store.dispatch(actFetchProducts(res.data));
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: `Không tìm thấy sản phẩm phù hợp với bộ lọc`
+                        })
+                    }
+                })
+                .catch((error) => {
+                    console.log('error filter', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: `${error}`
+                    })
+                });
+        }
+        catch (error) {
+            console.log('error in filter:', error);
+        }
+        finally {
+
+        }
+
     }
 
     render() {
@@ -487,6 +541,11 @@ class FilterProduct extends Component {
                         <span>18"</span>
                     </div>
                 </div>
+
+                {/* Button filter */}
+                {/* <div className="row no-gutters producer-area">
+                    <button type='button' onClick={() => { this.handleFilter() }}>Lọc</button>
+                </div> */}
             </div>
         )
     }

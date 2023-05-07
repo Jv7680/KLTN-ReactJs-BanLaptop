@@ -57,26 +57,26 @@ class ActionProduct extends Component {
       cpu_thread: '',
       cpu_speed: '',
 
-      harddrive_capacity: null,
-      harddrive_type: null,
+      harddrive_capacity: "",
+      harddrive_type: "",
 
-      ram_capacity: null,
-      ram_type: null,
-      ram_bus: null,
+      ram_capacity: "",
+      ram_type: "",
+      ram_bus: "",
 
-      screen_size: null,
-      screen_resolution: null,
-      screen_frequency: null,
+      screen_size: "",
+      screen_resolution: "",
+      screen_frequency: "",
 
-      graphic_card: null,
-      sound_technology: null,
+      graphic_card: "",
+      sound_technology: "",
 
-      weight: null,
-      shell_material: null,
+      weight: "",
+      shell_material: "",
 
-      battery: null,
-      operating_system: null,
-      release_year: null,
+      battery: "",
+      operating_system: "",
+      release_year: "",
 
       redirectToProduct: false,
     };
@@ -88,7 +88,7 @@ class ActionProduct extends Component {
   async componentDidMount() {
     let token = localStorage.getItem('_auth');
     if (id) {
-      const res = await callApi(`product/${id}`, 'GET', null, token);
+      const res = await callApi(`admin/product/${id}`, 'GET', null, token);
       if (res && res.status === 200) {
         console.log("dữ liệu trả về", res.data)
         this.setState({
@@ -102,6 +102,32 @@ class ActionProduct extends Component {
           //categoryId: res.data.categoryFKDto.categoryId,
           //supplierId: res.data.supplierFKDto.supplierId,
 
+          cpu_name: res.data.cpu,
+          cpu_core: res.data.cores,
+          cpu_cache: res.data.cache,
+          cpu_thread: res.data.threads,
+          cpu_speed: res.data.cpuspeed,
+
+          harddrive_capacity: res.data.storagecapacity,
+          harddrive_type: res.data.storagetype,
+
+          ram_capacity: res.data.ram,
+          ram_type: res.data.ramtype,
+          ram_bus: res.data.rambusspeed,
+
+          screen_size: res.data.screensize,
+          screen_resolution: res.data.screenresolution,
+          screen_frequency: res.data.screenrefreshrate,
+
+          graphic_card: res.data.graphicscard,
+          sound_technology: res.data.audiotechnology,
+
+          weight: res.data.weight,
+          shell_material: res.data.casingmaterial,
+
+          battery: res.data.battery,
+          operating_system: res.data.operatingsystem,
+          release_year: res.data.releasedate,
         })
       }
     }
@@ -146,7 +172,28 @@ class ActionProduct extends Component {
       categoryId,
       supplierId,
       filesImage,
-      productImageSet
+      productImageSet,
+
+      cpu_name,
+      cpu_core,
+      cpu_cache,
+      cpu_thread,
+      cpu_speed,
+      harddrive_capacity,
+      harddrive_type,
+      ram_capacity,
+      ram_type,
+      ram_bus,
+      screen_size,
+      screen_resolution,
+      screen_frequency,
+      graphic_card,
+      sound_technology,
+      weight,
+      shell_material,
+      battery,
+      operating_system,
+      release_year,
     } = this.state;
 
     const newProductName = productName === '' ? '' : productName;
@@ -159,7 +206,27 @@ class ActionProduct extends Component {
     const { image } = this.state;
 
     //check lỗi
-    if (!validateProduct.name(newProductName) || !validateProduct.unitprice(newUnitPrice) || !validateProduct.discount(newDiscount) || !validateProduct.quantity(newQuantity) || !validateProduct.description(newDescriptionProduct) || !validateProduct.image(image)) {
+    if (!validateProduct.name(newProductName) || !validateProduct.unitprice(newUnitPrice) || !validateProduct.discount(newDiscount) || !validateProduct.quantity(newQuantity)) {
+      return;
+    }
+    //check lỗi cpu
+    if (!validateProduct.cpu(cpu_name) || !validateProduct.cpuCore(cpu_core) || !validateProduct.cpuThread(cpu_thread) || !validateProduct.cpuSpeed(cpu_speed) || !validateProduct.cache(cpu_cache)) {
+      return;
+    }
+    //check lỗi ổ cứng
+    if (!validateProduct.harddriveCapacity(harddrive_capacity) || !validateProduct.harddriveType(harddrive_type)) {
+      return;
+    }
+    //check lỗi ram
+    if (!validateProduct.ram(ram_capacity) || !validateProduct.ramType(ram_type) || !validateProduct.ramBus(ram_bus)) {
+      return;
+    }
+    //check lỗi kích thước màn
+    if (!validateProduct.screenSize(screen_size) || !validateProduct.screenResolution(screen_resolution) || !validateProduct.screenFrequency(screen_frequency)) {
+      return;
+    }
+    //check lỗi khác
+    if (!validateProduct.graphicCard(graphic_card) || !validateProduct.audioTechnology(sound_technology) || !validateProduct.weight(weight) || !validateProduct.shellMaterial(shell_material) || !validateProduct.battery(battery) || !validateProduct.operatingSystem(operating_system) || !validateProduct.releaseYear(release_year) || !validateProduct.description(newDescriptionProduct)) {
       return;
     }
 
@@ -170,7 +237,28 @@ class ActionProduct extends Component {
       "unitprice": newUnitPrice,
       "discount": newDiscount,
       "description": newDescriptionProduct,
-      "supplierId": newSupplierId
+      "supplierId": newSupplierId,
+
+      "cpu": cpu_name,
+      "cores": cpu_core,
+      "threads": cpu_thread,
+      "cpuspeed": cpu_speed,
+      "cache": cpu_cache,
+      "storagecapacity": harddrive_capacity,
+      "storagetype": harddrive_type,
+      "ram": ram_capacity,
+      "ramtype": ram_type,
+      "rambusspeed": ram_bus,
+      "screensize": screen_size,
+      "screenresolution": screen_resolution,
+      "screenrefreshrate": screen_frequency,
+      "graphicscard": graphic_card,
+      "audiotechnology": sound_technology,
+      "weight": weight,
+      "casingmaterial": shell_material,
+      "battery": battery,
+      "operatingsystem": operating_system,
+      "releasedate": release_year,
     }
 
     const newProduct = {
@@ -181,7 +269,28 @@ class ActionProduct extends Component {
       "unitprice": newUnitPrice,
       "discount": newDiscount,
       "description": newDescriptionProduct,
-      "supplierId": newSupplierId
+      "supplierId": newSupplierId,
+
+      "cpu": cpu_name,
+      "cores": cpu_core,
+      "threads": cpu_thread,
+      "cpuspeed": cpu_speed,
+      "cache": cpu_cache,
+      "storagecapacity": harddrive_capacity,
+      "storagetype": harddrive_type,
+      "ram": ram_capacity,
+      "ramtype": ram_type,
+      "rambusspeed": ram_bus,
+      "screensize": screen_size,
+      "screenresolution": screen_resolution,
+      "screenrefreshrate": screen_frequency,
+      "graphicscard": graphic_card,
+      "audiotechnology": sound_technology,
+      "weight": weight,
+      "casingmaterial": shell_material,
+      "battery": battery,
+      "operatingsystem": operating_system,
+      "releasedate": release_year,
     }
 
     if (!id) {
@@ -356,7 +465,7 @@ class ActionProduct extends Component {
                             onChange={this.handleChange}
                             value={cpu_core}
                             name="cpu_core"
-                            type="number"
+                            type="text"
                             className="form-control" />
                         </div>
                         <label className="col-sm-3 form-control-label" >Số luồng*</label>
@@ -365,7 +474,7 @@ class ActionProduct extends Component {
                             onChange={this.handleChange}
                             value={cpu_thread}
                             name="cpu_thread"
-                            type="number"
+                            type="text"
                             className="form-control" />
                         </div>
                         <label className="col-sm-3 form-control-label" >Tốc độ CPU*</label>
@@ -374,7 +483,7 @@ class ActionProduct extends Component {
                             onChange={this.handleChange}
                             value={cpu_speed}
                             name="cpu_speed"
-                            type="number"
+                            type="text"
                             className="form-control" />
                         </div>
                         <label className="col-sm-3 form-control-label" >Bộ nhớ đệm*</label>
@@ -383,7 +492,7 @@ class ActionProduct extends Component {
                             onChange={this.handleChange}
                             value={cpu_cache}
                             name="cpu_cache"
-                            type="number"
+                            type="text"
                             className="form-control" />
                         </div>
                       </div>
@@ -398,7 +507,7 @@ class ActionProduct extends Component {
                             onChange={this.handleChange}
                             value={harddrive_capacity}
                             name="harddrive_capacity"
-                            type="number"
+                            type="text"
                             className="form-control" />
                         </div>
                         <label className="col-sm-3 form-control-label">Loại ổ cứng*</label>
@@ -407,7 +516,7 @@ class ActionProduct extends Component {
                             onChange={this.handleChange}
                             value={harddrive_type}
                             name="harddrive_type"
-                            type="number"
+                            type="text"
                             className="form-control" />
                         </div>
                       </div>
@@ -422,7 +531,7 @@ class ActionProduct extends Component {
                             onChange={this.handleChange}
                             value={ram_capacity}
                             name="ram_capacity"
-                            type="number"
+                            type="text"
                             className="form-control" />
                         </div>
                         <label className="col-sm-3 form-control-label">Loại RAM*</label>
@@ -440,7 +549,7 @@ class ActionProduct extends Component {
                             onChange={this.handleChange}
                             value={ram_bus}
                             name="ram_bus"
-                            type="number"
+                            type="text"
                             className="form-control" />
                         </div>
                       </div>
@@ -455,7 +564,7 @@ class ActionProduct extends Component {
                             onChange={this.handleChange}
                             value={screen_size}
                             name="screen_size"
-                            type="number"
+                            type="text"
                             className="form-control" />
                         </div>
                         <label className="col-sm-3 form-control-label">Độ phân giải*</label>
@@ -464,7 +573,7 @@ class ActionProduct extends Component {
                             onChange={this.handleChange}
                             value={screen_resolution}
                             name="screen_resolution"
-                            type="number"
+                            type="text"
                             className="form-control" />
                         </div>
                         <label className="col-sm-3 form-control-label">Tần số quét*</label>
@@ -473,7 +582,7 @@ class ActionProduct extends Component {
                             onChange={this.handleChange}
                             value={screen_frequency}
                             name="screen_frequency"
-                            type="number"
+                            type="text"
                             className="form-control" />
                         </div>
                       </div>
@@ -512,7 +621,7 @@ class ActionProduct extends Component {
                             onChange={this.handleChange}
                             value={weight}
                             name="weight"
-                            type="number"
+                            type="text"
                             className="form-control" />
                         </div>
                         <label className="col-sm-3 form-control-label">Chất liệu vỏ*</label>

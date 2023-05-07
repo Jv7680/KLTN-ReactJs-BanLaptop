@@ -10,8 +10,8 @@ import { startLoading, stopLoading } from '../components/Loading/setLoadingState
 const MySwal = withReactContent(Swal)
 toast.configure()
 
-export default async function callApi(endpoint, method = 'GET', body, token, startLoading) {
-  if (startLoading) {
+export default async function callApi(endpoint, method = 'GET', body, token, setStartLoading) {
+  if (setStartLoading) {
     startLoading();
   }
   try {
@@ -60,7 +60,7 @@ export default async function callApi(endpoint, method = 'GET', body, token, sta
     }
   }
   finally {
-    if (startLoading) {
+    if (setStartLoading) {
       stopLoading();
     }
   }
