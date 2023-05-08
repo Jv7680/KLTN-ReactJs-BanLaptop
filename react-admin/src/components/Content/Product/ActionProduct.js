@@ -51,24 +51,24 @@ class ActionProduct extends Component {
       supplierId: 1,
       image: '',
 
-      cpu_name: '',
+      cpu_name: 'Celeron',
       cpu_core: '',
-      cpu_cache: '',
+      cpu_cache: '2 MB',
       cpu_thread: '',
       cpu_speed: '',
 
-      harddrive_capacity: "",
-      harddrive_type: "",
+      harddrive_capacity: "128 GB",
+      harddrive_type: "SSD",
 
-      ram_capacity: "",
-      ram_type: "",
-      ram_bus: "",
+      ram_capacity: "4 GB",
+      ram_type: "DDR3",
+      ram_bus: "1600",
 
-      screen_size: "",
-      screen_resolution: "",
-      screen_frequency: "",
+      screen_size: "11.6 inch",
+      screen_resolution: "1280 x 720",
+      screen_frequency: "60 HZ",
 
-      graphic_card: "",
+      graphic_card: "AMD Radeon R5 520",
       sound_technology: "",
 
       weight: "",
@@ -148,6 +148,8 @@ class ActionProduct extends Component {
     this.setState({
       [name]: value
     });
+
+    console.log("event select", event, event.target.name, event.target.value)
   }
 
   handleChangeSelecProducer = (event) => {
@@ -155,6 +157,8 @@ class ActionProduct extends Component {
     this.setState({
       supplierId: value
     })
+
+    // console.log("e sup", event, event.target.name, event.target.value)
   }
 
   handleChangeEditor = (value) => {
@@ -195,7 +199,7 @@ class ActionProduct extends Component {
       operating_system,
       release_year,
     } = this.state;
-
+    console.log("cpu_name", cpu_name);
     const newProductName = productName === '' ? '' : productName;
     const newQuantity = parseInt(quantity);
     const newDiscount = parseInt(discount);
@@ -452,12 +456,25 @@ class ActionProduct extends Component {
                       <div className="form-group row">
                         <label className="col-sm-3 form-control-label">Tên CPU*</label>
                         <div className="col-sm-3">
-                          <input
+                          <select className="form-control mb-3" name="cpu_name" value={cpu_name} onChange={this.handleChange}>
+                            <option value="Celeron" >Celeron</option>
+                            <option value="Pentium" >Pentium</option>
+                            <option value="Snapdragon" >Snapdragon</option>
+                            <option value="Intel Core I3" >Intel Core I3</option>
+                            <option value="Intel Core I5" >Intel Core I5</option>
+                            <option value="Intel Core I7" >Intel Core I7</option>
+                            <option value="Intel Core I9" >Intel Core I9</option>
+                            <option value="AMD Ryzen 3" >AMD Ryzen 3</option>
+                            <option value="AMD Ryzen 5" >AMD Ryzen 5</option>
+                            <option value="AMD Ryzen 7" >AMD Ryzen 7</option>
+                            <option value="AMD Ryzen 9" >AMD Ryzen 9</option>
+                          </select>
+                          {/* <input
                             onChange={this.handleChange}
                             value={cpu_name}
                             name="cpu_name"
                             type="text"
-                            className="form-control" />
+                            className="form-control" /> */}
                         </div>
                         <label className="col-sm-3 form-control-label">Số nhân*</label>
                         <div className="col-sm-3">
@@ -488,12 +505,21 @@ class ActionProduct extends Component {
                         </div>
                         <label className="col-sm-3 form-control-label" >Bộ nhớ đệm*</label>
                         <div className="col-sm-3">
-                          <input
+                          <select className="form-control mb-3" name="cpu_cache" value={cpu_cache} onChange={this.handleChange}>
+                            <option value="2 MB" >2 MB</option>
+                            <option value="3 MB" >3 MB</option>
+                            <option value="4 MB" >4 MB</option>
+                            <option value="5 MB" >5 MB</option>
+                            <option value="6 MB" >6 MB</option>
+                            <option value="7 MB" >7 MB</option>
+                            <option value="8 MB" >8 MB</option>
+                          </select>
+                          {/* <input
                             onChange={this.handleChange}
                             value={cpu_cache}
                             name="cpu_cache"
                             type="text"
-                            className="form-control" />
+                            className="form-control" /> */}
                         </div>
                       </div>
 
@@ -503,21 +529,31 @@ class ActionProduct extends Component {
                       <div className="form-group row">
                         <label className="col-sm-3 form-control-label">Dung Lượng ổ cứng*</label>
                         <div className="col-sm-3">
-                          <input
+                          <select className="form-control mb-3" name="harddrive_capacity" value={harddrive_capacity} onChange={this.handleChange}>
+                            <option value="128 GB" >128 GB</option>
+                            <option value="256 GB" >256 GB</option>
+                            <option value="512 GB" >512 GB</option>
+                            <option value="1 TB" >1 TB</option>
+                          </select>
+                          {/* <input
                             onChange={this.handleChange}
                             value={harddrive_capacity}
                             name="harddrive_capacity"
                             type="text"
-                            className="form-control" />
+                            className="form-control" /> */}
                         </div>
                         <label className="col-sm-3 form-control-label">Loại ổ cứng*</label>
                         <div className="col-sm-3">
-                          <input
+                          <select className="form-control mb-3" name="harddrive_type" value={harddrive_type} onChange={this.handleChange}>
+                            <option value="SSD" >SSD</option>
+                            <option value="HDD" >HDD</option>
+                          </select>
+                          {/* <input
                             onChange={this.handleChange}
                             value={harddrive_type}
                             name="harddrive_type"
                             type="text"
-                            className="form-control" />
+                            className="form-control" /> */}
                         </div>
                       </div>
 
@@ -527,30 +563,46 @@ class ActionProduct extends Component {
                       <div className="form-group row">
                         <label className="col-sm-3 form-control-label">Dung Lượng RAM*</label>
                         <div className="col-sm-3">
-                          <input
+                          <select className="form-control mb-3" name="ram_capacity" value={ram_capacity} onChange={this.handleChange}>
+                            <option value="4 GB" >4 GB</option>
+                            <option value="8 GB" >8 GB</option>
+                            <option value="16 GB" >16 GB</option>
+                            <option value="32 GB" >32 GB</option>
+                          </select>
+                          {/* <input
                             onChange={this.handleChange}
                             value={ram_capacity}
                             name="ram_capacity"
                             type="text"
-                            className="form-control" />
+                            className="form-control" /> */}
                         </div>
                         <label className="col-sm-3 form-control-label">Loại RAM*</label>
                         <div className="col-sm-3">
-                          <input
+                          <select className="form-control mb-3" name="ram_type" value={ram_type} onChange={this.handleChange}>
+                            <option value="DDR3" >DDR3</option>
+                            <option value="DDR4" >DDR4</option>
+                          </select>
+                          {/* <input
                             onChange={this.handleChange}
                             value={ram_type}
                             name="ram_type"
                             type="text"
-                            className="form-control" />
+                            className="form-control" /> */}
                         </div>
                         <label className="col-sm-3 form-control-label">Tốc độ BUS RAM*</label>
                         <div className="col-sm-3">
-                          <input
+                          <select className="form-control mb-3" name="ram_bus" value={ram_bus} onChange={this.handleChange}>
+                            <option value="1600" >1600</option>
+                            <option value="2400" >2400</option>
+                            <option value="2666" >2666</option>
+                            <option value="3200" >3200</option>
+                          </select>
+                          {/* <input
                             onChange={this.handleChange}
                             value={ram_bus}
                             name="ram_bus"
                             type="text"
-                            className="form-control" />
+                            className="form-control" /> */}
                         </div>
                       </div>
 
@@ -560,30 +612,55 @@ class ActionProduct extends Component {
                       <div className="form-group row">
                         <label className="col-sm-3 form-control-label">Kích thước màn hình*</label>
                         <div className="col-sm-3">
-                          <input
+                          <select className="form-control mb-3" name="screen_size" value={screen_size} onChange={this.handleChange}>
+                            <option value="11.6 inch" >11.6 inch</option>
+                            <option value="13 inch" >13 inch</option>
+                            <option value="13.3 inch" >13.3 inch</option>
+                            <option value="13.4 inch" >13.4 inch</option>
+                            <option value="13.5 inch" >13.5 inch</option>
+                            <option value="14 inch" >14 inch</option>
+                            <option value="14.5 inch" >14.5 inch</option>
+                            <option value="15.6 inch" >15.6 inch</option>
+                            <option value="16 inch" >16 inch</option>
+                            <option value="16.1 inch" >16.1 inch</option>
+                            <option value="17 inch" >17 inch</option>
+                            <option value="17.3 inch" >17.3 inch</option>
+                            <option value="18 inch" >18 inch</option>
+                          </select>
+                          {/* <input
                             onChange={this.handleChange}
                             value={screen_size}
                             name="screen_size"
                             type="text"
-                            className="form-control" />
+                            className="form-control" /> */}
                         </div>
                         <label className="col-sm-3 form-control-label">Độ phân giải*</label>
                         <div className="col-sm-3">
-                          <input
+                          <select className="form-control mb-3" name="screen_resolution" value={screen_resolution} onChange={this.handleChange}>
+                            <option value="1280 x 720" >1280 x 720</option>
+                            <option value="1920 x 1080" >1920 x 1080</option>
+                            <option value="2560 x 1440" >2560 x 1440</option>
+                          </select>
+                          {/* <input
                             onChange={this.handleChange}
                             value={screen_resolution}
                             name="screen_resolution"
                             type="text"
-                            className="form-control" />
+                            className="form-control" /> */}
                         </div>
                         <label className="col-sm-3 form-control-label">Tần số quét*</label>
                         <div className="col-sm-3">
-                          <input
+                          <select className="form-control mb-3" name="screen_frequency" value={screen_frequency} onChange={this.handleChange}>
+                            <option value="60 HZ" >60 HZ</option>
+                            <option value="90 HZ" >90 HZ</option>
+                            <option value="144 HZ" >144 HZ</option>
+                          </select>
+                          {/* <input
                             onChange={this.handleChange}
                             value={screen_frequency}
                             name="screen_frequency"
                             type="text"
-                            className="form-control" />
+                            className="form-control" /> */}
                         </div>
                       </div>
 
@@ -593,12 +670,21 @@ class ActionProduct extends Component {
                       <div className="form-group row">
                         <label className="col-sm-3 form-control-label">Tên card màn hình*</label>
                         <div className="col-sm-3">
-                          <input
+                          <select className="form-control mb-3" name="graphic_card" value={graphic_card} onChange={this.handleChange}>
+                            <option value="AMD Radeon R5 520" >AMD Radeon R5 520</option>
+                            <option value="GTX 1650" >GTX 1650</option>
+                            <option value="GTX 1650Ti" >GTX 1650Ti</option>
+                            <option value="GeForce MX130" >GeForce MX130</option>
+                            <option value="GeForce MX330" >GeForce MX330</option>
+                            <option value="RTX 1650" >RTX 1650</option>
+                            <option value="RTX 2050" >RTX 2050</option>
+                          </select>
+                          {/* <input
                             onChange={this.handleChange}
                             value={graphic_card}
                             name="graphic_card"
                             type="text"
-                            className="form-control" />
+                            className="form-control" /> */}
                         </div>
                         <label className="col-sm-3 form-control-label">Công nghệ âm thanh*</label>
                         <div className="col-sm-3">

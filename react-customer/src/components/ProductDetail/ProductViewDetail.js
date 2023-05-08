@@ -410,14 +410,20 @@ class ProductViewDetail extends Component {
                                       <p className="new-price new-price-2" style={{ color: 'black', textDecoration: "none" }}>
                                         Chỉ còn: {(product.unitprice * ((100 - product.discount) / 100)).toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}
                                       </p>
+                                      <p>
+                                        <span style={{ color: 'black', textDecoration: "none", fontStyle: "italic" }}>Đã bán: {product.soldQuantity || 0}</span>
+                                      </p>
                                     </>
                                   )
                                   :
                                   (
                                     <>
-                                      <span className="new-price new-price-2" style={{ color: 'black', textDecoration: "none" }}>
+                                      <p className="new-price new-price-2" style={{ color: 'black', textDecoration: "none" }}>
                                         {product && product.unitprice ? product.unitprice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }) : null}
-                                      </span>
+                                      </p>
+                                      <p>
+                                        <span style={{ color: 'black', textDecoration: "none", fontStyle: "italic" }}>Đã bán: {product.soldQuantity || 0}</span>
+                                      </p>
                                     </>
                                   )
                               }
