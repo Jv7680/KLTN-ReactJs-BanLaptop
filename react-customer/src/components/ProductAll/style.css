@@ -186,7 +186,7 @@
 }
 
 .btnFilterPush {
-  margin: 10px 0 3px 0;
+  margin: 4px 0 3px 0;
 }
 
 .btnFilterPush:hover {
@@ -195,7 +195,7 @@
 }
 
 .btnFilterReset {
-  margin: 3px 0 4px 0;
+  margin: 3px 0 10px 0;
 }
 
 .btnFilterReset:hover {

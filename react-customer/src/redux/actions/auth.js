@@ -104,7 +104,7 @@ export const actForgotPasswordRequest = (body) => {
         startLoading()
         console.log('body actForgotPasswordRequest: ', body);
         localStorage.setItem('_mailreset', body.email);
-        const res = await callApi('auth/forgot', 'POST', body);
+        const res = await callApi('auth/forgot', 'POST', body, null, true);
         if (res && res.status === 200) {
             //const mes = res.data.message ? res.data.message : "Vui lòng xác nhận email để đổi mật khẩu";
             //localStorage.setItem('_mailreset', body.email);

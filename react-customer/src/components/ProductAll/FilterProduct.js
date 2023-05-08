@@ -461,6 +461,13 @@ class FilterProduct extends Component {
         return (
             <div className="col-2 filter-area">
                 <span className="filter-tittle"><i class="fa fa-filter"></i> Bộ lọc tìm kiếm</span>
+
+                {/* Button filter */}
+                <div className="row no-gutters producer-area" style={{ flexDirection: "column" }}>
+                    <button className='btnFilterPush' type='button' onClick={() => { this.handleFilter() }}>Lọc</button>
+                    <button className='btnFilterReset' type='button' onClick={() => { this.handleResetFilter() }}>Đặt lại</button>
+                </div>
+
                 {/* Phần filter giá */}
                 <div className="row no-gutters price-range-area">
                     <div className="col-12">
@@ -749,10 +756,10 @@ class FilterProduct extends Component {
                 </div>
 
                 {/* Button filter */}
-                <div className="row no-gutters producer-area" style={{ flexDirection: "column" }}>
+                {/* <div className="row no-gutters producer-area" style={{ flexDirection: "column" }}>
                     <button className='btnFilterPush' type='button' onClick={() => { this.handleFilter() }}>Lọc</button>
                     <button className='btnFilterReset' type='button' onClick={() => { this.handleResetFilter() }}>Đặt lại</button>
-                </div>
+                </div> */}
             </div>
         )
     }
