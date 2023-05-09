@@ -34,6 +34,7 @@ export default function Speech(props) {
       countSetTextSearch = 0;
       SpeechRecognition.abortListening();
       clearTimeout(timeOutID);
+      document.getElementsByTagName('body')[0].classList.remove('prevent-scroll-body');
     }
   }, []);
 

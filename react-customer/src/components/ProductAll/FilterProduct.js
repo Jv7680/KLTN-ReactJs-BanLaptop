@@ -200,6 +200,7 @@ class FilterProduct extends Component {
                     if (res.data.length && res.data.length > 0) {
                         // store.dispatch(actFetchProducts(res.data));
                         store.dispatch(actFetchFilterData(res.data));
+                        store.dispatch(actFetchProducts([]));
                     }
                     else {
                         Swal.fire({

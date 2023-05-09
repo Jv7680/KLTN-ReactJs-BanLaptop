@@ -10,7 +10,7 @@ export const actFetchProductsRequest = (page, newKey) => {
     return async (dispatch) => {
         // dispatch(actShowLoading());
         return await new Promise((resolve, reject) => {
-            callApi(`product/search?page=${newPage}&size=12&keyword=`, 'GET')
+            callApi(`product/search?page=${newPage}&size=12&keyword=`, 'GET', null, null, true)
                 .then(res => {
                     if (res && res.status === 200) {
                         console.log("đây là trả về", res);

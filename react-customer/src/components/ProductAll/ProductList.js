@@ -40,6 +40,13 @@ class ProductList extends Component {
         if (keySearch !== currentKeySearch) {
             this.fetch_reload_data_search_page();
         }
+
+        // console.log("page là:", this.state.currentPage);
+        // if (this.props.filterData && this.props.filterData.length > 0 && this.state.currentPage !== 1) {
+        //     this.setState({
+        //         currentPage: 1
+        //     });
+        // }
     }
 
     async fetch_reload_data() {
