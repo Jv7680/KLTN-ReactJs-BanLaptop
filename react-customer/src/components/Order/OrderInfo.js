@@ -56,7 +56,7 @@ class OrderInfo extends Component {
         });
     }
 
-    handleSubmit = async () => {
+    handleSubmit = async (paymentMethod) => {
         const { recipientname, address, phoneNumber, customerNote } = this.state;
         console.log('recipientname, address, phoneNumber, customerNote là: ', recipientname, address, phoneNumber, customerNote);
 
@@ -70,6 +70,7 @@ class OrderInfo extends Component {
             total: localStorage.getItem('total'),
             customerNote: customerNote,
             cartItemList: this.cartItemList,
+            paymentmethod: paymentMethod,
         }
 
         startLoading();
@@ -171,7 +172,7 @@ class OrderInfo extends Component {
                             </div>
                             <div className="col-12" >
                                 <button
-                                    onClick={() => this.handleSubmit()}
+                                    onClick={() => this.handleSubmit("Khi nhận hàng")}
                                     className="register-button mt-0 mb-3"
                                     type='button'
                                     style={{ width: "100%", height: 54 }}>

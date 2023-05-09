@@ -33,11 +33,16 @@ export default function PaypalCheckoutButton(props) {
           console.log("success", order);
           setTransactionStatus("success");
 
-          props.onSuccess();
+          props.onSuccess("Paypal");
         },
         onError: (err) => {
           console.log(err);
           setTransactionStatus("failure");
+          Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: `Error: ${err}`,
+          })
         },
       })
       .render(paypal.current);

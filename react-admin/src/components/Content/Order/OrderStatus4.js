@@ -281,6 +281,7 @@ class OrderStatus4 extends Component {
                             <th>Số điện thoại</th>
                             <th>Địa chỉ</th>
                             <th>Ghi chú</th>
+                            <th>Thanh toán</th>
                             <th>Ngày Đặt Hàng</th>
                             <th>Ngày Nhận Hàng</th>
                             {/* <th>Chi tiết</th> */}
@@ -334,6 +335,7 @@ class OrderStatus4 extends Component {
                                 <td>{item.phoneNumber}</td>
                                 <td>{item.address}</td>
                                 <td>{item.customerNote}</td>
+                                <td>{item.paymentmethod}</td>
                                 {/* <td>
                                   <Moment format="YYYY/MM/DD">
                                     {item.createDate}

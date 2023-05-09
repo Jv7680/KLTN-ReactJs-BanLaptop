@@ -102,24 +102,24 @@ class ActionProduct extends Component {
           //categoryId: res.data.categoryFKDto.categoryId,
           //supplierId: res.data.supplierFKDto.supplierId,
 
-          cpu_name: res.data.cpu,
+          cpu_name: res.data.cpu || "Celeron",
           cpu_core: res.data.cores,
-          cpu_cache: res.data.cache,
+          cpu_cache: res.data.cache || "2 MB",
           cpu_thread: res.data.threads,
           cpu_speed: res.data.cpuspeed,
 
-          harddrive_capacity: res.data.storagecapacity,
-          harddrive_type: res.data.storagetype,
+          harddrive_capacity: res.data.storagecapacity || "128 GB",
+          harddrive_type: res.data.storagetype || "SSD",
 
-          ram_capacity: res.data.ram,
-          ram_type: res.data.ramtype,
-          ram_bus: res.data.rambusspeed,
+          ram_capacity: res.data.ram || "4 GB",
+          ram_type: res.data.ramtype || "DDR3",
+          ram_bus: res.data.rambusspeed || "1600",
 
-          screen_size: res.data.screensize,
-          screen_resolution: res.data.screenresolution,
-          screen_frequency: res.data.screenrefreshrate,
+          screen_size: res.data.screensize || "11.6 inch",
+          screen_resolution: res.data.screenresolution || "1280 x 720",
+          screen_frequency: res.data.screenrefreshrate || "60 HZ",
 
-          graphic_card: res.data.graphicscard,
+          graphic_card: res.data.graphicscard || "AMD Radeon R5 520",
           sound_technology: res.data.audiotechnology,
 
           weight: res.data.weight,
@@ -457,7 +457,7 @@ class ActionProduct extends Component {
                         <label className="col-sm-3 form-control-label">Tên CPU*</label>
                         <div className="col-sm-3">
                           <select className="form-control mb-3" name="cpu_name" value={cpu_name} onChange={this.handleChange}>
-                            <option value="Celeron" >Celeron</option>
+                            <option selected value="Celeron" >Celeron</option>
                             <option value="Pentium" >Pentium</option>
                             <option value="Snapdragon" >Snapdragon</option>
                             <option value="Intel Core I3" >Intel Core I3</option>
@@ -506,7 +506,7 @@ class ActionProduct extends Component {
                         <label className="col-sm-3 form-control-label" >Bộ nhớ đệm*</label>
                         <div className="col-sm-3">
                           <select className="form-control mb-3" name="cpu_cache" value={cpu_cache} onChange={this.handleChange}>
-                            <option value="2 MB" >2 MB</option>
+                            <option selected value="2 MB" >2 MB</option>
                             <option value="3 MB" >3 MB</option>
                             <option value="4 MB" >4 MB</option>
                             <option value="5 MB" >5 MB</option>
@@ -530,7 +530,7 @@ class ActionProduct extends Component {
                         <label className="col-sm-3 form-control-label">Dung Lượng ổ cứng*</label>
                         <div className="col-sm-3">
                           <select className="form-control mb-3" name="harddrive_capacity" value={harddrive_capacity} onChange={this.handleChange}>
-                            <option value="128 GB" >128 GB</option>
+                            <option selected value="128 GB" >128 GB</option>
                             <option value="256 GB" >256 GB</option>
                             <option value="512 GB" >512 GB</option>
                             <option value="1 TB" >1 TB</option>
@@ -545,7 +545,7 @@ class ActionProduct extends Component {
                         <label className="col-sm-3 form-control-label">Loại ổ cứng*</label>
                         <div className="col-sm-3">
                           <select className="form-control mb-3" name="harddrive_type" value={harddrive_type} onChange={this.handleChange}>
-                            <option value="SSD" >SSD</option>
+                            <option selected value="SSD" >SSD</option>
                             <option value="HDD" >HDD</option>
                           </select>
                           {/* <input
@@ -564,7 +564,7 @@ class ActionProduct extends Component {
                         <label className="col-sm-3 form-control-label">Dung Lượng RAM*</label>
                         <div className="col-sm-3">
                           <select className="form-control mb-3" name="ram_capacity" value={ram_capacity} onChange={this.handleChange}>
-                            <option value="4 GB" >4 GB</option>
+                            <option selected value="4 GB" >4 GB</option>
                             <option value="8 GB" >8 GB</option>
                             <option value="16 GB" >16 GB</option>
                             <option value="32 GB" >32 GB</option>
@@ -579,7 +579,7 @@ class ActionProduct extends Component {
                         <label className="col-sm-3 form-control-label">Loại RAM*</label>
                         <div className="col-sm-3">
                           <select className="form-control mb-3" name="ram_type" value={ram_type} onChange={this.handleChange}>
-                            <option value="DDR3" >DDR3</option>
+                            <option selected value="DDR3" >DDR3</option>
                             <option value="DDR4" >DDR4</option>
                           </select>
                           {/* <input
@@ -592,7 +592,7 @@ class ActionProduct extends Component {
                         <label className="col-sm-3 form-control-label">Tốc độ BUS RAM*</label>
                         <div className="col-sm-3">
                           <select className="form-control mb-3" name="ram_bus" value={ram_bus} onChange={this.handleChange}>
-                            <option value="1600" >1600</option>
+                            <option selected value="1600" >1600</option>
                             <option value="2400" >2400</option>
                             <option value="2666" >2666</option>
                             <option value="3200" >3200</option>
@@ -613,7 +613,7 @@ class ActionProduct extends Component {
                         <label className="col-sm-3 form-control-label">Kích thước màn hình*</label>
                         <div className="col-sm-3">
                           <select className="form-control mb-3" name="screen_size" value={screen_size} onChange={this.handleChange}>
-                            <option value="11.6 inch" >11.6 inch</option>
+                            <option selected value="11.6 inch" >11.6 inch</option>
                             <option value="13 inch" >13 inch</option>
                             <option value="13.3 inch" >13.3 inch</option>
                             <option value="13.4 inch" >13.4 inch</option>
@@ -637,7 +637,7 @@ class ActionProduct extends Component {
                         <label className="col-sm-3 form-control-label">Độ phân giải*</label>
                         <div className="col-sm-3">
                           <select className="form-control mb-3" name="screen_resolution" value={screen_resolution} onChange={this.handleChange}>
-                            <option value="1280 x 720" >1280 x 720</option>
+                            <option selected value="1280 x 720" >1280 x 720</option>
                             <option value="1920 x 1080" >1920 x 1080</option>
                             <option value="2560 x 1440" >2560 x 1440</option>
                           </select>
@@ -651,7 +651,7 @@ class ActionProduct extends Component {
                         <label className="col-sm-3 form-control-label">Tần số quét*</label>
                         <div className="col-sm-3">
                           <select className="form-control mb-3" name="screen_frequency" value={screen_frequency} onChange={this.handleChange}>
-                            <option value="60 HZ" >60 HZ</option>
+                            <option selected value="60 HZ" >60 HZ</option>
                             <option value="90 HZ" >90 HZ</option>
                             <option value="144 HZ" >144 HZ</option>
                           </select>
@@ -671,7 +671,7 @@ class ActionProduct extends Component {
                         <label className="col-sm-3 form-control-label">Tên card màn hình*</label>
                         <div className="col-sm-3">
                           <select className="form-control mb-3" name="graphic_card" value={graphic_card} onChange={this.handleChange}>
-                            <option value="AMD Radeon R5 520" >AMD Radeon R5 520</option>
+                            <option selected value="AMD Radeon R5 520" >AMD Radeon R5 520</option>
                             <option value="GTX 1650" >GTX 1650</option>
                             <option value="GTX 1650Ti" >GTX 1650Ti</option>
                             <option value="GeForce MX130" >GeForce MX130</option>

@@ -46,7 +46,7 @@ class User extends Component {
     console.log("id", id)
     MySwal.fire({
       title: 'Xóa?',
-      text: `Bạn chắc chắn xóa tài khoản  ! ${name}`,
+      text: `Bạn chắc chắn xóa tài khoản tên ${name}`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -151,8 +151,8 @@ class User extends Component {
                                 <td>{item.address}</td>
                                 <td style={{ textAlign: "center" }}>
                                   <div>
-                                    <span title='Edit' className="fix-action"><Link to={`/customers/edit/${item.customerId}`}> <i className="fa fa-edit"></i></Link></span>
-                                    <span title='Delete' onClick={() => this.handleRemove(item.customerId, item.fullnameCustomer)} className="fix-action"><Link to="#"> <i className="fa fa-trash" style={{ color: '#ff00008f' }}></i></Link></span>
+                                    <span title='Edit' className="fix-action"><Link to={`/customers/edit/${item.accountId}`}> <i className="fa fa-edit"></i></Link></span>
+                                    <span title='Delete' onClick={() => this.handleRemove(item.accountId, `${item.lastname} ${item.firstname}`)} className="fix-action"><Link to="#"> <i className="fa fa-trash" style={{ color: '#ff00008f' }}></i></Link></span>
                                   </div>
                                 </td>
                               </tr>
