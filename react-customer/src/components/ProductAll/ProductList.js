@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom';
 import ProductItem from "./ProductItem";
 import { connect } from "react-redux";
-import { actFetchProductsRequest, actGetProductOfKeyRequest } from "../../redux/actions/products";
+import { actFetchProductsRequest, actGetProductOfKeyRequest, actFetchProducts, actFetchKeySearch } from "../../redux/actions/products";
 import { actFetchFilterData } from '../../redux/reducers/filterData';
 import store from '../..';
 import callApi from '../../utils/apiCaller';
@@ -62,11 +62,24 @@ class ProductList extends Component {
 
     async fetch_reload_data_search_page() {
         let { keySearch } = this.props; console.log("keySearch", keySearch);
-        let res = await actGetProductOfKeyRequest(keySearch)();
-        console.log("fetch_reload_data_keySearch", res);
+        // mới vào search sẽ clear products
+        const newKeyPage = { key: keySearch, totalPage: 1 };
+        if (keySearch !== this.state.currentKeySearch && this.props.products.length !== 0) {
+            await store.dispatch(actFetchProducts([]));
+        }
+
+        // await store.dispatch(actFetchKeySearch(newKeyPage));
+
         this.setState({
-            total: res.totalPage,
             currentKeySearch: keySearch,
+        }, async () => {
+            let res = await actGetProductOfKeyRequest(keySearch)();
+
+            console.log("fetch_reload_data_keySearch", res);
+
+            this.setState({
+                total: res.totalPage,
+            });
         });
     }
 

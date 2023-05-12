@@ -93,9 +93,9 @@ class ProductAll extends Component {
 
   }
 
-  componentWillUnmount = () => {
-    console.log("componentWillUnmount");
-  }
+  // componentWillUnmount = () => {
+  //   console.log("componentWillUnmount");
+  // }
 
   updateFilter = (newFilter) => {
     this.setState({

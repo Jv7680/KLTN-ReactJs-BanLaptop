@@ -9,6 +9,8 @@ import { withRouter } from 'react-router-dom';
 import Speech from './Speech';
 import Modal from "react-modal";
 import Keyboard from "react-simple-keyboard";
+import store from '../..';
+import { actFetchProducts, actFetchKeySearch } from '../../redux/actions/products';
 
 import './header-middle.css';
 import "react-simple-keyboard/build/css/index.css";
@@ -137,6 +139,10 @@ class HeaderMiddle extends Component {
       // if (res) {
       //   this.props.history.push(`/search/${textSearch}`);
       // }
+      // const newKeyPage = { key: textSearch, totalPage: 1 }
+      // await store.dispatch(actFetchProducts([]));
+      // await store.dispatch(actFetchKeySearch(newKeyPage));
+
       this.props.history.push(`/search/${textSearch}`);
 
 

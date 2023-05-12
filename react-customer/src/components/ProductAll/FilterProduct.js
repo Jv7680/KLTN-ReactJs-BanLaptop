@@ -191,7 +191,8 @@ class FilterProduct extends Component {
                     cpu: newFormat.cpu[0] || "",
                     ram: newFormat.ram[0] || "",
                     storagecapacity: newFormat.ssd[0] || "",
-                    screensize: newFormat.screenSize[0] || ""
+                    screensize: newFormat.screenSize[0] || "",
+                    producer: newFormat.producer[0] || "",
                 },
             })
                 .then((res) => {
