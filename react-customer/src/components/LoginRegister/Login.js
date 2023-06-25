@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login'
 import validateLoginRegister from '../../utils/validations/validateLoginRegister';
+import GoogleButton from './GoogleButton';
 import "./style.css";
 toast.configure()
 
@@ -124,20 +125,10 @@ class Login extends Component {
               <div className="col-md-4">
                 <button onClick={(event) => this.handleSubmit(event)} className="register-button mt-0 mb-3" value="Login">Đăng nhập</button>
               </div>
-              <div className="col-md-8">
-                {/* <button onClick={(event) => this.handleLoginGoogle(event)} className="loginBtn loginBtn--google" value="LoginGoogle" ref="googleLoginBtn">
-                  Login with Google
-                </button> */}
+              <div className="col-md-3"></div>
+              <div className="col-md-5">
+                <GoogleButton />
               </div>
-              {/* <div className="col-8">
-                <GoogleLogin 
-                buttonText='Đăng nhập với google'
-                style={{marginTop: "100px"}}
-                // onSuccess={onSuccess}
-                isSignedIn = {true}
-                />
-              </div> */}
-
             </div>
           </div>
         </form>

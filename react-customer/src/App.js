@@ -1,19 +1,18 @@
-import React, { Component } from "react";
-import routes from "./routes";
-import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer/Footer";
-import { connect } from "react-redux";
-import { actTokenRequest } from "./redux/actions/auth";
 import { css } from '@emotion/core';
-import { actShowLoading } from "./redux/actions/loading";
-import Chat from "./components/Chat/Chat";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import ButtonGoTop from "./components/ButtonGoTop/ButtonGoTop";
+import Chat from "./components/Chat/Chat";
+import Footer from "./components/Footer/Footer";
+import Header from "./components/Header/Header";
+import { actTokenRequest } from "./redux/actions/auth";
+import { actShowLoading } from "./redux/actions/loading";
+import routes from "./routes";
 
+import './app.css';
 import Loading from "./components/Loading/Loading";
-import './app.css'
-
-import PaypalCheckoutButton from "./components/CheckOut/PaypalCheckoutButton";
+import jwtDecode from "jwt-decode";
 
 const cssPulseLoader = css`
     margin: auto;
@@ -25,7 +24,20 @@ class App extends Component {
   componentDidMount() {
     const token = localStorage.getItem("_auth");
     this.props.add_token_redux(token);
+
+    window.onload = () => {
+      window.google.accounts.id.initialize({
+        client_id: "719600623259-ub1lq10i7fgmqnv2hh84dkjbt7266sur.apps.googleusercontent.com",
+        callback: this.handleCallBack,
+      });
+    };
   }
+
+  handleCallBack = (respone) => {
+    const userInfor = jwtDecode(respone.credential) || "No infor got!!";
+    console.log("userInfor", userInfor);
+  }
+
   render() {
     // const { loading } = this.props;
     // const loading = true;
