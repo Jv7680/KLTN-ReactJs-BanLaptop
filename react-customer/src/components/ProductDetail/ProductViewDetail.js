@@ -16,7 +16,7 @@ import { result } from "lodash";
 import Swal from "sweetalert2";
 import { withRouter } from 'react-router-dom';
 import { getProductListImageURL, getProductListImage360URL } from "../../firebase/CRUDImage";
-
+import { actAddWishListRequest, actFetchWishListRequest } from "../../redux/actions/wishlist";
 import Image360 from "./Image360";
 import ProductInfor from "./ProductInfor";
 import Slider from "react-slick";
@@ -28,6 +28,7 @@ toast.configure();
 
 let token;
 let id;
+let currentId;
 const customStyles = {
   content: {
     top: "50%",
@@ -72,7 +73,7 @@ class ProductViewDetail extends Component {
   }
 
   componentDidMount = async () => {
-
+    currentId = this.props.id;
     await this.props.get_product(this.props.id);
 
     let listImage = await getProductListImageURL(this.props.id);
@@ -84,7 +85,20 @@ class ProductViewDetail extends Component {
     });
   }
 
-  componentDidUpdate = () => {
+  componentDidUpdate = async () => {
+    if (this.props.id !== currentId) {
+      currentId = this.props.id;
+      await this.props.get_product(this.props.id);
+
+      let listImage = await getProductListImageURL(this.props.id);
+      // let listImage360 = await getProductListImage360URL(this.props.id);
+      this.getListImage360URL();
+      this.setState({
+        listImageURL: listImage.images,
+        // listImage360URL: listImage360.images360,
+      });
+    }
+
     let { modalState } = this.state;
     setTimeout(() => {
       let modalHeader1 = document.getElementsByClassName('modal-image-header1')[0];
@@ -244,8 +258,29 @@ class ProductViewDetail extends Component {
     this.setState({ modalIsOpen: false });
   }
 
+  addItemToFavorite = async (productId) => {
+    id = parseInt(localStorage.getItem("_id"));
+
+    if (!id) {
+      return toast.error('vui lòng đăng nhập !')
+    }
+
+    let { wishlist } = this.props;
+    let found = Array.from(wishlist).find(item => item.product.productId === productId);
+    // delete
+    if (found) {
+      let token = localStorage.getItem('_auth');
+      await callApi(`wishlist/delete/${found.wishlistId}`, 'DELETE', undefined, token);
+      this.props.fetch_wishlist(id);
+      toast.success('Đã xóa khỏi mục ưa thích')
+    }
+    else {
+      this.props.addWishList(id, productId);
+    }
+  }
+
   render() {
-    const { product, user } = this.props;
+    const { product, user, wishlist } = this.props;
     const { quantity, redirectYourLogin, cmtContent, cmtRating, ratingState, checkCommented, listImageURL, listImage360URL } = this.state;
     const { modalIsOpen, modalState } = this.state;
     let listProductInfor;
@@ -472,6 +507,9 @@ class ProductViewDetail extends Component {
                               Thêm vào giỏ
                               <i className="fa fa-shopping-cart"></i>
                             </span>
+                            <span style={{ cursor: "pointer", fontSize: 24, marginLeft: 12, position: "relative", top: -14 }} onClick={() => this.addItemToFavorite(product.productId)} className="links-details" title="yêu thích" >
+                              <i className="fa fa-heart-o" style={{ color: Array.from(wishlist).find(item => item.product.productId === product.productId) ? "#f13961" : "unset" }} />
+                            </span>
                           </div>
                         </form>
                       </div>
@@ -609,7 +647,8 @@ class ProductViewDetail extends Component {
 const mapStateToProps = state => {
   return {
     product: state.product,
-    user: state.auth
+    user: state.auth,
+    wishlist: state.wishlist,
   };
 };
 const mapDispatchToProps = dispatch => {
@@ -619,8 +658,13 @@ const mapDispatchToProps = dispatch => {
     },
     addCart: (idCustomer, product, quantity, token) => {
       dispatch(actAddCartRequest(idCustomer, product, quantity, token));
+    },
+    addWishList: (id, idProduct) => {
+      dispatch(actAddWishListRequest(id, idProduct));
+    },
+    fetch_wishlist: (id) => {
+      dispatch(actFetchWishListRequest(id))
     }
-
   }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProductViewDetail));

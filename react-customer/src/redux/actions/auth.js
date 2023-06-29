@@ -1,6 +1,7 @@
 import * as Types from '../../constants/ActionType';
 import { Redirect } from 'react-router-dom';
 import { actFetchUserRequset } from '../../redux/actions/user';
+import { actFetchWishListRequest } from './wishlist';
 import callApi from '../../utils/apiCaller';
 import { toast } from 'react-toastify';
 import { startLoading, doneLoading } from '../../utils/loading';
@@ -29,6 +30,7 @@ export const actLoginRequest = (user) => {
             dispatch(actLogin(token));
             dispatch(actFetchUserRequset(id));
             dispatch(actFetchCartRequest(id));
+            dispatch(actFetchWishListRequest(id));
         }
     };
 }

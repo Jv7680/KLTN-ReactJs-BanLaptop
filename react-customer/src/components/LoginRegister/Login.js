@@ -27,7 +27,6 @@ class Login extends Component {
 
   componentDidMount = () => {
     setTimeout(() => {
-      console.log('xxxsx');
       window.scrollTo(0, 210);
     }, 100);
   }

@@ -1,7 +1,8 @@
 import { css } from '@emotion/core';
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import ButtonGoTop from "./components/ButtonGoTop/ButtonGoTop";
 import Chat from "./components/Chat/Chat";
 import Footer from "./components/Footer/Footer";
@@ -9,6 +10,7 @@ import Header from "./components/Header/Header";
 import { actTokenRequest } from "./redux/actions/auth";
 import { actShowLoading } from "./redux/actions/loading";
 import routes from "./routes";
+import GlobalHistory from './utils/components/GlobalHistory';
 
 import './app.css';
 import Loading from "./components/Loading/Loading";
@@ -55,6 +57,7 @@ class App extends Component {
           <Footer></Footer>
           <Chat></Chat>
           <ButtonGoTop></ButtonGoTop>
+          <GlobalHistory />
         </div>
       </Router>
     )
