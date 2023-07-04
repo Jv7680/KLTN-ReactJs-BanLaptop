@@ -90,6 +90,18 @@ class TopTreddingProductItems extends Component {
   addItemToFavorite = async (productId) => {
     id = parseInt(localStorage.getItem("_id"));
 
+    token = localStorage.getItem("_auth");
+    if (!token) {
+      Swal.fire({
+        returnFocus: false,
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'Bạn cần đăng nhập để thực hiện chức năng này!',
+      })
+      this.props.history.push(`/login`);
+      return;
+    }
+
     if (!id) {
       return toast.error('vui lòng đăng nhập !')
     }
