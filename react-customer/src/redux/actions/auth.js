@@ -36,7 +36,7 @@ export const actLoginGoogleRequest = (userGmail) => {
         let body = {
             username: userGmail
         };
-        const res = await callApi('auth/loginggoauth', 'POST', body);
+        const res = await callApi('auth/loginggoauth', 'POST', body, undefined, true);
         // fail
         if (res.data.message) {
             return false;
@@ -116,8 +116,8 @@ export const actRegisterGoogleRequest = (user) => {
     return async () => {
         const body = {
             gmail: user.email,
-            lastname: user.family_name,
-            firstname: user.given_name,
+            lastname: user.family_name || "",
+            firstname: user.given_name || "",
             phonenumber: user.phonenumber,
             address: user.address,
         };

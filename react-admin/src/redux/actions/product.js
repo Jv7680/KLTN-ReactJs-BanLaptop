@@ -78,6 +78,7 @@ export const actAddProductRequest = (data) => {
       console.log("dữ liệu trả về", res.data)
       //dispatch(actAddProduct(res.data));
       dispatch(actFetchProductsRequest(1));
+      return true;
     }
   }
 }
@@ -138,6 +139,7 @@ export const actEditProductRequest = (id, data) => {
       toast.success('Sửa sản phẩm thành công')
       //dispatch(actEditProduct(res.data));
       dispatch(actFetchProductsRequest(1));
+      return true;
     }
   }
 }

@@ -1,20 +1,13 @@
-import React, { Component } from 'react'
-import './style.css'
-import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { actFetchProductsRequest, actFetchProductsRequest1, actDeleteProductRequest, actGetProductOfKeyRequest, actGetProductOfCatagoryRequest, actActiveProductRequest } from '../../../redux/actions/product';
-import { actFetchCategoriesRequest } from '../../../redux/actions/category';
-import Switch from "react-switch";
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
-import MyFooter from '../../MyFooter/MyFooter'
+import React, { Component } from 'react';
 import Paginator from 'react-js-paginator';
-import { is_empty } from '../../../utils/validations';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { actFetchCategoriesRequest } from '../../../redux/actions/category';
+import { actActiveProductRequest, actDeleteProductRequest, actFetchProductsRequest, actGetProductOfCatagoryRequest, actGetProductOfKeyRequest } from '../../../redux/actions/product';
 import callApi from '../../../utils/apiCaller';
-import { getProductFirstImageURL } from '../../../firebase/CRUDImage';
+import MyFooter from '../../MyFooter/MyFooter';
 import ProductItem from './ProductItem';
-import { async } from '@firebase/util';
-const MySwal = withReactContent(Swal)
+import './style.css';
 
 class Product extends Component {
 
