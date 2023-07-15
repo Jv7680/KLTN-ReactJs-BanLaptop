@@ -10,6 +10,7 @@ class SortProduct extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            newestProduct: true,
             pricesGoUp: false,
             pricesGoDown: false,
             mostSold: false,

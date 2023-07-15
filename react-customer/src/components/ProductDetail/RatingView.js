@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import Modal from "react-modal";
+import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 import { Rating } from 'react-simple-star-rating';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 import store from "../..";
+import { actFetchOrdersRequest } from "../../redux/actions/order";
 import { actGetProductRequest } from "../../redux/actions/products";
 import callApi from "../../utils/apiCaller";
 import { is_empty } from "../../utils/validations";
-import { actFetchOrdersRequest } from "../../redux/actions/order";
-import { connect } from "react-redux";
 
 
 const modalStyles = {
@@ -112,28 +112,21 @@ class RatingView extends Component {
     }
 
     let body = {
-      orderId: parseInt(idOrder),
       accountId: parseInt(idAccount),
       productId: parseInt(idProduct),
       contents: cmtContent,
       rate: cmtRating,
     }
 
-    // khúc này làm tạm, chờ sửa db
-    if (parseInt(idOrder)) {
-      //gọi api
-      let res = callApi('reviews', 'POST', body, token)
-        .then(result => {
-          toast.success('Đánh giá thành công.');
-          console.log('handleSubmitCMT result', result);
+    //gọi api
+    let res = callApi('reviews', 'POST', body, token)
+      .then(result => {
+        toast.success('Đánh giá thành công.');
+        console.log('handleSubmitCMT result', result);
 
-          //cập nhật lại sản phẩm hiện tại
-          store.dispatch(actGetProductRequest(idProduct));
-        });
-    }
-    else {
-      toast.error(`Order id ${parseInt(idOrder)}`);
-    }
+        //cập nhật lại sản phẩm hiện tại
+        store.dispatch(actGetProductRequest(idProduct));
+      });
   }
 
 

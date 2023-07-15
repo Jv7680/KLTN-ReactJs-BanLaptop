@@ -236,6 +236,7 @@ class ActionProduct extends Component {
     }
 
     const addNewProduct = {
+      "productId": parseInt(localStorage.getItem('_newProductID')),
       "productName": newProductName,
       "quantity": newQuantity,
       "image": image,

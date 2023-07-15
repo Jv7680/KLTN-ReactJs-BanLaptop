@@ -37,7 +37,7 @@ class ProductList extends Component {
         console.log("componentDidUpdate");
         let { keySearch } = this.props;
         let { currentKeySearch } = this.state;
-        if (keySearch !== currentKeySearch) {
+        if (keySearch && keySearch !== currentKeySearch) {
             this.fetch_reload_data_search_page();
         }
 

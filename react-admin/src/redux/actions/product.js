@@ -12,6 +12,7 @@ export const actFetchProductsRequest = (page) => {
   return async dispatch => {
     let token = localStorage.getItem('_auth');
     const res = await callApi(`admin/product/all?page=${page}&size=10`, 'GET', null, token)
+    // const res = await callApi(`admin/product/search?page=${page}&size=10&keyword=`, 'GET', null, token)
     console.log('actFetchProductsRequest res: ', res);
     if (res && res.status === 200) {
       store.dispatch(actFetchProducts(res.data.listProducts));

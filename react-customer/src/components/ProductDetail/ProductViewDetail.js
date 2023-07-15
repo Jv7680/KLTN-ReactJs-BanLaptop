@@ -415,21 +415,21 @@ class ProductViewDetail extends Component {
                   <span className="product-name">{product.productName}</span>
                   {/* Xử lý ngừng kinh doanh, hết hàng, và có discount */}
                   {
-                    product.isDeleted === 'yes' ?
+                    product.isdeleted === 1 ?
                       (
-                        <>
+                        <div style={{ marginTop: 16 }}>
                           <h3>Ngừng Kinh Doanh! </h3>
                           <h6>Chân thành xin lỗi quý khách, chúng tôi đã ngừng kinh doanh sản phẩm này.</h6>
-                        </>
+                        </div>
                       )
                       :
                       (
                         product.quantity === 0 ?
                           (
-                            <>
+                            <div style={{ marginTop: 16 }}>
                               <h3>Tạm Hết Hàng! </h3>
                               <h6>Chân thành xin lỗi quý khách, chúng tôi sẽ mong chóng nhập hàng để đáp ứng nhu cầu mua sắm của bạn.</h6>
-                            </>
+                            </div>
                           )
                           :
                           (
@@ -474,7 +474,7 @@ class ProductViewDetail extends Component {
                   </div>
 
                   {
-                    product.quantity === 0 || product.isDelete ?
+                    product.quantity === 0 || product.isdeleted === 1 ?
                       (
                         null
                       )

@@ -34,11 +34,13 @@ class Product extends Component {
 
       // Tạo biến lưu id product tiếp theo trong local storage
       // Dùng trong trường hợp thêm mới product để up ảnh firebase
-      const resNew = await callApi(`admin/product/all?page=${res.data.totalPage}&size=10`, 'GET', null, token);
+      const resNew = await callApi(`admin/product/all?page=1&size=10`, 'GET', null, token);
       if (resNew && resNew.status === 200) {
-        let dataFinalPage = resNew.data.listProducts;
+        console.log("resNew là", resNew);
+        // let dataFinalPage = resNew.data.listProducts;
         // newProductID sẽ bằng id mới nhất + 1 
-        let newProductID = dataFinalPage[dataFinalPage.length - 1].productId + 1;
+        // let newProductID = dataFinalPage[dataFinalPage.length - 1].productId + 1;
+        let newProductID = resNew.data.listProducts[0].productId + 1;
         localStorage.setItem('_newProductID', newProductID);
       }
     }
