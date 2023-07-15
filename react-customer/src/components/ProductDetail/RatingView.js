@@ -39,7 +39,7 @@ class RatingView extends Component {
 
   componentDidMount = async () => {
     currentId = this.props.product.productId;
-    let allProductHaveBought = await this.getAllIdProductHaveBought(3);
+    let allProductHaveBought = await this.getAllIdProductHaveBought(parseInt(localStorage.getItem("_idaccount")));
     let thisProductHasBought = allProductHaveBought.find(element => element === this.props.product.productId);
 
     if (thisProductHasBought) {
@@ -59,7 +59,7 @@ class RatingView extends Component {
     console.log("componentDidUpdate", currentId, this.props.product.productId);
     if (currentId !== this.props.product.productId) {
       currentId = this.props.product.productId;
-      let allProductHaveBought = await this.getAllIdProductHaveBought(3);
+      let allProductHaveBought = await this.getAllIdProductHaveBought(parseInt(localStorage.getItem("_idaccount")));
       let thisProductHasBought = allProductHaveBought.find(element => element === this.props.product.productId);
 
       if (thisProductHasBought) {
